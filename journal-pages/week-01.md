@@ -21,7 +21,7 @@ Base on the conversation in our group we decide to crate 5 queasitons that relat
 - How do you fell on avarge at Uni in 1-10?
 
 Follow the instructions we create a board to present all of the answer from our group mate. We use differnt colour sticker to showing the different people.
-![board](../assets/week-01/dataco.jpeg)
+![board](../assets/week-01/dataco.png)
 
 ### Step 2: Visualise
 
