@@ -13,9 +13,8 @@ After learning some very basic p5.js drawing functions such as:
 
 ```javascript
 rect()  
-circle()  
+circle() 
 fill()  
-stroke()  
 strokeWeight()  
 background()  
 ```
@@ -26,22 +25,31 @@ I decided to directly recreate the composition shown in the PowerPoint slide. I 
 example in PPT
 
 At the beginning, the two rectangles and the circle were very easy to make. I mainly just needed to think about the layering order. For example, the black rectangle had to be drawn first as the sky, then the circle, and then the green rectangle in front so that part of the circle would be hidden. This helped me understand that in p5.js, shapes drawn later appear on top of earlier ones.
-However, after I finished the main shapes, my teacher pointed out that I also needed to think about the black line in the middle of the composition. At first I did not pay much attention to it, because I was only focused on the three main shapes. After thinking about it more, and with the teacher’s reminder, I realised that I could use stroke() together with the background colour logic to make that line appear more clearly. This made me notice that even in a very simple composition, small details like outlines can still matter a lot.
-
+However, after I finished the main shapes, my teacher pointed out that I also needed to think about the black line in the middle of the composition. At first I did not pay much attention to it, because I was only focused on the three main shapes. After thinking about it more, and with the teacher’s reminder, I realised that I could use `strokeWeight()` function to make the green rectangle show its outline, thus blending it with the black rectangle to create this effect.
 <iframe src="https://editor.p5js.org/chengyuehan/full/3TCngiL9Z"
+width="400"
+height="400"></iframe>
+
+After thinking about it more, I realised there were also other ways to create the black line in the middle. Instead of relying on the outline of the green rectangle, I could draw the line separately using `line()`. At the same time I remove the black rectangle, change the background to black colour.This made me realise that there are many different ways to achieve the same visual result. For example, I also thought about only drawing a half circle to create the same sunset effect. This helped me understand that one image can have multiple coding solutions.
+
+<iframe src="https://editor.p5js.org/chengyuehan/full/eHpEkT5fW"
 width="400"
 height="400"></iframe>
 
 
 Activity 2: Make an Interactive Sketch
 
-Using the DOM elements covered in class (createButton(), createSlider(), createInput()), create a sketch with at least two interactive controls that change something on the canvas.
+For this activity, I created a sketch using the DOM elements introduced in class, including `createSlider()`, `createButton()`, and `createInput()`. I used three interactive controls that directly change what appears on the canvas.
 
-Some ideas:
+The `createInput()` allows the viewer to type any text, which will then be displayed on the canvas. This makes the content of the sketch change depending on what the user enters. The `createSlider()` controls the size of the text. When the slider moves, the text becomes larger or smaller. The `createButton()` changes the colour of the text randomly each time it is pressed.
 
-A slider that controls the size or position of a shape
-A button that resets or randomises the drawing
-A text input that displays a label on the canvas
+These controls allow the viewer to change both the appearance and the content of the sketch. Compared to a static drawing, this makes the visual more flexible and interactive. Through this activity, I learned how user input can be connected to variables, and how these variables can control visual elements such as size, colour, and text.
+
+<iframe src="https://editor.p5js.org/chengyuehan/full/kR-flsQxM"
+width="400"
+height="400"></iframe>
+
+
 Use the p5.js reference Links to an external site. to try DOM elements we haven't covered, like createSelect() or createCheckbox().
 
 Activity 3: Vibe Code an Interactive Sketch
