@@ -58,9 +58,9 @@ After recording my drinks across the week, I converted the information into a ha
 ![a](../assets/week-01/back1.png)
 Instead of writing each drink name directly in the final visualisation, I used a combination of shape and colour to build a coded language. Shape represents the company or brand of the drink: for example, circles stand for Coca-Cola, squares stand for Pepsi, rectangles represent Coco, stars represent Arctic Ocean, triangles represent L&P, and the zigzag form represents alcohol. 
 ![a](../assets/week-01/back2.png)
-Colour is used separately to indicate flavour, such as dark green for green tea, beige for Yakult, orange for orange flavour, black for kola, light green for lemon, and yellow for alcohol. By combining these two visual variables, each drink can be recognised through both its brand and flavour at the same time.
+Colour is used separately to indicate flavour, such as dark green for green tea, beige for Yakult, orange for orange flavour, black for kola, light green for lemon, and yellow for alcohol. By combining these two visual variables, each drink can be recognised through both its brand and flavour at the same time.Under such a visual language, different sodas can be quickly positioned through brands and flavors. Even non-existent drinks such as 7Up can be represented by green squares.
 
-Invent a personal visual language: use colour, shape, position, pattern, size, and texture to encode different aspects of your data. On the reverse side, draw a legend that explains your visual system.
+This method helped me transform simple weekly records into a more vivid, interesting, and layered data chart. Instead of presenting information in tables or graphs, it uses recurring shapes and colors to reveal different patterns, such as certain flavors appearing more frequently than others, or a stronger preference for a particular company's products. This method retains the function of displaying information while adding fun and visual appeal.
 
 ### Document your process
 
