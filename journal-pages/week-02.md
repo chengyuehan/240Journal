@@ -54,6 +54,26 @@ height="400"></iframe>
 
 Activity 3: Vibe Code an Interactive Sketch
 
+In Activity 3, I decided to experiment with ChatGPT as a tool for vibe coding. Instead of coding write prompt is more easier to me, I wanted to see how AI could help me quickly turn a simple idea into a working visual outcome. After thinking about different options, I chose to generate a raining cloud animation. I entered a short description of the requirements, and ChatGPT produced the initial code for the sketch. 
+
+<iframe src="https://editor.p5js.org/chengyuehan/full/VZShlG9A-"
+width="400"
+height="400"></iframe>
+
+The first version successfully created basic effects of clouds and rain in just a few seconds, demonstrating the power of GPT. However, it also presents an obvious problem: some raindrops emerge from above the clouds rather than from below. This makes the animation look illogical because the rain should visually come from the bottom of the cloud rather than the top. Although AI can generate code very quickly, getting usable code on the first answer is still difficult at this point in time.
+
+I then described this bug to ChatGPT and asked it to fix the problem. After the code was revised, the rain was generated from the lower part of the cloud, which made the overall animation look much more natural and believable. 
+
+<iframe src="https://editor.p5js.org/chengyuehan/full/Lc83HUJXV"
+width="400"
+height="400"></iframe>
+
+![a](../assets/week-02/code.png)
+By looking at GPT's changes to the code, I learned how to fix similar problems. This happens because the raindrops are generated at the top of the screen rather than underneath the clouds. Just change the value from to below the cloud. Base on the GPT's changes to the code, I learned how to fix similar problems. This happens because the raindrops are generated at the top of the screen rather than underneath the clouds. Just change the value from to below the cloud. In this round of changes, GPT changed the random number of the y-coordinate of the randomly generated raindrops from -400 to 250 to 140 to 170, so that the raindrops are generated at the position of the clouds.
+
+<iframe src="https://editor.p5js.org/chengyuehan/full/OIlQcpHZ2"
+width="400"
+height="400"></iframe>
 
 Describe what you want in plain language.
 
