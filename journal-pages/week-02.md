@@ -50,11 +50,10 @@ width="400"
 height="400"></iframe>
 
 
-Use the p5.js reference Links to an external site. to try DOM elements we haven't covered, like createSelect() or createCheckbox().
+！！！Use the p5.js reference Links to an external site. to try DOM elements we haven't covered, like createSelect() or createCheckbox().
 
 Activity 3: Vibe Code an Interactive Sketch
 
-Use an LLM (e.g. Gemini, ChatGPT, Claude) to help you build a more ambitious interactive sketch in p5.js.
 
 Describe what you want in plain language.
 
