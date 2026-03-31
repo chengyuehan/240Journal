@@ -56,7 +56,7 @@ I chose to use a page of my notebook to take notes. Although I often forget to w
 I recorded all the drinks I had for lunch and dinner throughout the week. Since I don't have a fixed habit of eating lunch, many lunch records are blank.
 
 ![a](../assets/week-01/IMG_1502.jpg)
-
+English translation of the data collected
 ### Step 3: Design your visualisation
 ![a](../assets/week-01/data.png)
 
