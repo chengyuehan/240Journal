@@ -21,7 +21,7 @@ Base on the conversation in our group we decide to crate 5 queasitons that relat
 - How do you fell on avarge at Uni in 1-10?
 
 Follow the instructions we create a board to present all of the answer from our group mate. We use differnt colour sticker to showing the different people.
-![board](../assets/week-01/dataco.png)
+![alt text](../assets/week-01/dataco.png)
 
 ### Step 2: Visualise
 
@@ -31,15 +31,15 @@ We each use the same colored post-it note to answer the question. In this way, t
 
 After some discussion, we freed our minds and started getting creative in how we embodied our data. We used sticky notes to make models of buses and cars to represent two different ways of going to school. For this purpose we created two miniature map scenes. One is a parking lot with parking signs, and a bus stop.
 
-!\[]\(IMG\_0357.HEIC null)
+![alt text](../assets/week-01/datavi.png)
 Through brainstorming we came up with many other ways to present our data. For example, use from 😊 to 😔 to show how you feel today. Use the number of hearts to show the favourate for a course.
 
 ### Step 3: Decode
 
 We exchanged with another group, and after seeing the other group's work, I was pleasantly surprised by its creative presentation method. They connected the answers to each question with zigzag lines, and also used symbolic icons to illustrate the questions and their data.
-!\[]\(IMG\_0359.HEIC null)
+![alt text](../assets/week-01/othergroup.png)
 The questions they ask are relatively more focused on how individuals' lives are different from ours, so it's relatively easy to identify each of them. At the same time, they use numbers more frequently than we do.
-!\[]\(IMG\_0360.HEIC null)
+![alt text](../assets/week-01/qa.png)
 
 ## Independent Data Portrait
 
