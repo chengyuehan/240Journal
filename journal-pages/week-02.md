@@ -121,18 +121,17 @@ Another iteration involved adding hover interaction. When the cursor moves over 
 
 Finally, I added a reset button so the viewer can quickly return to the original state after applying filters. I also reduced the canvas size to make the layout more compact and readable. Through iteration, the sketch became clearer, more interactive, and more consistent with the structure of the original hand-drawn data portrait.
 
-Document Your Process
-To capture the full scope of your practice, each entry in the Making Journal must include a mix of visual and textual evidence, such as sketches, screenshots, GIFs, diagrams, process notes, instructions and reflections.
+## Reflection
 
-Include reflective writing that addresses the following:
+From Experiment 1, I chose to focus on drink type, flavour, and company because these attributes create clear visual differences that can be represented using shape and colour. The original hand-drawn data used different shapes and colours to represent different drinks, so translating this system into code allowed me to maintain the same visual logic while making the design interactive.
 
-What data and visual aspects from Experiment 1 did you choose to work with, and why?
-How did you decide which interactive elements to use?
-What can a viewer learn by interacting with your sketch that they couldn't from your hand-drawn portrait?
-Did you use vibe coding or other tools in your process? What did you learn from this?
-What would you develop further with more time?
-Any other reflections?
+I decided to use dropdown menus as the main interactive elements because the dataset is categorical rather than numerical. Filters allow the viewer to explore relationships between flavour and brand. For example, some flavours correspond to multiple companies, while some companies produce drinks with multiple flavours. Interaction makes these connections easier to understand compared to the static drawing.
 
+By interacting with the sketch, the viewer can discover patterns that are not immediately obvious in the hand-drawn version. For example, drinks with the same flavour appear in different shapes depending on company, and some drink types appear repeatedly across multiple days. The hover animation highlights repeated items, helping the viewer recognise similarities across the dataset.
+
+During development, I used vibe coding to realize my ideas. I iterated on the interface's style and functionality bit by bit through dialogue with the AI. Through this process, I learned how to program using natural language and achieve the desired effects. This ability will help me realize my goals when encountering problems or ideas in the future.
+
+If time permits, I will continue to improve the visual icons and use more creative ways to display data. My strong interest in animation also makes me think about whether animated effects can be implemented in more areas. For example, after selecting a flavor, the bubbles for other unselected flavors could slowly disappear.
 ## AI Usage Statement
 
 *Document any use of AI tools under an AI Usage Statement heading. Explain which tools you used and describe how you used them. Reference any AI-generated content (see [QuickCite](https://auckland.libguides.com/referencing-generative-ai-tools) for guidance).*
