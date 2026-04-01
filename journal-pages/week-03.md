@@ -73,7 +73,9 @@ use visibility control the `strokeWeight` of rectangale
 use `ramdom()` fuction control the canvas size 
 
 #### Use vibe coding to try something more ambitious.
-<iframe src="https://editor.p5js.org/chengyuehan/full/PExUhh-FC"></iframe>
+<iframe src="https://editor.p5js.org/chengyuehan/full/PExUhh-FC"
+width="700"
+height="600"></iframe>
 With the help of vibe coding, a bunch of clouds are generated, and the speed at which they float away depends on the wind speed returned by the API. Three city options are also provided to see the difference.
 
 ### Activity 3: Design and Execute a Data Protocol
@@ -96,7 +98,9 @@ I chose a digital approach because I think it is easier to create a stronger vis
 
 The live data source I used was the Binance API, specifically the recent trading data for ETH/BTC. I chose it because I am also interested in cryptocurrency, and Binance’s API does not require an API key. Cryptocurrency prices and trading behaviour are already highly volatile, so they fit the idea of conflict and movement very well. At first, I considered using a more realistic way of showing the data, but later I decided it would be more interesting to process the data as a battle for space. I did not want to simply display numbers on the screen, so I transformed the data into a territorial struggle. I counted the direction of recent trades and used that as the reason for territorial expansion.
 
-<iframe src="https://editor.p5js.org/chengyuehan/full/ngcUJXHTq"></iframe>
+<iframe src="https://editor.p5js.org/chengyuehan/full/ngcUJXHTq"
+width="700"
+height="600"></iframe>
 
 In terms of visual mapping, I tried to keep it simple while making sure that each part had a clear meaning. The count of recent trade directions determines which territory is advancing. The difference between the two counts controls how much the frontline shakes. I used orange for Bitcoin and blue for Ethereum so the two sides could be clearly distinguished. I also added small particles near the frontline so that the middle area would feel less static and more like a conflict zone.
 
