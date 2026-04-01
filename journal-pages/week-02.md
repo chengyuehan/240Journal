@@ -27,14 +27,14 @@ example in PPT
 At the beginning, the two rectangles and the circle were very easy to make. I mainly just needed to think about the layering order. For example, the black rectangle had to be drawn first as the sky, then the circle, and then the green rectangle in front so that part of the circle would be hidden. This helped me understand that in p5.js, shapes drawn later appear on top of earlier ones.
 However, after I finished the main shapes, my teacher pointed out that I also needed to think about the black line in the middle of the composition. At first I did not pay much attention to it, because I was only focused on the three main shapes. After thinking about it more, and with the teacher’s reminder, I realised that I could use `strokeWeight()` function to make the green rectangle show its outline, thus blending it with the black rectangle to create this effect.
 <iframe src="https://editor.p5js.org/chengyuehan/full/3TCngiL9Z"
-width="400"
-height="400"></iframe>
+width="500"
+height="500"></iframe>
 
 After thinking about it more, I realised there were also other ways to create the black line in the middle. Instead of relying on the outline of the green rectangle, I could draw the line separately using `line()`. At the same time I remove the black rectangle, change the background to black colour.This made me realise that there are many different ways to achieve the same visual result. For example, I also thought about only drawing a half circle to create the same sunset effect. This helped me understand that one image can have multiple coding solutions.
 
 <iframe src="https://editor.p5js.org/chengyuehan/full/eHpEkT5fW"
-width="400"
-height="400"></iframe>
+width="500"
+height="500"></iframe>
 
 
 ### Activity 2: Make an Interactive Sketch
@@ -46,8 +46,8 @@ The `createInput()` allows the viewer to type any text, which will then be displ
 These controls allow the viewer to change both the appearance and the content of the sketch. Compared to a static drawing, this makes the visual more flexible and interactive. Through this activity, I learned how user input can be connected to variables, and how these variables can control visual elements such as size, colour, and text.
 
 <iframe src="https://editor.p5js.org/chengyuehan/full/kR-flsQxM"
-width="400"
-height="400"></iframe>
+width="700"
+height="600"></iframe>
 
 
 ！！！Use the p5.js reference Links to an external site. to try DOM elements we haven't covered, like createSelect() or createCheckbox().
@@ -56,17 +56,17 @@ height="400"></iframe>
 
 In Activity 3, I decided to experiment with ChatGPT as a tool for vibe coding. Instead of coding write prompt is more easier to me, I wanted to see how AI could help me quickly turn a simple idea into a working visual outcome. After thinking about different options, I chose to generate a raining cloud animation. I entered a short description of the requirements, and ChatGPT produced the initial code for the sketch. 
 
-<iframe src="https://editor.p5js.org/chengyuehan/full/VZShlG9A-"
-width="400"
-height="400"></iframe>
+<iframe src="https://editor.p5js.org/chengyuehan/full/r0oRhNEqW"
+width="700"
+height="600"></iframe>
 
 The first version successfully created basic effects of clouds and rain in just a few seconds, demonstrating the power of GPT. However, it also presents an obvious problem: some raindrops emerge from above the clouds rather than from below. This makes the animation look illogical because the rain should visually come from the bottom of the cloud rather than the top. Although AI can generate code very quickly, getting usable code on the first answer is still difficult at this point in time.
 
 I then described this bug to ChatGPT and asked it to fix the problem. After the code was revised, the rain was generated from the lower part of the cloud, which made the overall animation look much more natural and believable. 
 
 <iframe src="https://editor.p5js.org/chengyuehan/full/Lc83HUJXV"
-width="400"
-height="400"></iframe>
+width="700"
+height="600"></iframe>
 
 
 ![a](../assets/week-02/code.png)
@@ -76,8 +76,8 @@ By looking at GPT's changes to the code, I learned how to fix similar problems. 
 Finally, I asked GPT to generate an umbrella without raindrops under it. The X-axis of the umbrella is locked, and the Y-axis moves with the mouse. GPT was completed very successfully.
 
 <iframe src="https://editor.p5js.org/chengyuehan/full/OIlQcpHZ2"
-width="400"
-height="400"></iframe>
+width="700"
+height="600"></iframe>
 
 
 ## Independent Study: Interactive Data Portrait
@@ -108,12 +108,16 @@ When the viewer changes the selection, the sketch updates immediately to display
 
 Compared to the original drawing, interaction allows the viewer to focus on one layer of the dataset at a time. This makes the structure of the data clearer and reduces visual overload when interpreting multiple categories simultaneously.
 
-<iframe src="https://editor.p5js.org/chengyuehan/full/o6L7vtVwq"></iframe>
+<iframe src="https://editor.p5js.org/chengyuehan/full/o6L7vtVwq"
+width="700"
+height="600"></iframe>
 
 
 ### Step 3: Iterate
 
-<iframe src="https://editor.p5js.org/chengyuehan/full/o6L7vtVwq"></iframe>
+<iframe src="https://editor.p5js.org/chengyuehan/full/o6L7vtVwq"
+width="700"
+height="600"></iframe>
 
 After creating the first version of the interactive data portrait, I improved the interaction. Initially, the sketch only showed static shapes. I then added filter controls that allow the viewer to select meal type (lunch or dinner), company, and flavour. These controls help the viewer explore relationships between different categories of drinks. For example, selecting Coca-Cola and lemon flavour reveals Sprite, while selecting Coco and Yakult flavour shows two possible drinks, which demonstrates that some combinations do not correspond to only one product.
 
