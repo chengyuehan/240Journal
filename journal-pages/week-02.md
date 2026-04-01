@@ -37,7 +37,7 @@ width="400"
 height="400"></iframe>
 
 
-Activity 2: Make an Interactive Sketch
+### Activity 2: Make an Interactive Sketch
 
 For this activity, I created a sketch using the DOM elements introduced in class, including `createSlider()`, `createButton()`, and `createInput()`. I used three interactive controls that directly change what appears on the canvas.
 
@@ -52,7 +52,7 @@ height="400"></iframe>
 
 ！！！Use the p5.js reference Links to an external site. to try DOM elements we haven't covered, like createSelect() or createCheckbox().
 
-Activity 3: Vibe Code an Interactive Sketch
+### Activity 3: Vibe Code an Interactive Sketch
 
 In Activity 3, I decided to experiment with ChatGPT as a tool for vibe coding. Instead of coding write prompt is more easier to me, I wanted to see how AI could help me quickly turn a simple idea into a working visual outcome. After thinking about different options, I chose to generate a raining cloud animation. I entered a short description of the requirements, and ChatGPT produced the initial code for the sketch. 
 
@@ -69,44 +69,45 @@ width="400"
 height="400"></iframe>
 
 ![a](../assets/week-02/code.png)
-By looking at GPT's changes to the code, I learned how to fix similar problems. This happens because the raindrops are generated at the top of the screen rather than underneath the clouds. Just change the value from to below the cloud. Base on the GPT's changes to the code, I learned how to fix similar problems. This happens because the raindrops are generated at the top of the screen rather than underneath the clouds. Just change the value from to below the cloud. In this round of changes, GPT changed the random number of the y-coordinate of the randomly generated raindrops from -400 to 250 to 140 to 170, so that the raindrops are generated at the position of the clouds.
+By looking at GPT's changes to the code, I learned how to fix similar problems. This happens because the raindrops are generated at the top of the screen rather than underneath the clouds. Just change the value from to below the cloud. This happens because the raindrops are generated at the top of the screen rather than underneath the clouds. Just change the value from to below the cloud. In this round of changes, GPT changed the random number of the y-coordinate of the randomly generated raindrops from -400 to 250 to 140 to 170, so that the raindrops are generated at the position of the clouds.
+
+Finally, I asked GPT to generate an umbrella without raindrops under it. The X-axis of the umbrella is locked, and the Y-axis moves with the mouse. GPT was completed very successfully.
 
 <iframe src="https://editor.p5js.org/chengyuehan/full/OIlQcpHZ2"
 width="400"
 height="400"></iframe>
 
-Describe what you want in plain language.
 
-Paste results into the p5.js editor and run the program.
-Start with something simple, add features one at a time.
-Ask for something you don't know how to code, and try to learn from the LLM.
-Take note of what surprised you. What worked first time, what didn't, and what did you learn from reading the code?
+## Independent Study: Interactive Data Portrait
 
-Independent Study: Interactive Data Portrait
-Overview
+### Step 1: Translate your data drawing into code
 
-Take the data you collected for Experiment 1 and use it as the basis for an interactive p5.js sketch. The challenge is to translate your hand-drawn data portrait into something a viewer can explore, control, or manipulate through interactive elements.
+For this step, I looked back at the drink data I collected by hand in Week 01 and thought about which parts could be translated into a p5.js sketch. In my original drawing, the main information included the day of the week, whether the drink was for lunch or dinner, the company, the flavour, and the company of the drink. Some of these were easier to define in code than others.
 
-Step 1: Translate your data drawing into code
+The clearest categorical values were the day, meal type, company, and flavour. These could all be stored as labels in code. For example, the days run from Saturday to Friday, the meals are divided into lunch and dinner, and each drink belongs to a company and a flavour category. These were the most straightforward parts to represent in p5.js because they can be organised clearly using arrays or objects.
 
-Look at the data you collected by hand last week. How could you represent it in a p5.js sketch? Think about which values are numeric, which are categories, and which are qualitative or hard to pin down.
+The most difficult part was the Irregularly sized bubble chart shapes. In my hand-drawn version, the different sizes were partly based on visual judgement rather than a strict numerical system. This is a big challenge for me to use P5.JS to reproduce
 
-You don't need to represent everything. Choose aspects of your data drawing that are most interesting to make interactive.
+### Step 2: Design your interactive visualisation
 
-Step 2: Design your interactive visualisation
+In this stage, I translated the structure of my hand-drawn data portrait into a p5.js sketch and introduced interaction so that viewers can explore the dataset dynamically.
 
-Create a p5.js sketch that includes interactive elements that allow the viewer to explore your data. Use DOM elements (e.g. buttons, sliders, text inputs, dropdowns, checkboxes) to give the viewer control over what they encounter.
+At first, I tried generating shapes randomly, but many shapes overlapped or clustered together, making the visualisation difficult to read. To improve readability and visual consistency, I divided the canvas into a grid structure. Each day occupies one vertical column, and each column is divided into two zones: Lunch and Dinner. Instead of placing shapes randomly across the whole canvas, each group of shapes is generated within a defined coordinate range. This ensures that the layout remains structured and aligned, while still allowing variation inside each area.
 
-Consider:
 
-What can interaction reveal that your hand-drawn portrait could not?
-How do your controls relate to the structure of your data?
-What happens when the viewer changes something? Is the response immediate, gradual, surprising?
-Use the p5.js reference Links to an external site. and tutorials Links to an external site. to learn new techniques. 
+To introduce interaction, I used a DOM element from the p5.js library: `createSelect()`. This dropdown menu allows viewers to filter the data by meal category:
+- All
+- Lunch only
+- Dinner only
 
-Vibe coding is a legitimate creative workflow. You can use LLMs to help you build features beyond what was covered in class. Make sure to document your process and explain what you learn.
+When the viewer changes the selection, the sketch updates immediately to display only the relevant data points. This interaction reveals patterns that were less obvious in the static drawing. For example, users can quickly see which days contain missing lunch data, or identify how flavour types are distributed across dinners during the week.
 
-Step 3: Iterate
+Compared to the original drawing, interaction allows the viewer to focus on one layer of the dataset at a time. This makes the structure of the data clearer and reduces visual overload when interpreting multiple categories simultaneously.
+
+<iframe src="https://editor.p5js.org/chengyuehan/full/o6L7vtVwq"></iframe>
+
+
+### Step 3: Iterate
 
 Test your sketch. Show it to someone else and observe how they use it. Refine the interaction based on what you observe.
 
@@ -121,15 +122,6 @@ What can a viewer learn by interacting with your sketch that they couldn't from 
 Did you use vibe coding or other tools in your process? What did you learn from this?
 What would you develop further with more time?
 Any other reflections?
-
-## Images & Media
-
-*Use the format below to embed images from your assets folder:*
-
-`![Alt text](../assets/week-01/your-image.jpg)`
-`*Your caption here*`
-
-*The text inside the square brackets is alt text (a description for accessibility), not a visible caption. To add a caption, place a line of italic text below the image.*
 
 ## AI Usage Statement
 
