@@ -68,7 +68,9 @@ I then described this bug to ChatGPT and asked it to fix the problem. After the 
 width="400"
 height="400"></iframe>
 
+
 ![a](../assets/week-02/code.png)
+
 By looking at GPT's changes to the code, I learned how to fix similar problems. This happens because the raindrops are generated at the top of the screen rather than underneath the clouds. Just change the value from to below the cloud. This happens because the raindrops are generated at the top of the screen rather than underneath the clouds. Just change the value from to below the cloud. In this round of changes, GPT changed the random number of the y-coordinate of the randomly generated raindrops from -400 to 250 to 140 to 170, so that the raindrops are generated at the position of the clouds.
 
 Finally, I asked GPT to generate an umbrella without raindrops under it. The X-axis of the umbrella is locked, and the Y-axis moves with the mouse. GPT was completed very successfully.
@@ -92,7 +94,9 @@ The most difficult part was the Irregularly sized bubble chart shapes. In my han
 
 In this stage, I translated the structure of my hand-drawn data portrait into a p5.js sketch and introduced interaction so that viewers can explore the dataset dynamically.
 
-At first, I tried generating shapes randomly, but many shapes overlapped or clustered together, making the visualisation difficult to read. To improve readability and visual consistency, I divided the canvas into a grid structure. Each day occupies one vertical column, and each column is divided into two zones: Lunch and Dinner. Instead of placing shapes randomly across the whole canvas, each group of shapes is generated within a defined coordinate range. This ensures that the layout remains structured and aligned, while still allowing variation inside each area.
+At the beginning of this stage, I attempted to directly translate my hand-drawn data portrait into p5.js using randomly generated shapes. However, the initial result was very different from what I expected. Many shapes overlapped or clustered too closely together, which made the visualisation difficult to read. Although randomness created variation, the lack of structure made the data appear messy rather than informative.
+
+To improve readability and visual consistency, I divided the canvas into a grid structure. Each day occupies one vertical column, and each column is divided into two zones: Lunch and Dinner. Instead of placing shapes randomly across the whole canvas, each group of shapes is generated within a defined coordinate range. This ensures that the layout remains structured and aligned, while still allowing variation inside each area.
 
 
 To introduce interaction, I used a DOM element from the p5.js library: `createSelect()`. This dropdown menu allows viewers to filter the data by meal category:
@@ -109,7 +113,13 @@ Compared to the original drawing, interaction allows the viewer to focus on one 
 
 ### Step 3: Iterate
 
-Test your sketch. Show it to someone else and observe how they use it. Refine the interaction based on what you observe.
+<iframe src="https://editor.p5js.org/chengyuehan/full/o6L7vtVwq"></iframe>
+
+After creating the first version of the interactive data portrait, I improved the interaction. Initially, the sketch only showed static shapes. I then added filter controls that allow the viewer to select meal type (lunch or dinner), company, and flavour. These controls help the viewer explore relationships between different categories of drinks. For example, selecting Coca-Cola and lemon flavour reveals Sprite, while selecting Coco and Yakult flavour shows two possible drinks, which demonstrates that some combinations do not correspond to only one product.
+
+Another iteration involved adding hover interaction. When the cursor moves over a shape, a small tooltip appears near the mouse showing the drink name. At the same time, all matching drinks slightly animate by changing size. This makes connections between repeated drinks easier to identify across different days.
+
+Finally, I added a reset button so the viewer can quickly return to the original state after applying filters. I also reduced the canvas size to make the layout more compact and readable. Through iteration, the sketch became clearer, more interactive, and more consistent with the structure of the original hand-drawn data portrait.
 
 Document Your Process
 To capture the full scope of your practice, each entry in the Making Journal must include a mix of visual and textual evidence, such as sketches, screenshots, GIFs, diagrams, process notes, instructions and reflections.
