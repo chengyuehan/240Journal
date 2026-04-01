@@ -39,14 +39,18 @@ curl wttr.in/moon
 
 ### Look up the synonyms and antonyms of a word
 
-curl https://api.dictionaryapi.dev/api/v2/entries/en/cry  
-
 ```terminal
-Find something else in the documentation that we haven't covered
+curl https://api.dictionaryapi.dev/api/v2/entries/en/cry  
 ```
 ![5](../assets/week-03/5.png)
 
-### 
+### Find something else in the documentation that we haven't covered
+
+```terminal
+curl parrot.live
+```
+![6](../assets/week-03/6.gif)
+
 
 Activity 2: Weather Visualisation
 
