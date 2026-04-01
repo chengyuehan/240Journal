@@ -52,18 +52,26 @@ curl parrot.live
 ![6](../assets/week-03/6.gif)
 
 
-Activity 2: Weather Visualisation
+### Activity 2: Weather Visualisation
 
-Open the demo sketch Links to an external site. in the p5.js web editor. This sketch uses the Open-Meteo API Links to an external site. to fetch current weather data for Auckland and map it to visual properties.
+![1](../assets/week-03/activity2/1.png)
 
-Experiment with the sketch:
+#### Change the latitude and longitude to a different city and observe how the sketch changes.
+![1](../assets/week-03/activity2/2.png)
+change city to Beijing
 
-Change the latitude and longitude to a different city and observe how the sketch changes.
-Use the data to control different visual properties: colour, position, size, number of shapes.
-Add more weather variables from the Open-Meteo documentation Links to an external site. to the API URL.
-Try using random() or noise() alongside or instead of the live data.
-Use vibe coding to try something more ambitious.
-Use print() in the console to check the range and scale of values before trying to visualise them.
+#### Use the data to control different visual properties: colour, position, size, number of shapes.
+![1](../assets/week-03/activity2/3.png)
+use temp data control circle locaton 
+
+#### Add more weather variables from the Open-Meteo documentation Links to an external site. to the API URL.
+![1](../assets/week-03/activity2/4.png)
+use visibility control the `strokeWeight` of rectangale 
+
+#### Try using random() or noise() alongside or instead of the live data.
+
+#### Use vibe coding to try something more ambitious.
+
 
 Activity 3: Design and Execute a Data Protocol
 
