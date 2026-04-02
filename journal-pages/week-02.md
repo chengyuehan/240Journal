@@ -70,7 +70,7 @@ height="400"></iframe>
 
 By looking at GPT's changes to the code, I learned how to fix similar problems. This happens because the raindrops are generated at the top of the screen rather than underneath the clouds. Just change the value from to below the cloud. In this round of changes, GPT changed the random number of the y-coordinate of the randomly generated raindrops from -400 to 250 to 140 to 170, so that the raindrops are generated at the position of the clouds.
 
-Finally, I asked GPT to generate an umbrella without raindrops under it. The X-axis of the umbrella is locked, and the Y-axis moves with the mouse. GPT was completed very successfully.
+Finally, I asked GPT to generate an umbrella with no raindrops underneath. The umbrella is fixed at the bottom and moves with the mouse. GPT accomplished its mission very successfully.
 
 <iframe src="https://editor.p5js.org/chengyuehan/full/OIlQcpHZ2"
 width="500"
@@ -119,7 +119,7 @@ After creating the first version of the interactive data portrait, I improved th
 
 Another iteration involved adding hover interaction. When the cursor moves over a shape, a small tooltip appears near the mouse showing the drink name. At the same time, all matching drinks slightly animate by changing size. This makes connections between repeated drinks easier to identify across different days.
 
-Finally, while testing the sketch myself, I took on the role of a first-time viewer and explored it as someone encountering it for the first time. I noticed that there was no reset function after switching filters — the only way to return to the original state was to manually set both dropdowns back to All, which was not a great experience. Because of this, I added a reset button so the viewer can quickly return to the initial state after applying filters. I also reduced the canvas size to make the layout more compact and readable. Through iteration, the sketch became clearer, more interactive, and more consistent with the structure of the original hand-drawn data portrait.
+Finally, while testing the sketch myself, I took on the role of a first-time viewer, I noticed that there was no reset function after switching filters — the only way to return to the original state was to manually set both dropdowns back to All, which was not a great experience. Because of this, I added a reset button so the viewer can quickly return to the initial state after applying filters. I also reduced the canvas size to make the layout more compact and readable. Through iteration, the sketch became clearer, more interactive, and more consistent with the structure of the original hand-drawn data portrait.
 
 ## Reflection
 
