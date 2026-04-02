@@ -72,7 +72,7 @@ The results returned by Claude showed me that there were two different sets of d
 
 Claude created a webpage featuring four different people, each representing a different level of education. However, regarding the data presentation, I advised against using tables and charts, but he still opted for a design resembling an energy bar, which perhaps lacked imagination. I was very satisfied with his automatically generated "Who's behind the wheel?" theme; this description effectively illustrated the meaning of the visualization: using education level to reveal the percentage of people holding driver's licenses, thereby uncovering those who have been overlooked.
 
-### 2 
+#### 2 
 
 <iframe src="https://editor.p5js.org/chengyuehan/full/uzJtfXmRg"
 width="1200"
@@ -80,13 +80,16 @@ height="700"></iframe>
 
 In this iteration, I instructed ChatGPT to try to move away from traditional chart formats and organize the data in a more visually metaphorical way. Instead of directly creating bar charts or line graphs, I transformed the data for different groups into an organic, flower-like form. Each flower represents an age or education level group, the four petals correspond to different driver's license statuses, and the length of the petals and the overall size represent proportions and numbers. The goal was to make the otherwise rigid statistical data more lifelike and to allow viewers to not just "read" the data, but to first visually experience the differences between different groups.
 
-### 3 
+#### 3 
+
 <iframe src="https://editor.p5js.org/chengyuehan/full/rdiLh6q2s"
 width="1200"
 height="700"></iframe>
 
+In this iteration, I discussed my ideas with GPT because I wanted to move the visualisation even further away from traditional chart forms and turn it into a layered, explorable school world. Instead of using bar charts, line graphs, or pie charts, the data was organised into a three-step spatial experience: the four qualification levels became four schools, each school then opened into age-based campus zones, and each selected age group could be expanded again into separate licence-stage spaces. Population size was represented through groups of human icons, while licence status was encoded through consistent visual variations in the appearance of the characters. The aim was to make the dataset feel less like a static graph and more like a navigable environment, so that viewers could understand relationships by moving through the scene rather than simply reading axes and labels. After discussing the idea with GPT, I gave the generated prompt to Codex, which then helped produce this outcome.
 
-Step 4: Critically Evaluate
+
+### Step 4: Critically Evaluate
 
 Look at the representations you've produced and reflect on the AI's design choices:
 
