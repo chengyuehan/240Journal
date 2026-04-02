@@ -58,7 +58,7 @@ After speaking with Claude, I gained a much better understanding of the data. It
 
 Through this data, I discovered many things that were both intuitive and counterintuitive. For example, full-time employees had the highest licensing rate, but part-time employees (67%) had a lower licensing rate than those "outside the labor market" (68%).
 
-This dataset was created by linking driver's license registers to census records. Its core purpose was administrative and policy monitoring—to understand who still lacks a driver's license. This very purpose introduces a bias: the data only asks "who has a driver's license or doesn't have one," never "why they don't have one" or "what does not having a driver's license actually mean for their lives." It reflects a systemic perspective, not a human one.
+This dataset was created by linking driver's license registers to census records. Its core purpose was administrative and policy monitoring—to understand who still lacks a driver's license. This very purpose introduces a bias: the data only asks who has a driver's license or doesn't have one, never ask why or what does it actually mean for their lives. It reflects a systemic perspective, not a human one.
 
 ### Step 3: Design Multiple Representations
 
@@ -91,36 +91,34 @@ In this iteration, I discussed my ideas with GPT because I wanted to move the vi
 
 ### Step 4: Critically Evaluate
 
-Look at the representations you've produced and reflect on the AI's design choices:
+In these iterations, I found that AI also tends to default to analytical ways of visualising data. It usually relies on charts, which are also the most common form of data visualisation. Because of this, I had to keep guiding the AI again and again. I needed to state clearly that I did not want traditional chart forms such as bar charts, line charts, pie charts, or tables. I also had to push it to think more from the perspective of design, interaction, and space. I wanted the dataset to be more than something simply displayed on a flat screen. I wanted it to feel more exploratory. Even when it did not directly use bars or graphs, the underlying logic was still very similar, because its main concern remained comparison and clarity rather than a stronger visual concept. Because of this, I needed to introduce creativity already at the prompting stage so that the AI could better understand and produce what I actually wanted.
 
-What did the AI default to? (e.g. bar charts, blue colour schemes, generic titles)
-What did you have to override or redirect?
-What assumptions did the AI make about the data or the audience?
-Which representation is the most interesting, and why?
-What would you do differently if you were building this without AI?
+I also think AI made certain assumptions about both the data and the audience. It seemed to assume that the most important thing was to make the data quick and easy to understand, and that the audience mainly wanted direct comparison. It also treated the dataset as complete and neutral, without really questioning what kinds of experiences or social issues were missing behind the numbers. The most interesting version was the flower version. I think this version was the most successful because it changed the way viewers experienced the data. The audience was no longer simply reading labels and values, but instead looking at a cluster of rotating flowers. This made the work feel more like exploring a universe of multiple planets rather than reading a chart. It was also more memorable than the earlier versions because it was supported by a much stronger concept.
 
-Document Your Process
-To capture the full scope of your practice, each entry in the Making Journal must include a mix of visual and textual evidence, such as sketches, screenshots, GIFs, diagrams, process notes, instructions and reflections.
+If I had not used AI to build this work, I think I would have spent much more time thinking about ideas for how to present it. AI offered many ideas that felt interesting, and these could inspire me to think in more creative directions. Without AI, that process would have been much more difficult. At the same time, AI wrote all of the code. Without AI, I would not have been able to complete such a polished and refined visualisation in a short amount of time. It would have greatly increased the amount of work required, and the final result might still not have been as successful as this one. From this, I learned that AI can help explore many possibilities, but it still requires a large amount of human direction in order to make the outcome feel more designed and meaningful.
 
-Items on the course Reading List for this week include the introduction to Data Feminism by Catherine D'Ignazio and Lauren F. Klein, and a talk by Kirikowhai Mikaere on Māori data sovereignty. Engage with both of these and draw on them in your reflections.
+## reflective writing 
 
-Include reflective writing that addresses the following:
+In this project, I chose the New Zealand Driver’s License Holding Rate dataset because it is closely connected to everyday life in New Zealand. A driver’s licence is not only about transport. It also affects where people are able to go through mobility, especially in areas where public transport is limited. Because of this, the dataset was meaningful to me, as it can be understood not only as a transport issue, but also as a social and spatial issue.
 
-What dataset did you choose, and why?
-How did AI tools help you understand the data? What did they miss?
-What design decisions did you make in directing the AI, and what did you learn from this process?
-How do the different representations of the same data change what a viewer might understand?
-What questions do D'Ignazio and Klein's ideas raise for your work with this dataset?
-How does Mikaere's framing of data as a strategic asset for Māori development challenge or inform how you think about the dataset you chose?
-What was your experience of working with AI as design tool?
-What would you develop further with more time?
-Any other reflections?
+AI tools helped me understand the dataset more quickly. Claude was able to identify the data structure effectively and clearly show that it was a well-organised percentage-based dataset containing different categories such as age, ethnicity, labour market status, and education level. This saved time and made the dataset easier to work with. However, the dataset only records who does or does not hold a driver’s licence. It does not explain why, nor does it show what not having a licence means for people’s lives. In this sense, it reflects a policy and administrative perspective rather than a human one.
+
+During the design process, I found that AI often defaulted to analytical forms of visualisation. It frequently assumed that data should be presented through charts, or through designs that still followed chart logic. Because of this, I had to repeatedly guide it away from bar charts, pie charts, line graphs, and tables. I wanted the work to feel more exploratory, spatial, and designed, rather than simply focused on clarity and comparison.
+
+This led to multiple iterations. The early version still felt too close to infographic design. The flower version was the most successful because it changed the way viewers experienced the data. Instead of simply reading labels and values, viewers saw a group of rotating flowers, with each flower representing a category through petals, proportion, and movement. This made the work feel more like exploring a small universe than reading a chart. Later, I developed this idea further into a layered “school world,” where qualification levels became schools, age groups became spaces, and licence stages were represented through groups of characters. These different forms of representation made me realise that the form of visualisation can strongly shape what viewers notice and how they emotionally connect with the data.
+
+The ideas of D’Ignazio and Klein made me question the neutrality of the dataset. Their work suggests that data can never be fully neutral, and that the collection of data is often tied to reinforcing the power of those who collect it. The administrative purpose behind this driver’s licence dataset already carries a bias toward non-licence holders, and this bias also shapes the way we think about the data, especially since it contains almost no human perspective. Kirikowhai Mikaere’s discussion of the government’s narrative bias and identity definitions in collecting and designing Māori data also influenced my critical thinking about the ethnicity-related information in the dataset, even though I did not use ethnicity data in the visualisation itself.
+
+Overall, working with AI was both efficient and limited. It helped me quickly explore ideas and generate code, but it still required strong human direction. Without AI, I would not have been able to produce such a refined interactive visualisation in a short time. At the same time, this project made me realise that AI cannot automatically create meaningful design well in this context, and that it is highly sensitive to prompting. It can generate interesting and meaningful design outcomes, but only when the designer describes the concept and direction clearly enough in the prompt. This still requires the designer to have strong ideas, creativity, and originality.
 
 ## AI Usage Statement
 
 I used artificial intelligence tools throughout the project to help. AI provides me with ideas and technical support to implement all code and physical content. At the same time, AI helps me translate and polish the Journal during the writing process.
 
 OpenAI. (2026). *ChatGPT* (GPT5.4 Thinking) [Large language model]. https://chat.openai.com/chat
+
 Google. (2026). *Gemini* (Gemini3.1 Pro) [Large language model]. https://gemini.google.com/
+
 Anthropic. (2026). *Claude* (Sonnet 4.6) [Large language model]. https://claude.ai/
+
 OpenAI. (2026). *CodeX* (GPT5.3 Codex) [Vibe Coding Agent]. https://openai.com/codex/
