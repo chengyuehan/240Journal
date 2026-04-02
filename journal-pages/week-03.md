@@ -90,7 +90,7 @@ The protocol we received from the other group was about the number of people usi
 
 ![7](../assets/week-03/their.png)
 
-After comparing the two sets of results, our protocol required the return of the pre-processed data, while theirs required the raw data. When using a computer, pre-programming (e.g., using p5.js) allows the computer to display, process, and analyze the data in real time, but this is too cumbersome for handwriting. This is why I programmed the update time to change whenever the person next to me at the table changes.
+After comparing the two sets of results, our protocol required the return of the pre-processed data, while theirs required the raw data. When using a computer, pre-programming (e.g., using p5.js) allows the computer to display, process, and analyze the data in real time, but this is too cumbersome for handwriting. This is why I let the update time to change whenever the person increse and decrese at the table rather than just a fixed time.
 
 ### Independent Study: Live Data Visualisation
 
