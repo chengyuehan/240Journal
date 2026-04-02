@@ -19,12 +19,12 @@ create a flowing fountain using p5.js.
 ```
 <iframe src="https://editor.p5js.org/chengyuehan/full/nmSEbdKCz"
 width="600"
-height="600"></iframe>
+height="500"></iframe>
 Gemini 3.1 Pro
 
 <iframe src="https://editor.p5js.org/chengyuehan/full/BTg06M9pH"
 width="600"
-height="600"></iframe>
+height="500"></iframe>
 GPT5.4 Thinking
 
 <iframe src="https://editor.p5js.org/chengyuehan/full/eEjDN7Zjm"
@@ -75,16 +75,16 @@ Claude created a webpage featuring four different people, each representing a di
 #### 2 
 
 <iframe src="https://editor.p5js.org/chengyuehan/full/uzJtfXmRg"
-width="1200"
-height="700"></iframe>
+width="800"
+height="600"></iframe>
 
 In this iteration, I instructed ChatGPT to try to move away from traditional chart formats and organize the data in a more visually metaphorical way. Instead of directly creating bar charts or line graphs, I transformed the data for different groups into an organic, flower-like form. Each flower represents an age or education level group, the four petals correspond to different driver's license statuses, and the length of the petals and the overall size represent proportions and numbers. The goal was to make the otherwise rigid statistical data more lifelike and to allow viewers to not just "read" the data, but to first visually experience the differences between different groups.
 
 #### 3 
 
 <iframe src="https://editor.p5js.org/chengyuehan/full/rdiLh6q2s"
-width="1200"
-height="700"></iframe>
+width="800"
+height="600"></iframe>
 
 In this iteration, I discussed my ideas with GPT because I wanted to move the visualisation even further away from traditional chart forms and turn it into a layered, explorable school world. Instead of using bar charts, line graphs, or pie charts, the data was organised into a three-step spatial experience: the four qualification levels became four schools, each school then opened into age-based campus zones, and each selected age group could be expanded again into separate licence-stage spaces. Population size was represented through groups of human icons, while licence status was encoded through consistent visual variations in the appearance of the characters. The aim was to make the dataset feel less like a static graph and more like a navigable environment, so that viewers could understand relationships by moving through the scene rather than simply reading axes and labels. After discussing the idea with GPT, I gave the generated prompt to Codex, which then helped produce this outcome.
 
