@@ -17,10 +17,14 @@ In this activity, I chose to use qwen3 8b as the local model. I tried having the
 ```Prompt
 create a flowing fountain using p5.js.
 ```
-<iframe src="https://editor.p5js.org/chengyuehan/full/nmSEbdKCz"></iframe>
+<iframe src="https://editor.p5js.org/chengyuehan/full/nmSEbdKCz"
+width="400"
+height="400></iframe>
 Gemini 3.1 Pro
 
-<iframe src="https://editor.p5js.org/chengyuehan/full/BTg06M9pH"></iframe>
+<iframe src="https://editor.p5js.org/chengyuehan/full/BTg06M9pH"
+width="400"
+height="400></iframe>
 GPT5.4 Thinking
 
 <iframe src="https://editor.p5js.org/chengyuehan/full/eEjDN7Zjm"></iframe>
@@ -56,11 +60,17 @@ This dataset was created by linking driver's license registers to census records
 
 ### Step 3: Design Multiple Representations
 
-Of all the categories, I chose the one that interested me most: categorized by education level. I had Claude generate a visualization, which, after analysis by pands, returned an HTML document.[to visualization](../assets/week-04/qual_viz.html)← click to see
+Of all the categories, I chose the one that interested me most: categorized by education level. I had Claude generate a visualization, which, after analysis by pands, returned an HTML document[to visualization](../assets/week-04/qual_viz.html)← click to see
+
 The results returned by Claude showed me that there were two different sets of data: one containing only education level and the other containing both education level and age. Therefore, I plan to create three separate visualization: one for those with only academic qualifications, one for those with both academic qualifications and age, and one where age can be viewed in a sub-menu of the academic qualifications table.
 
 #### 1
-<iframe src="assets/week-04/qual_characters.html"></iframe>
+![2](../assets/week-04/2.png)
+[click to see](../assets/week-04/qual_characters.html)
+
+Claude created a webpage featuring four different people, each representing a different level of education. However, regarding the data presentation, I advised against using tables and charts, but he still opted for a design resembling an energy bar, which perhaps lacked imagination. I was very satisfied with his automatically generated "Who's behind the wheel?" theme; this description effectively illustrated the meaning of the visualization: using education level to reveal the percentage of people holding driver's licenses, thereby uncovering those who have been overlooked.
+
+### 2 
 
 
 Step 4: Critically Evaluate
