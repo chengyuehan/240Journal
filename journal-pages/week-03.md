@@ -92,12 +92,11 @@ The protocol we received from the other group was about the number of people usi
 
 After comparing the two sets of results, our protocol required the return of the pre-processed data, while theirs required the raw data. When using a computer, pre-programming (e.g., using p5.js) allows the computer to display, process, and analyze the data in real time, but this is too cumbersome for handwriting. This is why I let the update time to change whenever the person increse and decrese at the table rather than just a fixed time.
 
-### Independent Study: Live Data Visualisation
+### Independent Study: Live Data Visualisation & Reflction
 
 I chose a digital approach because I think it is easier to create a stronger visual effect in p5.js than with a physical method. Since the project involves live, changing data, using code also made more sense, because the sketch can keep updating and respond to new information.
 
-The live data source I used was the Binance API, specifically the recent trading data for ETH/BTC. I chose it because I am also interested in cryptocurrency, and Binance’s API does not require an API key. Cryptocurrency prices and trading behaviour are already highly volatile, so they fit the idea of conflict and movement very well. At first, I considered using a more realistic way of showing the data, but later I decided it would be more interesting to process the data as a battle for space. I did not want to simply display numbers on the screen, so I transformed the data into a territorial struggle. I counted the direction of recent trades and used that as the reason for territorial expansion.
-
+The real-time data source I used was the Binance API, specifically recent ETH/BTC trading data. I chose it because I'm also interested in cryptocurrencies, and the Binance API doesn't require an API key. I could directly access the API and obtain the data using the `loadjson()` function. Cryptocurrency prices and trading behavior are inherently highly volatile, making them very suitable for the concepts of conflict and movement. Initially, I considered presenting the data in a more realistic way, but later I decided that processing the data as a battle for territory would be more interesting. I didn't want to just display numbers on a screen, so I transformed the data into a territorial struggle. I analyzed the direction of recent transactions and used this as a justification for territorial expansion.
 <iframe src="https://editor.p5js.org/chengyuehan/full/ngcUJXHTq"
 width="700"
 height="600"></iframe>
