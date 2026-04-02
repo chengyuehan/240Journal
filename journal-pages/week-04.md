@@ -40,11 +40,13 @@ At least for today, privacy and capability remain at opposite ends of a balancin
 
 ### Activity 2: Cloud AI with NotebookLM
 
-For this activity, I used NotebookLM to gather together the sources that reflect my experimentation so far in this course. I added my Making Journal, several external references that influenced my thinking, and a short context document to guide the AI. 
+For this activity, I used NotebookLM to gather together the sources that reflect my experimentation so far in this course. I added my Making Journal, several external references that influenced my thinking, and [a short context document](../context.md) to guide the AI. 
 
 ![1](../assets/week-04/1.png)
 
 NotebookLM's automatic question recommendation feature revealed many possibilities and content I hadn't discovered before. By analyzing all my files, it automatically suggested several questions I might be interested in, such as how to break free from the limitations of "data analysis thinking" and make data visualization more creative and human-centered. It not only summarized useful information from each source but also provided many helpful suggestions. I could also engage in deeper Q&A sessions with the responses, gaining a better understanding of my interests and concerns from different perspectives.
+
+I also tried the Audio Overview feature in NotebookLM. This feature allowed me to receive content from all my uploaded materials and supplementary information in Chinese, delivered in a podcast-like format where two speakers discuss everything through conversation. Accessing information through audio means you are not tied to a screen, but personally I still prefer reading on a screen — it offers richer information and allows me to select what I engage with rather than passively receiving it. 
 
 ## Independent Study: AI-Assisted Data Exploration
 
@@ -109,6 +111,8 @@ This led to multiple iterations. The early version still felt too close to infog
 
 The ideas of D’Ignazio and Klein made me question the neutrality of the dataset. Their work suggests that data can never be fully neutral, and that the collection of data is often tied to reinforcing the power of those who collect it. The administrative purpose behind this driver’s licence dataset already carries a bias toward non-licence holders, and this bias also shapes the way we think about the data, especially since it contains almost no human perspective. Kirikowhai Mikaere’s discussion of the government’s narrative bias and identity definitions in collecting and designing Māori data also influenced my critical thinking about the ethnicity-related information in the dataset, even though I did not use ethnicity data in the visualisation itself.
 
+If time permits, I would explore other categories in the dataset that I have not yet used, such as ethnicity and region, to see whether patterns and social issues emerge that are less visible in the education-level data. I would also want to develop the school world visualisation further — currently the characters representing licence status look visually similar across groups, and I think strengthening the visual differentiation between them by designing four distinct licence-status characters for each individual age group would make the work more immediate and readable. I am also curious about whether it would be possible to combine multiple categories into a single visualisation, so that viewers could explore relationships between, for example, education level and employment status simultaneously, rather than examining each category in isolation.
+
 Overall, working with AI was both efficient and limited. It helped me quickly explore ideas and generate code, but it still required strong human direction. Without AI, I would not have been able to produce such a refined interactive visualisation in a short time. At the same time, this project made me realise that AI cannot automatically create meaningful design well in this context, and that it is highly sensitive to prompting. It can generate interesting and meaningful design outcomes, but only when the designer describes the concept and direction clearly enough in the prompt. This still requires the designer to have strong ideas, creativity, and originality.
 
 ## AI Usage Statement
@@ -122,3 +126,5 @@ Google. (2026). *Gemini* (Gemini3.1 Pro) [Large language model]. https://gemini.
 Anthropic. (2026). *Claude* (Sonnet 4.6) [Large language model]. https://claude.ai/
 
 OpenAI. (2026). *CodeX* (GPT5.3 Codex) [Vibe Coding Agent]. https://openai.com/codex/
+
+Qwen. (2026). *Qwen* (Qwen 3.0 8B) [Large Language model]. Self Hosted

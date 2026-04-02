@@ -49,9 +49,6 @@ These controls allow the viewer to change both the appearance and the content of
 width="400"
 height="500"></iframe>
 
-
-！！！Use the p5.js reference Links to an external site. to try DOM elements we haven't covered, like createSelect() or createCheckbox().
-
 ### Activity 3: Vibe Code an Interactive Sketch
 
 In Activity 3, I decided to experiment with ChatGPT as a tool for vibe coding. Instead of coding write prompt is more easier to me, I wanted to see how AI could help me quickly turn a simple idea into a working visual outcome. After thinking about different options, I chose to generate a raining cloud animation. I entered a short description of the requirements, and ChatGPT produced the initial code for the sketch. 
@@ -118,11 +115,11 @@ height="600"></iframe>
 width="700"
 height="600"></iframe>
 
-After creating the first version of the interactive data portrait, I improved the interaction. Initially, the sketch only showed static shapes. I then added filter controls that allow the viewer to select meal type (lunch or dinner), company, and flavour. These controls help the viewer explore relationships between different categories of drinks. For example, selecting Coca-Cola and lemon flavour reveals Sprite, while selecting Coco and Yakult flavour shows two possible drinks, which demonstrates that some combinations do not correspond to only one product.
+After creating the first version of the interactive data portrait, I improved the interaction. Initially, the sketch only showed static shapes. I then added filter controls that allow the viewer to select meal type (lunch or dinner), companion, and flavour. These controls help the viewer explore relationships between different categories of drinks. For example, selecting Coca-Cola and lemon flavour reveals Sprite, while selecting Coco and Yakult flavour shows two possible drinks, which demonstrates that some combinations do not correspond to only one product.
 
 Another iteration involved adding hover interaction. When the cursor moves over a shape, a small tooltip appears near the mouse showing the drink name. At the same time, all matching drinks slightly animate by changing size. This makes connections between repeated drinks easier to identify across different days.
 
-Finally, I added a reset button so the viewer can quickly return to the original state after applying filters. I also reduced the canvas size to make the layout more compact and readable. Through iteration, the sketch became clearer, more interactive, and more consistent with the structure of the original hand-drawn data portrait.
+Finally, while testing the sketch myself, I took on the role of a first-time viewer and explored it as someone encountering it for the first time. I noticed that there was no reset function after switching filters — the only way to return to the original state was to manually set both dropdowns back to All, which was not a great experience. Because of this, I added a reset button so the viewer can quickly return to the initial state after applying filters. I also reduced the canvas size to make the layout more compact and readable. Through iteration, the sketch became clearer, more interactive, and more consistent with the structure of the original hand-drawn data portrait.
 
 ## Reflection
 
