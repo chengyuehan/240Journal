@@ -73,13 +73,20 @@ This method helped me transform simple weekly records into a more vivid, interes
 ### Reflection
 
 For this exercise, I chose to track the drinks I had for lunch and dinner over one week. I picked this because it is just a very normal part of daily life and also something quite easy to record. It did not feel too hard to keep track of, and I thought even a small thing like this might still show some patterns if I paid attention to it for a few days.
+
 Collecting the data was actually not that hard. Most of the time I did not need to keep thinking about it on purpose. A lot of the time, I only remembered the task after I had already finished the drink or even thrown the bottle away. I think that says a lot by itself, because it shows how automatic this habit is for me. I usually do not think much about what I drink with meals, so recording it made me notice it more than usual.
+
 Making the visualisation was much harder than collecting the data. To be honest, I do not think I am a very creative person, so my first version still looked too much like a table or chart. It felt more like organising information than actually making a data drawing. After I looked at some of my classmates’ work and saw how creative their designs were, I decided to redo mine.
+
 One thing I noticed from doing this was that I actually drank orange-flavoured drinks quite a lot. Before this exercise, I thought I bought cola more often and probably liked it more than lemon drinks like Sprite. This week’s data showed something a bit different. Of course, this is only one week, so it might not fully represent my usual habits, but it still showed me something I had not really noticed before.
+
 I also made choices about what to include in the data. I only recorded the drink company and flavour, not the full product name. I also did not record how much I drank, why I chose it, or where I drank it. Because of that, the visualisation mainly shows repeated patterns in brand and flavour. At the same time, it leaves out a lot of context, like whether I actually wanted that drink or whether it was just what I already had at home.
+
 I think this connects to data humanism and Dear Data because it turns a very small and personal part of daily life into something worth noticing. It is not about big data or something very scientific. It is more about using data to look at everyday habits in a personal way. This exercise also made me realise that data visualisation does not have to look serious all the time. It can also be creative, personal, and a bit playful. Although it will be difficult for me to create this kind of creativity because I am currently limited by data analysis mindset, I will continue to brainstorm in the coming time to possess this skill.
 
 
 ## AI Usage Statement
 
-*Document any use of AI tools under an AI Usage Statement heading. Explain which tools you used and describe how you used them. Reference any AI-generated content (see* *[QuickCite](https://auckland.libguides.com/referencing-generative-ai-tools)* *for guidance).*
+I used artificial intelligence tools throughout the project to help. AI provides me with ideas and technical support to implement all code and physical content. At the same time, AI helps me translate and polish the Journal during the writing process.
+
+OpenAI. (2026). *ChatGPT* (GPT5.4 Thinking) [Large language model]. https://chat.openai.com/chat

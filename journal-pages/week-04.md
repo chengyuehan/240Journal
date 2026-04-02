@@ -18,16 +18,18 @@ In this activity, I chose to use qwen3 8b as the local model. I tried having the
 create a flowing fountain using p5.js.
 ```
 <iframe src="https://editor.p5js.org/chengyuehan/full/nmSEbdKCz"
-width="400"
-height="400"></iframe>
+width="600"
+height="600"></iframe>
 Gemini 3.1 Pro
 
 <iframe src="https://editor.p5js.org/chengyuehan/full/BTg06M9pH"
-width="400"
-height="400"></iframe>
+width="600"
+height="600"></iframe>
 GPT5.4 Thinking
 
-<iframe src="https://editor.p5js.org/chengyuehan/full/eEjDN7Zjm"></iframe>
+<iframe src="https://editor.p5js.org/chengyuehan/full/eEjDN7Zjm"
+width="600"
+height="600"></iframe>
 Qwen 3 8B
 
 While using ollama's local model, I heard my computer fan start spinning. This took more than a minute, while ChatGPT and Gemini only took a few seconds. In terms of code quality, both GPT and Gemini successfully reproduced the water flow of the fountain using only this small piece of prompting text. GPT even successfully replicated the shape of the fountain's base. In contrast, Qwen only replicated a bunch of bubbles floating upwards. 
@@ -79,6 +81,9 @@ height="700"></iframe>
 In this iteration, I instructed ChatGPT to try to move away from traditional chart formats and organize the data in a more visually metaphorical way. Instead of directly creating bar charts or line graphs, I transformed the data for different groups into an organic, flower-like form. Each flower represents an age or education level group, the four petals correspond to different driver's license statuses, and the length of the petals and the overall size represent proportions and numbers. The goal was to make the otherwise rigid statistical data more lifelike and to allow viewers to not just "read" the data, but to first visually experience the differences between different groups.
 
 ### 3 
+<iframe src="https://editor.p5js.org/chengyuehan/full/rdiLh6q2s"
+width="1200"
+height="700"></iframe>
 
 
 Step 4: Critically Evaluate
@@ -110,4 +115,9 @@ Any other reflections?
 
 ## AI Usage Statement
 
-*Document any use of AI tools under an AI Usage Statement heading. Explain which tools you used and describe how you used them. Reference any AI-generated content (see [QuickCite](https://auckland.libguides.com/referencing-generative-ai-tools) for guidance).*
+I used artificial intelligence tools throughout the project to help. AI provides me with ideas and technical support to implement all code and physical content. At the same time, AI helps me translate and polish the Journal during the writing process.
+
+OpenAI. (2026). *ChatGPT* (GPT5.4 Thinking) [Large language model]. https://chat.openai.com/chat
+Google. (2026). *Gemini* (Gemini3.1 Pro) [Large language model]. https://gemini.google.com/
+Anthropic. (2026). *Claude* (Sonnet 4.6) [Large language model]. https://claude.ai/
+OpenAI. (2026). *CodeX* (GPT5.3 Codex) [Vibe Coding Agent]. https://openai.com/codex/

@@ -137,4 +137,6 @@ During development, I used vibe coding to realize my ideas. I iterated on the in
 If time permits, I will continue to improve the visual icons and use more creative ways to display data. My strong interest in animation also makes me think about whether animated effects can be implemented in more areas. For example, after selecting a flavor, the bubbles for other unselected flavors could slowly disappear.
 ## AI Usage Statement
 
-*Document any use of AI tools under an AI Usage Statement heading. Explain which tools you used and describe how you used them. Reference any AI-generated content (see [QuickCite](https://auckland.libguides.com/referencing-generative-ai-tools) for guidance).*
+I used artificial intelligence tools throughout the project to help. AI provides me with ideas and technical support to implement all code and physical content. At the same time, AI helps me translate and polish the Journal during the writing process.
+
+OpenAI. (2026). *ChatGPT* (GPT5.4 Thinking) [Large language model]. https://chat.openai.com/chat

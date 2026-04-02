@@ -112,4 +112,6 @@ If I had more time, I would strengthen the war effect by redesigning the frontli
 
 ## AI Usage Statement
 
-*Document any use of AI tools under an AI Usage Statement heading. Explain which tools you used and describe how you used them. Reference any AI-generated content (see* *[QuickCite](https://auckland.libguides.com/referencing-generative-ai-tools)* *for guidance).*
+I used artificial intelligence tools throughout the project to help. AI provides me with ideas and technical support to implement all code and physical content. At the same time, AI helps me translate and polish the Journal during the writing process.
+
+OpenAI. (2026). *ChatGPT* (GPT5.4 Thinking) [Large language model]. https://chat.openai.com/chat
