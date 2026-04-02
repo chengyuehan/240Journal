@@ -64,7 +64,8 @@ This dataset was created by linking driver's license registers to census records
 
 ### Step 3: Design Multiple Representations
 
-Of all the categories, I chose the one that interested me most: categorized by education level. I had Claude generate a visualization, which, after analysis by pands, returned an HTML document[to visualization](../assets/week-04/qual_viz.html)← click to see
+Of all the categories, I chose the one that interested me most: categorized by education level. I had Claude generate a visualization, which, after analysis by pands, returned an HTML document.
+[click to see](../assets/week-04/qual_viz.html)
 
 The results returned by Claude showed me that there were two different sets of data: one containing only education level and the other containing both education level and age. Therefore, I plan to create three separate visualization: one for those with only academic qualifications, one for those with both academic qualifications and age, and one where age can be viewed in a sub-menu of the academic qualifications table.
 
