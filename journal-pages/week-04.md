@@ -19,12 +19,12 @@ create a flowing fountain using p5.js.
 ```
 <iframe src="https://editor.p5js.org/chengyuehan/full/nmSEbdKCz"
 width="400"
-height="400></iframe>
+height="400"></iframe>
 Gemini 3.1 Pro
 
 <iframe src="https://editor.p5js.org/chengyuehan/full/BTg06M9pH"
 width="400"
-height="400></iframe>
+height="400"></iframe>
 GPT5.4 Thinking
 
 <iframe src="https://editor.p5js.org/chengyuehan/full/eEjDN7Zjm"></iframe>
@@ -71,6 +71,14 @@ The results returned by Claude showed me that there were two different sets of d
 Claude created a webpage featuring four different people, each representing a different level of education. However, regarding the data presentation, I advised against using tables and charts, but he still opted for a design resembling an energy bar, which perhaps lacked imagination. I was very satisfied with his automatically generated "Who's behind the wheel?" theme; this description effectively illustrated the meaning of the visualization: using education level to reveal the percentage of people holding driver's licenses, thereby uncovering those who have been overlooked.
 
 ### 2 
+
+<iframe src="https://editor.p5js.org/chengyuehan/full/uzJtfXmRg"
+width="1200"
+height="700"></iframe>
+
+In this iteration, I instructed ChatGPT to try to move away from traditional chart formats and organize the data in a more visually metaphorical way. Instead of directly creating bar charts or line graphs, I transformed the data for different groups into an organic, flower-like form. Each flower represents an age or education level group, the four petals correspond to different driver's license statuses, and the length of the petals and the overall size represent proportions and numbers. The goal was to make the otherwise rigid statistical data more lifelike and to allow viewers to not just "read" the data, but to first visually experience the differences between different groups.
+
+### 3 
 
 
 Step 4: Critically Evaluate
