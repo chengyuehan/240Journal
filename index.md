@@ -5,7 +5,7 @@ title: Home
 
 # Making Journal for DES240
 
-*Write a short introduction about yourself and this course here. What are you hoping to learn and achieve? What's your background as a designer? What are your interests as a designer?*
+As a second-year student in IT Management and Design, I chose this course because I spent the entire semester last year studying Data Analytica. I initially thought this was a good thing, but now it seems it significantly limited my imagination. As a design student, I am interested in UI/UX, animation, and game design.
 
 ---
 
