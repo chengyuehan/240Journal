@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Who's Behind the Wheel? — NZ Licence Data</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Syne+Mono&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#0e0e0e;
+  --surface:#161616;
+  --border:#2a2a2a;
+  --text:#f0ede6;
+  --muted:#666;
+  --c0:#e8c547; /* no qual — amber */
+  --c1:#5bc4a0; /* school — teal */
+  --c2:#e07a5f; /* post-school — coral */
+  --c3:#7eb8f7; /* degree — blue */
+}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Syne',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── HEADER ── */
+header{
+  padding:3rem 3rem 2rem;
+  border-bottom:1px solid var(--border);
+}
+.kicker{
+  font-family:'Syne Mono',monospace;
+  font-size:10px;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:.8rem;
+}
+h1{
+  font-size:clamp(24px,4vw,42px);
+  font-weight:800;
+  line-height:1.1;
+  max-width:620px;
+}
+h1 span{color:var(--c1)}
+.sub{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:.8rem;
+  font-weight:400;
+  max-width:480px;
+  line-height:1.7;
+}
+
+/* ── STAGE ── */
+.stage{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0;
+  border-bottom:1px solid var(--border);
+  min-height:70vh;
+}
+
+/* ── CHARACTER CARD ── */
+.char{
+  position:relative;
+  border-right:1px solid var(--border);
+  padding:2rem 1.5rem 2rem;
+  cursor:pointer;
+  transition:background .25s;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+.char:last-child{border-right:none}
+.char::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  opacity:0;
+  transition:opacity .3s;
+}
+.char:nth-child(1)::before{background:linear-gradient(180deg,rgba(232,197,71,.06) 0%,transparent 100%)}
+.char:nth-child(2)::before{background:linear-gradient(180deg,rgba(91,196,160,.06) 0%,transparent 100%)}
+.char:nth-child(3)::before{background:linear-gradient(180deg,rgba(224,122,95,.06) 0%,transparent 100%)}
+.char:nth-child(4)::before{background:linear-gradient(180deg,rgba(126,184,247,.06) 0%,transparent 100%)}
+.char:hover::before{opacity:1}
+
+.char-index{
+  font-family:'Syne Mono',monospace;
+  font-size:10px;
+  color:var(--muted);
+  letter-spacing:.1em;
+  margin-bottom:1.5rem;
+}
+
+/* ── SVG PERSON ── */
+.figure{
+  display:flex;
+  justify-content:center;
+  margin-bottom:1.5rem;
+  flex-shrink:0;
+}
+.figure svg{
+  width:90px;
+  height:140px;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.char:hover .figure svg{transform:translateY(-6px)}
+
+/* ── NAME + ROLE ── */
+.char-name{
+  font-size:15px;
+  font-weight:700;
+  margin-bottom:2px;
+  transition:color .2s;
+}
+.char:nth-child(1):hover .char-name{color:var(--c0)}
+.char:nth-child(2):hover .char-name{color:var(--c1)}
+.char:nth-child(3):hover .char-name{color:var(--c2)}
+.char:nth-child(4):hover .char-name{color:var(--c3)}
+
+.char-role{
+  font-size:11px;
+  color:var(--muted);
+  font-weight:400;
+  margin-bottom:1.5rem;
+  letter-spacing:.02em;
+}
+
+/* ── DATA PANEL (shown on hover) ── */
+.data-panel{
+  opacity:0;
+  transform:translateY(8px);
+  transition:opacity .25s, transform .25s;
+  pointer-events:none;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+.char:hover .data-panel{
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
+
+.metric{display:flex;flex-direction:column;gap:4px}
+
+.metric-label{
+  font-family:'Syne Mono',monospace;
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  color:var(--muted);
+}
+
+.bar-track{
+  height:4px;
+  background:var(--border);
+  border-radius:2px;
+  overflow:hidden;
+  position:relative;
+}
+.bar-fill{
+  height:100%;
+  border-radius:2px;
+  width:0%;
+  transition:width .6s cubic-bezier(.25,1,.5,1);
+}
+.char:hover .bar-fill{width:var(--w)}
+
+.metric-value{
+  font-size:18px;
+  font-weight:800;
+  line-height:1;
+}
+
+/* accent colours per card */
+.char:nth-child(1) .bar-fill{background:var(--c0)}
+.char:nth-child(1) .metric-value{color:var(--c0)}
+.char:nth-child(2) .bar-fill{background:var(--c1)}
+.char:nth-child(2) .metric-value{color:var(--c1)}
+.char:nth-child(3) .bar-fill{background:var(--c2)}
+.char:nth-child(3) .metric-value{color:var(--c2)}
+.char:nth-child(4) .bar-fill{background:var(--c3)}
+.char:nth-child(4) .metric-value{color:var(--c3)}
+
+/* ── HOVER HINT ── */
+.hint{
+  position:absolute;
+  bottom:1.2rem;
+  left:1.5rem;
+  right:1.5rem;
+  font-size:10px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--border);
+  font-family:'Syne Mono',monospace;
+  transition:opacity .2s;
+}
+.char:hover .hint{opacity:0}
+
+/* ── FOOTER NOTE ── */
+footer{
+  padding:1.5rem 3rem;
+  font-size:11px;
+  color:var(--muted);
+  font-family:'Syne Mono',monospace;
+  line-height:1.8;
+  border-top:1px solid var(--border);
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:700px){
+  .stage{grid-template-columns:repeat(2,1fr)}
+  .char:nth-child(2){border-right:none}
+  .char:nth-child(3){border-top:1px solid var(--border)}
+  header{padding:2rem 1.5rem 1.5rem}
+  footer{padding:1.5rem}
+}
+@media(max-width:420px){
+  .stage{grid-template-columns:1fr}
+  .char{border-right:none;border-bottom:1px solid var(--border)}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">NZ Driver Licence Register · Qualification breakdown</div>
+  <h1>Who's behind<br><span>the wheel?</span></h1>
+  <p class="sub">Four people. Four qualification levels. Hover each character to see how education shapes licence status across Aotearoa's 3.7 million residents.</p>
+</header>
+
+<div class="stage">
+
+  <!-- 0: No qualifications -->
+  <div class="char">
+    <div class="char-index">01 / 04</div>
+    <div class="figure">
+      <svg viewBox="0 0 90 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- body shadow -->
+        <ellipse cx="45" cy="136" rx="22" ry="4" fill="#1a1a1a"/>
+        <!-- legs -->
+        <rect x="30" y="92" width="12" height="40" rx="6" fill="#2a2218"/>
+        <rect x="48" y="92" width="12" height="40" rx="6" fill="#2a2218"/>
+        <!-- boots -->
+        <rect x="27" y="124" width="18" height="10" rx="4" fill="#e8c547"/>
+        <rect x="45" y="124" width="18" height="10" rx="4" fill="#e8c547"/>
+        <!-- torso -->
+        <rect x="24" y="52" width="42" height="46" rx="10" fill="#3a2e10"/>
+        <!-- hi-vis stripe -->
+        <rect x="24" y="68" width="42" height="8" rx="0" fill="#e8c547" opacity=".35"/>
+        <!-- arms -->
+        <rect x="8" y="54" width="16" height="10" rx="5" fill="#3a2e10"/>
+        <rect x="66" y="54" width="16" height="10" rx="5" fill="#3a2e10"/>
+        <!-- head -->
+        <ellipse cx="45" cy="36" rx="18" ry="20" fill="#c8965a"/>
+        <!-- hard hat -->
+        <rect x="27" y="18" width="36" height="8" rx="4" fill="#e8c547"/>
+        <rect x="22" y="23" width="46" height="5" rx="2" fill="#e8c547"/>
+        <!-- eyes -->
+        <ellipse cx="38" cy="36" rx="3" ry="3.5" fill="#1a1a1a"/>
+        <ellipse cx="52" cy="36" rx="3" ry="3.5" fill="#1a1a1a"/>
+        <!-- smile -->
+        <path d="M38 45 Q45 50 52 45" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      </svg>
+    </div>
+    <div class="char-name">Jordan</div>
+    <div class="char-role">No qualifications · Tradesperson</div>
+
+    <div class="data-panel">
+      <div class="metric">
+        <div class="metric-label">Full licence</div>
+        <div class="metric-value">70.1%</div>
+        <div class="bar-track"><div class="bar-fill" style="--w:70.1%"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">No licence</div>
+        <div class="metric-value">18.1%</div>
+        <div class="bar-track"><div class="bar-fill" style="--w:18.1%"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Learner</div>
+        <div class="metric-value">6.0%</div>
+        <div class="bar-track"><div class="bar-fill" style="--w:6%"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Restricted</div>
+        <div class="metric-value">5.7%</div>
+        <div class="bar-track"><div class="bar-fill" style="--w:5.7%"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Total population</div>
+        <div class="metric-value" style="font-size:14px">590,454</div>
+      </div>
+    </div>
+    <div class="hint">hover to reveal ↑</div>
+  </div>
+
+  <!-- 1: School qualifications -->
+  <div class="char">
+    <div class="char-index">02 / 04</div>
+    <div class="figure">
+      <svg viewBox="0 0 90 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="45" cy="136" rx="22" ry="4" fill="#1a1a1a"/>
+        <!-- legs -->
+        <rect x="30" y="92" width="12" height="40" rx="6" fill="#1a2e28"/>
+        <rect x="48" y="92" width="12" height="40" rx="6" fill="#1a2e28"/>
+        <!-- shoes -->
+        <rect x="27" y="124" width="18" height="10" rx="4" fill="#5bc4a0"/>
+        <rect x="45" y="124" width="18" height="10" rx="4" fill="#5bc4a0"/>
+        <!-- skirt/dress -->
+        <path d="M24 90 L20 132 H38 L45 100 L52 132 H70 L66 90 Z" fill="#1e3d35" opacity=".0"/>
+        <!-- torso -->
+        <rect x="24" y="52" width="42" height="46" rx="10" fill="#1e3d35"/>
+        <!-- collar detail -->
+        <path d="M36 52 L45 64 L54 52" stroke="#5bc4a0" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- arms -->
+        <rect x="8" y="54" width="16" height="10" rx="5" fill="#1e3d35"/>
+        <rect x="66" y="54" width="16" height="10" rx="5" fill="#1e3d35"/>
+        <!-- bag strap -->
+        <path d="M66 60 Q78 70 74 90" stroke="#5bc4a0" stroke-width="2" fill="none" stroke-linecap="round" opacity=".6"/>
+        <!-- head -->
+        <ellipse cx="45" cy="36" rx="18" ry="20" fill="#a06040"/>
+        <!-- hair -->
+        <path d="M27 30 Q27 14 45 14 Q63 14 63 30 Q63 18 55 16 Q45 12 35 16 Q27 20 27 30Z" fill="#2a1a0a"/>
+        <!-- eyes -->
+        <ellipse cx="38" cy="36" rx="3" ry="3.5" fill="#1a1a1a"/>
+        <ellipse cx="52" cy="36" rx="3" ry="3.5" fill="#1a1a1a"/>
+        <!-- smile -->
+        <path d="M38 45 Q45 50 52 45" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <!-- backpack -->
+        <rect x="60" y="68" width="16" height="22" rx="4" fill="#5bc4a0" opacity=".4"/>
+      </svg>
+    </div>
+    <div class="char-name">Mia</div>
+    <div class="char-role">School qualifications · Retail worker</div>
+
+    <div class="data-panel">
+      <div class="metric">
+        <div class="metric-label">Full licence</div>
+        <div class="metric-value">66.7%</div>
+        <div class="bar-track"><div class="bar-fill" style="--w:66.7%"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">No licence</div>
+        <div class="metric-value">12.5%</div>
+        <div class="bar-track"><div class="bar-fill" style="--w:12.5%"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Learner</div>
+        <div class="metric-value">10.3%</div>
+        <div class="bar-track"><div class="bar-fill" style="--w:10.3%"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Restricted</div>
+        <div class="metric-value">10.6%</div>
+        <div class="bar-track"><div class="bar-fill" style="--w:10.6%"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Total population</div>
+        <div class="metric-value" style="font-size:14px">1,318,362</div>
+      </div>
+    </div>
+    <div class="hint">hover to reveal ↑</div>
+  </div>
+
+  <!-- 2: Post-school -->
+  <div class="char">
+    <div class="char-index">03 / 04</div>
+    <div class="figure">
+      <svg viewBox="0 0 90 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="45" cy="136" rx="22" ry="4" fill="#1a1a1a"/>
+        <!-- legs -->
+        <rect x="30" y="92" width="12" height="40" rx="6" fill="#2e1a10"/>
+        <rect x="48" y="92" width="12" height="40" rx="6" fill="#2e1a10"/>
+        <!-- boots -->
+        <rect x="27" y="124" width="18" height="10" rx="4" fill="#e07a5f"/>
+        <rect x="45" y="124" width="18" height="10" rx="4" fill="#e07a5f"/>
+        <!-- torso / workwear -->
+        <rect x="24" y="52" width="42" height="46" rx="10" fill="#2e1a10"/>
+        <!-- chest pocket -->
+        <rect x="30" y="58" width="12" height="10" rx="2" fill="#e07a5f" opacity=".35"/>
+        <!-- arms -->
+        <rect x="8" y="54" width="16" height="10" rx="5" fill="#2e1a10"/>
+        <!-- tool in hand -->
+        <rect x="4" y="56" width="8" height="3" rx="1" fill="#e07a5f" opacity=".8"/>
+        <rect x="66" y="54" width="16" height="10" rx="5" fill="#2e1a10"/>
+        <!-- head -->
+        <ellipse cx="45" cy="36" rx="18" ry="20" fill="#d4956a"/>
+        <!-- stubble / beard area -->
+        <ellipse cx="45" cy="44" rx="10" ry="6" fill="#b07040" opacity=".3"/>
+        <!-- hair -->
+        <path d="M27 28 Q29 14 45 14 Q60 14 63 28 Q60 16 50 14 Q42 13 34 16 Z" fill="#1a0a00"/>
+        <!-- eyes -->
+        <ellipse cx="38" cy="34" rx="3" ry="3.5" fill="#1a1a1a"/>
+        <ellipse cx="52" cy="34" rx="3" ry="3.5" fill="#1a1a1a"/>
+        <!-- smile -->
+        <path d="M38 44 Q45 49 52 44" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <!-- wrench icon -->
+        <text x="68" y="68" font-size="12" fill="#e07a5f" opacity=".7">🔧</text>
+      </svg>
+    </div>
+    <div class="char-name">Sam</div>
+    <div class="char-role">Post-school quals · Electrician</div>
+
+    <div class="data-panel">
+      <div class="metric">
+        <div class="metric-label">Full licence</div>
+        <div class="metric-value">83.5%</div>
+        <div class="bar-track"><div class="bar-fill" style="--w:83.5%"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">No licence</div>
+        <div class="metric-value">6.1%</div>
+        <div class="bar-track"><div class="bar-fill" style="--w:6.1%"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Learner</div>
+        <div class="metric-value">4.3%</div>
+        <div class="bar-track"><div class="bar-fill" style="--w:4.3%"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Restricted</div>
+        <div class="metric-value">6.0%</div>
+        <div class="bar-track"><div class="bar-fill" style="--w:6%"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Total population</div>
+        <div class="metric-value" style="font-size:14px">648,627</div>
+      </div>
+    </div>
+    <div class="hint">hover to reveal ↑</div>
+  </div>
+
+  <!-- 3: Degree -->
+  <div class="char">
+    <div class="char-index">04 / 04</div>
+    <div class="figure">
+      <svg viewBox="0 0 90 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="45" cy="136" rx="22" ry="4" fill="#1a1a1a"/>
+        <!-- legs - trousers -->
+        <rect x="30" y="92" width="12" height="40" rx="6" fill="#1a1e2e"/>
+        <rect x="48" y="92" width="12" height="40" rx="6" fill="#1a1e2e"/>
+        <!-- shoes -->
+        <rect x="27" y="124" width="18" height="10" rx="4" fill="#7eb8f7"/>
+        <rect x="45" y="124" width="18" height="10" rx="4" fill="#7eb8f7"/>
+        <!-- torso / blazer -->
+        <rect x="24" y="52" width="42" height="46" rx="10" fill="#1a1e2e"/>
+        <!-- lapels -->
+        <path d="M38 52 L45 65 L52 52" fill="#242840"/>
+        <!-- shirt / tie -->
+        <rect x="42" y="60" width="6" height="30" rx="2" fill="#7eb8f7" opacity=".4"/>
+        <!-- arms -->
+        <rect x="8" y="54" width="16" height="10" rx="5" fill="#1a1e2e"/>
+        <rect x="66" y="54" width="16" height="10" rx="5" fill="#1a1e2e"/>
+        <!-- laptop in hand -->
+        <rect x="2" y="60" width="14" height="9" rx="2" fill="#7eb8f7" opacity=".5"/>
+        <rect x="2" y="68" width="14" height="2" rx="1" fill="#7eb8f7" opacity=".3"/>
+        <!-- head -->
+        <ellipse cx="45" cy="36" rx="18" ry="20" fill="#8a6040"/>
+        <!-- glasses -->
+        <rect x="32" y="32" rx="4" width="10" height="7" fill="none" stroke="#7eb8f7" stroke-width="1.5"/>
+        <rect x="48" y="32" rx="4" width="10" height="7" fill="none" stroke="#7eb8f7" stroke-width="1.5"/>
+        <line x1="42" y1="35" x2="48" y2="35" stroke="#7eb8f7" stroke-width="1.5"/>
+        <!-- hair -->
+        <path d="M27 30 Q27 14 45 14 Q63 14 63 30 Q58 16 45 15 Q32 15 27 30Z" fill="#1a0a00"/>
+        <!-- eyes (behind glasses) -->
+        <ellipse cx="37" cy="35" rx="2.5" ry="2.5" fill="#1a1a1a"/>
+        <ellipse cx="53" cy="35" rx="2.5" ry="2.5" fill="#1a1a1a"/>
+        <!-- smile -->
+        <path d="M38 45 Q45 50 52 45" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <!-- mortarboard hat -->
+        <rect x="30" y="16" width="30" height="5" rx="1" fill="#7eb8f7" opacity=".7"/>
+        <ellipse cx="45" cy="16" rx="18" ry="3" fill="#7eb8f7" opacity=".5"/>
+        <!-- tassel -->
+        <line x1="60" y1="16" x2="65" y2="26" stroke="#7eb8f7" stroke-width="1.5" opacity=".7"/>
+        <ellipse cx="65" cy="27" rx="2" ry="2" fill="#7eb8f7" opacity=".7"/>
+      </svg>
+    </div>
+    <div class="char-name">Alex</div>
+    <div class="char-role">Degree holder · Urban professional</div>
+
+    <div class="data-panel">
+      <div class="metric">
+        <div class="metric-label">Full licence</div>
+        <div class="metric-value">84.3%</div>
+        <div class="bar-track"><div class="bar-fill" style="--w:84.3%"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">No licence</div>
+        <div class="metric-value">8.4%</div>
+        <div class="bar-track"><div class="bar-fill" style="--w:8.4%"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Learner</div>
+        <div class="metric-value">3.2%</div>
+        <div class="bar-track"><div class="bar-fill" style="--w:3.2%"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Restricted</div>
+        <div class="metric-value">4.1%</div>
+        <div class="bar-track"><div class="bar-fill" style="--w:4.1%"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Total population</div>
+        <div class="metric-value" style="font-size:14px">865,620</div>
+      </div>
+    </div>
+    <div class="hint">hover to reveal ↑</div>
+  </div>
+
+</div>
+
+<footer>
+  Source: NZ Driver Licence Register linked with Census data, Stats NZ. &nbsp;·&nbsp;
+  Counts rounded to nearest 3. &nbsp;·&nbsp;
+  Insight: post-school and degree holders reach nearly identical full licence rates (~84%) — driving is occupational, not academic.
+</footer>
+
+</body>
+</html>

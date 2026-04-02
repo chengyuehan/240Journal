@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Licence by Qualification - NZ Driver Licence Data</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f8f7f4;
+    --surface: #ffffff;
+    --border: #e5e2db;
+    --text: #1a1a18;
+    --text-mid: #555550;
+    --text-muted: #999890;
+    --no-lic: #E24B4A;
+    --learner: #EF9F27;
+    --restricted: #378ADD;
+    --full: #1D9E75;
+    --no-lic-a: rgba(226,75,74,0.78);
+    --learner-a: rgba(239,159,39,0.78);
+    --restricted-a: rgba(55,138,221,0.78);
+    --full-a: rgba(29,158,117,0.78);
+  }
+
+  body {
+    background: var(--bg);
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+
+  .wrap { max-width: 760px; margin: 0 auto; }
+
+  .page-header { margin-bottom: 2.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; }
+  .eyebrow { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; font-weight: 400; }
+  h1 { font-size: 22px; font-weight: 500; line-height: 1.3; color: var(--text); }
+  .subtitle { font-size: 13px; color: var(--text-mid); margin-top: 0.4rem; font-weight: 300; line-height: 1.6; }
+
+  .tabs { display: flex; gap: 6px; margin-bottom: 1.5rem; }
+  .tab { padding: 7px 16px; border-radius: 20px; border: 1px solid var(--border); background: transparent; font-size: 12px; font-family: 'Inter', sans-serif; color: var(--text-muted); cursor: pointer; font-weight: 400; transition: all 0.15s; }
+  .tab:hover { color: var(--text-mid); border-color: #ccc; }
+  .tab.active { background: var(--text); color: #fff; border-color: var(--text); }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 1rem; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-mid); font-weight: 300; }
+  .legend-swatch { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+  .chart-wrap { position: relative; width: 100%; }
+
+  .insight { background: var(--bg); border-left: 2px solid var(--border); border-radius: 0; padding: 12px 16px; margin-top: 1rem; font-size: 12.5px; color: var(--text-mid); line-height: 1.7; font-weight: 300; }
+  .insight strong { font-weight: 500; color: var(--text); }
+
+  .stat-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+  .stat-label { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; font-weight: 400; }
+  .stat-value { font-size: 22px; font-weight: 500; line-height: 1; }
+  .stat-sub { font-size: 11px; color: var(--text-muted); margin-top: 4px; font-weight: 300; }
+
+  .pane { display: none; }
+  .pane.active { display: block; }
+
+  .source { font-size: 11px; color: var(--text-muted); margin-top: 1.5rem; font-weight: 300; }
+
+  @media (max-width: 500px) {
+    .stat-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    h1 { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="page-header">
+    <div class="eyebrow">NZ Driver Licence Register</div>
+    <h1>Licence status by highest qualification</h1>
+    <p class="subtitle">Population aged 16+, all counts rounded to nearest 3 (Stats NZ confidentiality). Percentages are approximate.</p>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-label">No qualifications</div>
+      <div class="stat-value" style="color: #534AB7;">70.1%</div>
+      <div class="stat-sub">full licence</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">School qualifications</div>
+      <div class="stat-value" style="color: #1D9E75;">66.7%</div>
+      <div class="stat-sub">full licence</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Post-school</div>
+      <div class="stat-value" style="color: #D85A30;">83.5%</div>
+      <div class="stat-sub">full licence</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Degree</div>
+      <div class="stat-value" style="color: #378ADD;">84.3%</div>
+      <div class="stat-sub">full licence</div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('overview', this)">Overview</button>
+    <button class="tab" onclick="switchTab('age', this)">By age group</button>
+  </div>
+
+  <div id="pane-overview" class="pane active">
+    <div class="card">
+      <div class="legend">
+        <div class="legend-item"><span class="legend-swatch" style="background:#E24B4A"></span>No licence</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#EF9F27"></span>Learner</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#378ADD"></span>Restricted</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#1D9E75"></span>Full licence</div>
+      </div>
+      <div class="chart-wrap" style="height: 270px;">
+        <canvas id="chartOverview"></canvas>
+      </div>
+      <div class="insight">
+        <strong>Post-school and degree holders show almost identical full licence rates (~84%).</strong> This suggests licensing is driven more by occupational need than academic level — vocational pathways often require driving as much as graduate roles do. Notably, those with <strong>no qualifications (70.1%)</strong> outperform those with school qualifications only (66.7%), likely because they are more concentrated in trades and manual work where driving is essential.
+      </div>
+    </div>
+  </div>
+
+  <div id="pane-age" class="pane">
+    <div class="card">
+      <div class="legend">
+        <div class="legend-item"><span class="legend-swatch" style="background:#534AB7"></span>No qualifications</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#1D9E75"></span>School qualifications</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#D85A30"></span>Post-school</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#378ADD"></span>Degree</div>
+      </div>
+      <div class="chart-wrap" style="height: 300px;">
+        <canvas id="chartAge"></canvas>
+      </div>
+      <div class="insight">
+        <strong>The 16-18 no-qualification group has a near-zero full licence rate (0.9%)</strong> — but this is mostly an age effect, not a qualification effect. Almost no one that age has had the chance to earn any qualification yet. The qualification gap only stabilises meaningfully from age 25 onwards. The <strong>degree line starts null at 16-18</strong> for the same reason: too few data points to report.
+      </div>
+    </div>
+  </div>
+
+  <p class="source">Source: NZ Driver Licence Register linked with Census data, Stats NZ. Counts rounded to nearest 3.</p>
+
+</div>
+
+<script>
+const sharedOpts = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: { display: false },
+    tooltip: {
+      callbacks: {
+        label: ctx => ctx.raw != null ? ` ${ctx.dataset.label}: ${ctx.raw.toFixed(1)}%` : ' suppressed'
+      }
+    }
+  }
+};
+
+new Chart(document.getElementById('chartOverview'), {
+  type: 'bar',
+  data: {
+    labels: ['No qualifications', 'School qualifications', 'Post-school', 'Degree'],
+    datasets: [
+      { label: 'No licence',   data: [18.1, 12.5,  6.1,  8.4], backgroundColor: 'rgba(226,75,74,0.78)' },
+      { label: 'Learner',      data: [ 6.0, 10.3,  4.3,  3.2], backgroundColor: 'rgba(239,159,39,0.78)' },
+      { label: 'Restricted',   data: [ 5.7, 10.6,  6.0,  4.1], backgroundColor: 'rgba(55,138,221,0.78)' },
+      { label: 'Full licence', data: [70.1, 66.7, 83.5, 84.3], backgroundColor: 'rgba(29,158,117,0.78)' },
+    ]
+  },
+  options: {
+    ...sharedOpts,
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { font: { size: 11 }, color: '#999' } },
+      y: { stacked: true, min: 0, max: 100, grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { callback: v => v + '%', font: { size: 11 }, color: '#999' } }
+    }
+  }
+});
+
+new Chart(document.getElementById('chartAge'), {
+  type: 'line',
+  data: {
+    labels: ['16-18', '19-24', '25-34', '35-44', '45-54', '55-64', '65-75', '75+'],
+    datasets: [
+      { label: 'No qualifications',   data: [0.9,  15.2, 42.5, 59.1, 75.1, 80.3, 84.2, 81.1], borderColor: '#534AB7', backgroundColor: 'transparent', tension: 0.35, pointRadius: 4, borderWidth: 2, spanGaps: false },
+      { label: 'School qualifications', data: [9.0, 39.0, 58.9, 76.3, 87.2, 89.5, 89.3, 85.4], borderColor: '#1D9E75', backgroundColor: 'transparent', tension: 0.35, pointRadius: 4, borderWidth: 2 },
+      { label: 'Post-school',          data: [14.3, 46.7, 71.9, 84.0, 92.1, 94.4, 95.0, 93.3], borderColor: '#D85A30', backgroundColor: 'transparent', tension: 0.35, pointRadius: 4, borderWidth: 2 },
+      { label: 'Degree',               data: [null, 60.8, 74.1, 86.6, 92.5, 94.0, 93.7, 89.6], borderColor: '#378ADD', backgroundColor: 'transparent', tension: 0.35, pointRadius: 4, borderWidth: 2, spanGaps: false },
+    ]
+  },
+  options: {
+    ...sharedOpts,
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 11 }, color: '#999' } },
+      y: { min: 0, max: 100, grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { callback: v => v + '%', font: { size: 11 }, color: '#999' } }
+    }
+  }
+});
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('pane-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

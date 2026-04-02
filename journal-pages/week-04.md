@@ -8,6 +8,8 @@ layout: default
 
 ## Documentation 
 
+## In-Class Activities
+
 ### Activity 1: Local AI with Ollama
 
 In this activity, I chose to use qwen3 8b as the local model. I tried having them write some p5.js code and then comparing their code with online AI.
@@ -32,6 +34,61 @@ At least for today, privacy and capability remain at opposite ends of a balancin
 
 ### Activity 2: Cloud AI with NotebookLM
 
+For this activity, I used NotebookLM to gather together the sources that reflect my experimentation so far in this course. I added my Making Journal, several external references that influenced my thinking, and a short context document to guide the AI. 
+
+![1](../assets/week-04/1.png)
+
+NotebookLM's automatic question recommendation feature revealed many possibilities and content I hadn't discovered before. By analyzing all my files, it automatically suggested several questions I might be interested in, such as how to break free from the limitations of "data analysis thinking" and make data visualization more creative and human-centered. It not only summarized useful information from each source but also provided many helpful suggestions. I could also engage in deeper Q&A sessions with the responses, gaining a better understanding of my interests and concerns from different perspectives.
+
+## Independent Study: AI-Assisted Data Exploration
+
+### Step 1: Find a Dataset
+
+I chose the [New Zealand Driver's License Holding Rate dataset](https://catalogue.data.govt.nz/dataset/rates-of-driver-licence-holding-in-aotearoa-nz) because it is closely related to the daily lives of New Zealanders. Driver's license ownership affects people's opportunities for employment, education, healthcare, and social interaction, especially in areas with limited public transport access. I am interested in this dataset because it allows us to view the driver's license issue not only as a transportation problem, but also as a social and spatial one.
+
+### Step 2: Understand the Data
+
+After speaking with Claude, I gained a much better understanding of the data. It's a very complete and well-organized percentage-based dataset, without a large amount of inconsistently formatted data that requires cleaning and processing. The data shows the number and proportion of people with driver's licenses under different segmentation criteria, such as ethnicity and age.
+
+Through this data, I discovered many things that were both intuitive and counterintuitive. For example, full-time employees had the highest licensing rate, but part-time employees (67%) had a lower licensing rate than those "outside the labor market" (68%).
+
+This dataset was created by linking driver's license registers to census records. Its core purpose was administrative and policy monitoring—to understand who still lacks a driver's license. This very purpose introduces a bias: the data only asks "who has a driver's license or doesn't have one," never "why they don't have one" or "what does not having a driver's license actually mean for their lives." It reflects a systemic perspective, not a human one.
+
+### Step 3: Design Multiple Representations
+
+Of all the categories, I chose the one that interested me most: categorized by education level. I had Claude generate a visualization, which, after analysis by pands, returned an HTML document.[to visualization](../assets/week-04/qual_viz.html)← click to see
+The results returned by Claude showed me that there were two different sets of data: one containing only education level and the other containing both education level and age. Therefore, I plan to create three separate visualization: one for those with only academic qualifications, one for those with both academic qualifications and age, and one where age can be viewed in a sub-menu of the academic qualifications table.
+
+#### 1
+<iframe src="assets/week-04/qual_characters.html"></iframe>
+
+
+Step 4: Critically Evaluate
+
+Look at the representations you've produced and reflect on the AI's design choices:
+
+What did the AI default to? (e.g. bar charts, blue colour schemes, generic titles)
+What did you have to override or redirect?
+What assumptions did the AI make about the data or the audience?
+Which representation is the most interesting, and why?
+What would you do differently if you were building this without AI?
+
+Document Your Process
+To capture the full scope of your practice, each entry in the Making Journal must include a mix of visual and textual evidence, such as sketches, screenshots, GIFs, diagrams, process notes, instructions and reflections.
+
+Items on the course Reading List for this week include the introduction to Data Feminism by Catherine D'Ignazio and Lauren F. Klein, and a talk by Kirikowhai Mikaere on Māori data sovereignty. Engage with both of these and draw on them in your reflections.
+
+Include reflective writing that addresses the following:
+
+What dataset did you choose, and why?
+How did AI tools help you understand the data? What did they miss?
+What design decisions did you make in directing the AI, and what did you learn from this process?
+How do the different representations of the same data change what a viewer might understand?
+What questions do D'Ignazio and Klein's ideas raise for your work with this dataset?
+How does Mikaere's framing of data as a strategic asset for Māori development challenge or inform how you think about the dataset you chose?
+What was your experience of working with AI as design tool?
+What would you develop further with more time?
+Any other reflections?
 
 ## AI Usage Statement
 
