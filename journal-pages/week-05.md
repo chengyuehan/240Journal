@@ -26,7 +26,7 @@ Publications Office of the European Union. (n.d.). *Making the invisible visible
 
 Anthropic. (2026). *Claude* (Claude Sonnet 4.6) [Large language model]. https://claude.ai/
 
-LLM Stats. (2026). *API LLM Stats* [Dataset]. https://llm-stats.com/developer
+LLM Stats. (2026). *API* [Dataset]. https://llm-stats.com/developer
 
 ## AI Usage Statement
 
