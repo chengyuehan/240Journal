@@ -8,7 +8,13 @@ layout: default
 
 ## Progress Report
 
-<iframe loading="lazy" style="position: absolute; width: 700; height: 600; top: 0; left: 0; border: none; padding: 0;margin: 0;" src="https://www.canva.com/design/DAHJCJVQIUE/cbhh54tOIdCnrXSbY60qwQ/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen"></iframe>
+<iframe
+  src="https://www.canva.com/design/DAHJCJVQIUE/cbhh54tOIdCnrXSbY60qwQ/view?embed"
+  width="700"
+  height="600"
+  frameborder="0"
+  allowfullscreen>
+</iframe>
 
 
 ## Images & Media
