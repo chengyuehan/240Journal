@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fuel Station Mode / AI API Pricing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@300;400;500;700&family=IBM+Plex+Mono:wght@300;400;500;700&family=Share+Tech+Mono&family=Special+Elite&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="scanlines" aria-hidden="true"></div>
+  <main class="station-shell">
+    <section class="machine" aria-label="Interactive AI fuel station">
+      <header class="topbar">
+        <div>
+          <span class="topbar__id">FS-LLM-09</span>
+          <span class="topbar__muted">same input / different cost</span>
+        </div>
+        <div class="topbar__status" id="dataStatus">WARMING API LINK</div>
+      </header>
+
+      <div class="pump-grid">
+        <aside class="selector-bank" aria-label="Session controls">
+          <label class="field">
+            <span>company</span>
+            <select id="companySelect"></select>
+          </label>
+          <label class="field">
+            <span>model</span>
+            <select id="modelSelect"></select>
+          </label>
+          <label class="field">
+            <span>fixed task</span>
+            <select id="taskSelect"></select>
+          </label>
+          <button class="fuel-button" id="fuelButton" type="button">
+            <span class="fuel-button__lamp"></span>
+            begin fueling
+          </button>
+          <div class="same-input">
+            <span>input load</span>
+            <strong id="taskTokens">100,000 tokens</strong>
+          </div>
+        </aside>
+
+        <div class="canvas-stage">
+          <canvas id="stationCanvas" width="1120" height="680"></canvas>
+          <div class="stage-readout" aria-live="polite">
+            <div>
+              <span>selected unit</span>
+              <strong id="readoutModel">-</strong>
+            </div>
+            <div>
+              <span>input rate</span>
+              <strong id="readoutRate">$0.000 / 1M</strong>
+            </div>
+            <div>
+              <span>session cost</span>
+              <strong id="readoutCost">$0.0000</strong>
+            </div>
+          </div>
+        </div>
+
+        <aside class="receipt-printer" aria-label="Thermal receipt printer">
+          <div class="printer-head">
+            <span>thermal printer</span>
+            <strong id="printerState">idle</strong>
+          </div>
+          <div class="receipt-slot" id="receiptSlot"></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="compare-panel" aria-label="Pinned receipt wall">
+      <header class="wall-header">
+        <div>
+          <span>receipt wall</span>
+          <strong id="wallCount">0 pinned</strong>
+        </div>
+        <div class="wall-tools">
+          <select id="filterSelect" aria-label="Filter pinned receipts by company">
+            <option value="all">all companies</option>
+          </select>
+          <button id="sortWall" type="button">sort by price</button>
+          <button id="compareExtremes" type="button">cheapest / premium</button>
+          <button id="clearWall" type="button">clear wall</button>
+        </div>
+      </header>
+      <div class="wall-spread" id="wallSpread">Pin completed receipts to compare fuel costs physically.</div>
+      <div class="receipt-wall" id="receiptWall"></div>
+    </section>
+  </main>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
