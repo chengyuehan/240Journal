@@ -70,6 +70,14 @@ So I decided to return to the current fuel station concept and continue developi
 
 I improved this by thinking about how the system could leave a record behind. After a brief brainstorming process, I came up with the idea of generating a receipt after each fueling session, preserving the price information for each model. I then updated the demo by adding a receipt-printing module. After each receipt is printed, it is automatically pinned to the board at the bottom, allowing users to compare different model prices more easily.
 
-[link to demo](../assets/week-08/21/index.html)
+[link to demo](../assets/week-08/index.html)
+
+At this point, I started thinking: instead of showing the whole refuelling process, why not just show the receipt? The receipt is still connected to the gas station concept, but it is much simpler and clearer. It is also a very familiar object. People understand that a receipt records what was purchased, how much it cost, and where it came from.
+
+This helped me shift the visual focus from the process to the result. Instead of trying to visualise fuel moving through a machine, I could present the final cost as a series of receipts. Each AI model could correspond to one receipt. The receipt could include the company name, model name, output price, and estimated cost. This is more direct, easier to understand, and easier to build than the full gas station metaphor.
+
+The receipt idea also solved a practical problem. I wanted to show quite a large number of models, around 40 to 50. If each model became a complex machine or animated object, the page could become too crowded. But receipts are small, repeatable, and easy to compare. A receipt collection board can show many models at the same time while keeping the layout clear and readable.
+
+
 
 ## AI Usage Statement

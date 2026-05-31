@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fuel Station Mode / AI API Pricing</title>
+  <style>
+:root {
+  color-scheme: dark;
+  --bg: #090807;
+  --panel: #14110d;
+  --line: #413528;
+  --line-hot: #7c6544;
+  --ink: #e2d6bd;
+  --muted: #897d67;
+  --amber: #ffbd5a;
+  --amber-hot: #ffe0a2;
+  --red: #dc5c47;
+  --cyan: #82d8ce;
+}
+
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(133, 93, 45, .2), transparent 42%),
+    linear-gradient(180deg, #0b0907, #080707 62%, #050504);
+  color: var(--ink);
+  font-family: "IBM Plex Mono", "Azeret Mono", monospace;
+  letter-spacing: 0;
+}
+button, select { font: inherit; }
+.grain, .scanlines { position: fixed; inset: 0; pointer-events: none; z-index: 50; }
+.grain {
+  opacity: .22;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter><rect width='180' height='180' filter='url(%23n)' opacity='.55'/></svg>");
+}
+.scanlines {
+  opacity: .13;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,.8) 0 1px, transparent 1px 4px);
+}
+.station-shell { width: min(1500px, calc(100vw - 28px)); margin: 14px auto 42px; }
+.machine, .compare-panel {
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(24,20,15,.94), rgba(11,9,7,.96));
+  box-shadow: inset 0 0 0 1px rgba(255,196,99,.04), 0 30px 80px rgba(0,0,0,.38);
+}
+.topbar, .wall-header {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 12px 16px; border-bottom: 1px solid var(--line);
+  text-transform: uppercase; font-size: 11px; color: var(--muted);
+}
+.topbar__id { color: var(--amber); margin-right: 12px; }
+.topbar__status { color: var(--red); font-size: 10px; }
+.pump-grid { display: grid; grid-template-columns: 250px minmax(0, 1fr) 300px; min-height: 650px; }
+.selector-bank, .receipt-printer { padding: 16px; background: rgba(13,11,8,.72); }
+.selector-bank { border-right: 1px solid var(--line); }
+.receipt-printer { border-left: 1px solid var(--line); }
+.field { display: grid; gap: 6px; margin-bottom: 14px; }
+.field span, .same-input span, .stage-readout span, .printer-head span, .wall-header span {
+  color: var(--muted); text-transform: uppercase; font-size: 10px;
+}
+select, button {
+  min-height: 38px; border: 1px solid var(--line); background: #0b0907;
+  color: var(--ink); border-radius: 2px;
+}
+select { width: 100%; padding: 0 10px; }
+button { padding: 0 12px; cursor: pointer; text-transform: uppercase; font-size: 11px; }
+button:hover, select:hover { border-color: var(--line-hot); }
+button.is-on { color: #15100b; background: var(--amber); border-color: var(--amber); }
+.fuel-button {
+  display: flex; align-items: center; justify-content: center; gap: 9px;
+  width: 100%; margin: 18px 0; background: linear-gradient(180deg, #332215, #16100c);
+  border-color: #8a5a2c; color: var(--amber-hot);
+}
+.fuel-button:disabled { opacity: .58; cursor: wait; }
+.fuel-button__lamp { width: 9px; height: 9px; border-radius: 50%; background: var(--red); box-shadow: 0 0 12px var(--red); }
+.same-input {
+  display: grid; gap: 4px; padding: 12px; border: 1px dashed var(--line);
+  background: rgba(255,189,90,.04);
+}
+.same-input strong { color: var(--amber-hot); }
+.canvas-stage { position: relative; min-width: 0; overflow: hidden; }
+#stationCanvas { display: block; width: 100%; min-height: 420px; }
+.stage-readout {
+  position: absolute; left: 14px; right: 14px; bottom: 14px;
+  display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 10px;
+}
+.stage-readout div {
+  display: grid; gap: 4px; padding: 10px; background: rgba(6,5,4,.82);
+  border: 1px solid rgba(255,189,90,.18);
+}
+.stage-readout strong {
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--amber-hot);
+  font-family: "Share Tech Mono", monospace; font-size: 18px;
+}
+.printer-head {
+  display: flex; justify-content: space-between; border-bottom: 1px solid var(--line);
+  padding-bottom: 10px; margin-bottom: 16px; text-transform: uppercase;
+}
+.printer-head strong { color: var(--cyan); font-size: 11px; }
+.receipt-slot {
+  min-height: 520px; display: flex; justify-content: center; align-items: flex-start; padding-top: 18px;
+  background:
+    linear-gradient(90deg, transparent 0 46%, rgba(0,0,0,.3) 46% 54%, transparent 54%),
+    linear-gradient(180deg, #080706, #15110c 14%, #0b0907);
+  border: 1px solid #211b14;
+}
+.compare-panel { margin-top: 16px; }
+.wall-tools { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.wall-tools select { width: 180px; }
+.wall-spread { padding: 11px 16px; color: var(--amber-hot); border-bottom: 1px solid var(--line); font-size: 12px; }
+.receipt-wall {
+  min-height: 300px; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 18px; padding: 24px;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(180deg, #17130e, #100d0a);
+  background-size: 44px 44px, auto;
+}
+.receipt {
+  --paper: #eee4c9; --receipt-ink: #241c13;
+  position: relative; width: min(100%, 270px); margin: 0 auto; padding: 18px 16px 20px;
+  transform: rotate(var(--tilt, 0deg));
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,.03) 0 1px, transparent 1px 5px), var(--paper);
+  color: var(--receipt-ink); box-shadow: 0 18px 30px rgba(0,0,0,.34);
+  font-family: "Special Elite", "Courier New", monospace;
+}
+.receipt--fresh { animation: printDrop 700ms cubic-bezier(.18,.88,.24,1.06); }
+@keyframes printDrop {
+  from { transform: translateY(-90px) rotate(var(--tilt, 0deg)); clip-path: inset(0 0 78% 0); }
+  to { transform: translateY(0) rotate(var(--tilt, 0deg)); clip-path: inset(0); }
+}
+.receipt__perfs {
+  position: absolute; left: 0; right: 0; top: -5px; height: 10px;
+  background: radial-gradient(circle at 5px 5px, transparent 0 3px, var(--paper) 3.5px) repeat-x;
+  background-size: 12px 10px;
+}
+.receipt header {
+  display: grid; grid-template-columns: 42px 1fr; gap: 2px 8px; align-items: start;
+  border-bottom: 1px dashed currentColor; padding-bottom: 10px;
+}
+.receipt header span {
+  grid-row: span 2; display: grid; place-items: center; min-height: 34px;
+  border: 1px solid currentColor; font-family: "Share Tech Mono", monospace;
+}
+.receipt header strong, .receipt header em { overflow-wrap: anywhere; }
+.receipt header em, .receipt footer, .receipt dt { opacity: .72; font-size: 10px; font-style: normal; }
+.receipt__title { text-align: center; margin: 14px 0; letter-spacing: 0; }
+.receipt dl { display: grid; gap: 7px; margin: 0; }
+.receipt dl div { display: grid; grid-template-columns: 84px minmax(0,1fr); gap: 8px; border-bottom: 1px dotted rgba(0,0,0,.28); }
+.receipt dt, .receipt dd { margin: 0; overflow-wrap: anywhere; }
+.receipt dd { text-align: right; }
+.receipt__total {
+  display: flex; justify-content: space-between; gap: 8px; margin: 16px 0 12px; padding: 9px 0;
+  border-top: 2px solid currentColor; border-bottom: 2px solid currentColor;
+}
+.receipt__total strong { font-family: "Share Tech Mono", monospace; font-size: 22px; }
+.receipt__barcode { height: 46px; display: flex; align-items: stretch; justify-content: center; gap: 2px; margin: 12px 0; overflow: hidden; }
+.receipt__barcode i { display: block; background: currentColor; }
+.receipt footer { display: flex; justify-content: space-between; gap: 8px; border-top: 1px dashed currentColor; padding-top: 8px; }
+.company-blue { font-family: "IBM Plex Mono", monospace; }
+.company-kraft, .company-clay { filter: sepia(.18); }
+.company-grey { filter: contrast(1.08); }
+@media (max-width: 1120px) {
+  .pump-grid { grid-template-columns: 230px minmax(0, 1fr); }
+  .receipt-printer { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--line); }
+  .receipt-slot { min-height: 360px; }
+}
+@media (max-width: 760px) {
+  .station-shell { width: calc(100vw - 16px); margin-top: 8px; }
+  .pump-grid, .stage-readout { grid-template-columns: 1fr; }
+  .selector-bank, .receipt-printer { border: 0; border-bottom: 1px solid var(--line); }
+  .topbar, .wall-header { align-items: flex-start; flex-direction: column; }
+  .wall-tools, .wall-tools select, .wall-tools button { width: 100%; }
+}
+
+  </style>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="scanlines" aria-hidden="true"></div>
+  <main class="station-shell">
+    <section class="machine" aria-label="Interactive AI fuel station">
+      <header class="topbar">
+        <div>
+          <span class="topbar__id">FS-LLM-09</span>
+          <span class="topbar__muted">same input / different cost</span>
+        </div>
+        <div class="topbar__status" id="dataStatus">WARMING API LINK</div>
+      </header>
+
+      <div class="pump-grid">
+        <aside class="selector-bank" aria-label="Session controls">
+          <label class="field">
+            <span>company</span>
+            <select id="companySelect"></select>
+          </label>
+          <label class="field">
+            <span>model</span>
+            <select id="modelSelect"></select>
+          </label>
+          <label class="field">
+            <span>fixed task</span>
+            <select id="taskSelect"></select>
+          </label>
+          <button class="fuel-button" id="fuelButton" type="button">
+            <span class="fuel-button__lamp"></span>
+            begin fueling
+          </button>
+          <div class="same-input">
+            <span>input load</span>
+            <strong id="taskTokens">100,000 tokens</strong>
+          </div>
+        </aside>
+
+        <div class="canvas-stage">
+          <canvas id="stationCanvas" width="1120" height="680"></canvas>
+          <div class="stage-readout" aria-live="polite">
+            <div>
+              <span>selected unit</span>
+              <strong id="readoutModel">-</strong>
+            </div>
+            <div>
+              <span>input rate</span>
+              <strong id="readoutRate">$0.000 / 1M</strong>
+            </div>
+            <div>
+              <span>session cost</span>
+              <strong id="readoutCost">$0.0000</strong>
+            </div>
+          </div>
+        </div>
+
+        <aside class="receipt-printer" aria-label="Thermal receipt printer">
+          <div class="printer-head">
+            <span>thermal printer</span>
+            <strong id="printerState">idle</strong>
+          </div>
+          <div class="receipt-slot" id="receiptSlot"></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="compare-panel" aria-label="Pinned receipt wall">
+      <header class="wall-header">
+        <div>
+          <span>receipt wall</span>
+          <strong id="wallCount">0 pinned</strong>
+        </div>
+        <div class="wall-tools">
+          <select id="filterSelect" aria-label="Filter pinned receipts by company">
+            <option value="all">all companies</option>
+          </select>
+          <button id="sortWall" type="button">sort by price</button>
+          <button id="compareExtremes" type="button">cheapest / premium</button>
+          <button id="clearWall" type="button">clear wall</button>
+        </div>
+      </header>
+      <div class="wall-spread" id="wallSpread">Pin completed receipts to compare fuel costs physically.</div>
+      <div class="receipt-wall" id="receiptWall"></div>
+    </section>
+  </main>
+  <script>
+const TASKS = [
+  { id: 'pdf', label: 'summarize a PDF', tokens: 18000, outputRatio: 0.08 },
+  { id: 'document', label: 'analyze a document', tokens: 52000, outputRatio: 0.12 },
+  { id: 'codebase', label: 'process a codebase', tokens: 240000, outputRatio: 0.07 },
+  { id: 'translate', label: 'translate text', tokens: 32000, outputRatio: 0.9 },
+  { id: 'qa', label: 'answer questions', tokens: 9500, outputRatio: 0.2 },
+  { id: 'archive', label: 'inspect an archive', tokens: 640000, outputRatio: 0.04 },
+];
+
+const FALLBACK_MODELS = [
+  { id:'claude-haiku-4-5-20251001:anthropic', modelId:'claude-haiku-4-5-20251001', name:'Claude Haiku 4.5', company:'Anthropic', provider:'Anthropic', input:1, output:5, context:null, modalities:['image','text'], source:'cached fallback' },
+  { id:'claude-opus-4-7:anthropic', modelId:'claude-opus-4-7', name:'Claude Opus 4.7', company:'Anthropic', provider:'Anthropic', input:5, output:25, context:null, modalities:['image','text'], source:'cached fallback' },
+  { id:'claude-sonnet-4-6:anthropic', modelId:'claude-sonnet-4-6', name:'Claude Sonnet 4.6', company:'Anthropic', provider:'Anthropic', input:3, output:15, context:null, modalities:['audio','image','text','video'], source:'cached fallback' },
+  { id:'deepseek-chat:deepseek', modelId:'deepseek-chat', name:'DeepSeek-V3.2', company:'DeepSeek', provider:'DeepSeek', input:0.28, output:0.42, context:null, modalities:['text'], source:'cached fallback' },
+  { id:'deepseek-v4-flash-max:deepseek', modelId:'deepseek-v4-flash-max', name:'DeepSeek-V4-Flash-Max', company:'DeepSeek', provider:'DeepSeek', input:0.14, output:0.28, context:null, modalities:['text'], source:'cached fallback' },
+  { id:'deepseek-r1-0528:deepseek', modelId:'deepseek-r1-0528', name:'DeepSeek-R1-0528', company:'DeepSeek', provider:'DeepSeek', input:0.55, output:2.19, context:null, modalities:['text'], source:'cached fallback' },
+  { id:'gpt-5-2025-08-07:openai', modelId:'gpt-5-2025-08-07', name:'GPT-5', company:'OpenAI', provider:'OpenAI', input:1.25, output:10, context:null, modalities:['image','text'], source:'cached fallback' },
+  { id:'gpt-5-mini-2025-08-07:openai', modelId:'gpt-5-mini-2025-08-07', name:'GPT-5 mini', company:'OpenAI', provider:'OpenAI', input:0.25, output:2, context:null, modalities:['image','text'], source:'cached fallback' },
+  { id:'gpt-5-nano-2025-08-07:openai', modelId:'gpt-5-nano-2025-08-07', name:'GPT-5 nano', company:'OpenAI', provider:'OpenAI', input:0.05, output:0.4, context:null, modalities:['text'], source:'cached fallback' },
+  { id:'gemini-2-5-pro:google', modelId:'gemini-2-5-pro', name:'Gemini 2.5 Pro', company:'Google', provider:'Google AI', input:1.25, output:10, context:2000000, modalities:['image','text'], source:'cached fallback' },
+  { id:'gemini-2-5-flash:google', modelId:'gemini-2-5-flash', name:'Gemini 2.5 Flash', company:'Google', provider:'Google AI', input:0.3, output:2.5, context:1000000, modalities:['image','text'], source:'cached fallback' },
+  { id:'llama-3-3-70b:deepinfra', modelId:'llama-3-3-70b', name:'Llama 3.3 70B', company:'Meta', provider:'DeepInfra', input:0.13, output:0.4, context:131000, modalities:['text'], source:'cached fallback' },
+  { id:'mistral-large-latest:mistral', modelId:'mistral-large-latest', name:'Mistral Large', company:'Mistral', provider:'Mistral', input:2, output:6, context:128000, modalities:['text'], source:'cached fallback' },
+  { id:'command-a-03-2025:cohere', modelId:'command-a-03-2025', name:'Command A', company:'Cohere', provider:'Cohere', input:2.5, output:10, context:256000, modalities:['text'], source:'cached fallback' },
+  { id:'nova-pro:amazon', modelId:'nova-pro', name:'Nova Pro', company:'Amazon', provider:'Bedrock', input:0.8, output:3.2, context:300000, modalities:['text','image'], source:'cached fallback' },
+  { id:'qwen-max:alibaba', modelId:'qwen-max', name:'Qwen Max', company:'Alibaba', provider:'Alibaba', input:1.6, output:6.4, context:32000, modalities:['text'], source:'cached fallback' },
+];
+
+const COMPANY_STYLES = [
+  { className:'company-amber', mark:'OAI', paper:'#eee4c9', ink:'#241c13' },
+  { className:'company-clay', mark:'ANT', paper:'#e5d5bf', ink:'#271a15' },
+  { className:'company-blue', mark:'GGL', paper:'#dbe0d6', ink:'#161d24' },
+  { className:'company-green', mark:'MET', paper:'#d9e0cc', ink:'#151e17' },
+  { className:'company-red', mark:'MTR', paper:'#ead6cd', ink:'#2b1511' },
+  { className:'company-grey', mark:'DPS', paper:'#dbd7cd', ink:'#171817' },
+  { className:'company-violet', mark:'XAI', paper:'#ded8e6', ink:'#1a1421' },
+  { className:'company-kraft', mark:'COH', paper:'#d5bd88', ink:'#241a0c' },
+];
+
+  </script>
+  <script>
+const $ = (selector, root = document) => root.querySelector(selector);
+
+const ui = {
+  companySelect: $('#companySelect'),
+  modelSelect: $('#modelSelect'),
+  taskSelect: $('#taskSelect'),
+  fuelButton: $('#fuelButton'),
+  canvas: $('#stationCanvas'),
+  dataStatus: $('#dataStatus'),
+  taskTokens: $('#taskTokens'),
+  readoutModel: $('#readoutModel'),
+  readoutRate: $('#readoutRate'),
+  readoutCost: $('#readoutCost'),
+  printerState: $('#printerState'),
+  receiptSlot: $('#receiptSlot'),
+  receiptWall: $('#receiptWall'),
+  wallCount: $('#wallCount'),
+  wallSpread: $('#wallSpread'),
+  filterSelect: $('#filterSelect'),
+  sortWall: $('#sortWall'),
+  compareExtremes: $('#compareExtremes'),
+  clearWall: $('#clearWall'),
+};
+
+const state = {
+  models: FALLBACK_MODELS.slice(),
+  company: '',
+  selectedId: '',
+  taskId: TASKS[2].id,
+  fueling: false,
+  fuelStart: 0,
+  fuelDuration: 5200,
+  completedCostVisible: false,
+  pinned: [],
+  wallSorted: false,
+  extremesOnly: false,
+  filter: 'all',
+  phase: 0,
+};
+
+const ctx = ui.canvas.getContext('2d');
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function money(value) {
+  if (!Number.isFinite(value)) return '$0.0000';
+  if (value >= 100) return `${value.toFixed(1)}`;
+  if (value >= 1) return `${value.toFixed(2)}`;
+  if (value >= 0.01) return `${value.toFixed(4)}`;
+  return `${value.toFixed(5)}`;
+}
+
+function seededNumber(seed) {
+  let hash = 2166136261;
+  for (let i = 0; i < seed.length; i += 1) hash = Math.imul(hash ^ seed.charCodeAt(i), 16777619);
+  return ((hash >>> 0) % 1000) / 1000;
+}
+
+function getCompanyStyle(company) {
+  const index = Math.floor(seededNumber(company) * COMPANY_STYLES.length);
+  const base = COMPANY_STYLES[index];
+  const letters = company.replace(/[^a-z0-9]/gi, '').slice(0, 3).toUpperCase() || base.mark;
+  return { ...base, mark: letters };
+}
+
+function bootInterface() {
+  ui.dataStatus.textContent = `LOCAL CACHE / LIVE LINK BLOCKED`;
+
+  TASKS.forEach((task) => {
+    const option = document.createElement('option');
+    option.value = task.id;
+    option.textContent = task.label;
+    ui.taskSelect.appendChild(option);
+  });
+  ui.taskSelect.value = state.taskId;
+
+  populateCompanies();
+  updateModelsForCompany();
+  bindEvents();
+  updateReadout();
+  renderWall();
+  requestAnimationFrame(draw);
+}
+
+function populateCompanies() {
+  const companies = [...new Set(state.models.map((model) => model.company))].sort();
+  ui.companySelect.innerHTML = '';
+  ui.filterSelect.innerHTML = '<option value="all">all companies</option>';
+  companies.forEach((company) => {
+    const option = document.createElement('option');
+    option.value = company;
+    option.textContent = company;
+    ui.companySelect.appendChild(option);
+
+    const filterOption = document.createElement('option');
+    filterOption.value = company;
+    filterOption.textContent = company;
+    ui.filterSelect.appendChild(filterOption);
+  });
+  state.company = companies[0] || '';
+  ui.companySelect.value = state.company;
+}
+
+function updateModelsForCompany() {
+  const models = state.models.filter((model) => model.company === state.company);
+  ui.modelSelect.innerHTML = '';
+  models.forEach((model) => {
+    const option = document.createElement('option');
+    option.value = model.id;
+    option.textContent = `${model.name} / ${model.provider}`;
+    ui.modelSelect.appendChild(option);
+  });
+  state.selectedId = models[0]?.id || state.models[0]?.id || '';
+  ui.modelSelect.value = state.selectedId;
+}
+
+function bindEvents() {
+  ui.companySelect.addEventListener('change', () => {
+    state.company = ui.companySelect.value;
+    updateModelsForCompany();
+    updateReadout();
+  });
+  ui.modelSelect.addEventListener('change', () => {
+    state.selectedId = ui.modelSelect.value;
+    updateReadout();
+  });
+  ui.taskSelect.addEventListener('change', () => {
+    state.taskId = ui.taskSelect.value;
+    updateReadout();
+  });
+  ui.fuelButton.addEventListener('click', beginFueling);
+  ui.sortWall.addEventListener('click', () => {
+    state.wallSorted = !state.wallSorted;
+    renderWall();
+  });
+  ui.compareExtremes.addEventListener('click', () => {
+    state.extremesOnly = !state.extremesOnly;
+    renderWall();
+  });
+  ui.clearWall.addEventListener('click', () => {
+    state.pinned = [];
+    renderWall();
+  });
+  ui.filterSelect.addEventListener('change', () => {
+    state.filter = ui.filterSelect.value;
+    renderWall();
+  });
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+}
+
+function selectedModel() {
+  return state.models.find((model) => model.id === state.selectedId) || state.models[0];
+}
+
+function selectedTask() {
+  return TASKS.find((task) => task.id === state.taskId) || TASKS[0];
+}
+
+function estimateInputCost(model = selectedModel(), task = selectedTask()) {
+  return model.input * task.tokens / 1_000_000;
+}
+
+function estimateOutputCost(model = selectedModel(), task = selectedTask()) {
+  return model.output * (task.tokens * task.outputRatio) / 1_000_000;
+}
+
+function updateReadout(progress = state.fueling ? currentProgress() : 1) {
+  const model = selectedModel();
+  const task = selectedTask();
+  if (!model || !task) return;
+  ui.taskTokens.textContent = `${task.tokens.toLocaleString()} tokens`;
+  ui.readoutModel.textContent = `${model.company} / ${model.name}`;
+  ui.readoutRate.textContent = `${model.input.toFixed(model.input < 1 ? 3 : 2)} / 1M`;
+  ui.readoutCost.textContent = money(estimateInputCost(model, task) * progress);
+}
+
+function currentProgress() {
+  if (!state.fueling) return 0;
+  return clamp((performance.now() - state.fuelStart) / state.fuelDuration, 0, 1);
+}
+
+function beginFueling() {
+  if (state.fueling) return;
+  state.fueling = true;
+  state.fuelStart = performance.now();
+  state.completedCostVisible = false;
+  ui.fuelButton.disabled = true;
+  ui.printerState.textContent = 'metering';
+  ui.receiptSlot.innerHTML = '';
+}
+
+function finishFueling() {
+  const receipt = makeReceipt(selectedModel(), selectedTask());
+  state.completedCostVisible = true;
+  state.pinned.unshift(receipt);
+  state.pinned = state.pinned.slice(0, 24);
+  ui.receiptSlot.innerHTML = '';
+  ui.receiptSlot.appendChild(createReceiptElement(receipt, true));
+  ui.printerState.textContent = 'printed';
+  ui.fuelButton.disabled = false;
+  state.fueling = false;
+  renderWall();
+}
+
+function makeReceipt(model, task) {
+  const now = new Date();
+  const inputCost = estimateInputCost(model, task);
+  const outputCost = estimateOutputCost(model, task);
+  const style = getCompanyStyle(model.company);
+  return {
+    receiptId: `${model.id}:${task.id}:${now.getTime()}`,
+    company: model.company,
+    provider: model.provider,
+    model: model.name,
+    task: task.label,
+    tokens: task.tokens,
+    input: model.input,
+    output: model.output,
+    inputCost,
+    outputCost,
+    timestamp: now.toLocaleString(),
+    gateway: model.gateway,
+    style,
+  };
+}
+
+function createReceiptElement(receipt, fresh = false) {
+  const article = document.createElement('article');
+  article.className = `receipt ${receipt.style.className}${fresh ? ' receipt--fresh' : ''}`;
+  article.style.setProperty('--paper', receipt.style.paper);
+  article.style.setProperty('--receipt-ink', receipt.style.ink);
+  article.style.setProperty('--tilt', `${(seededNumber(receipt.receiptId) - .5) * 4}deg`);
+  article.innerHTML = `
+    <div class="receipt__perfs"></div>
+    <header><span>${receipt.style.mark}</span><strong>${receipt.company}</strong><em>${receipt.provider}</em></header>
+    <div class="receipt__title">COMPUTE FUEL RECEIPT</div>
+    <dl>
+      <div><dt>model</dt><dd>${receipt.model}</dd></div>
+      <div><dt>task</dt><dd>${receipt.task}</dd></div>
+      <div><dt>same input</dt><dd>${receipt.tokens.toLocaleString()} tok</dd></div>
+      <div><dt>input rate</dt><dd>${receipt.input.toFixed(receipt.input < 1 ? 3 : 2)} / 1M</dd></div>
+      <div><dt>output rate</dt><dd>${receipt.output.toFixed(receipt.output < 1 ? 3 : 2)} / 1M</dd></div>
+      <div><dt>est. input cost</dt><dd>${money(receipt.inputCost)}</dd></div>
+      <div><dt>est. output cost</dt><dd>${money(receipt.outputCost)}</dd></div>
+    </dl>
+    <div class="receipt__total"><span>metered input</span><strong>${money(receipt.inputCost)}</strong></div>
+    <div class="receipt__barcode">${barcode(receipt.receiptId)}</div>
+    <footer><span>${receipt.timestamp}</span><span>${receipt.gateway ? 'gateway routable' : 'catalog record'}</span></footer>
+  `;
+  return article;
+}
+
+function barcode(seed) {
+  let bars = '';
+  for (let i = 0; i < 42; i += 1) {
+    const width = 1 + Math.floor(seededNumber(`${seed}-${i}`) * 4);
+    bars += `<i style="width:${width}px"></i>`;
+  }
+  return bars;
+}
+
+function renderWall() {
+  let receipts = state.pinned.slice();
+  if (state.filter !== 'all') receipts = receipts.filter((receipt) => receipt.company === state.filter);
+  if (state.wallSorted) receipts.sort((a, b) => a.inputCost - b.inputCost);
+  if (state.extremesOnly && receipts.length > 2) {
+    const sorted = receipts.slice().sort((a, b) => a.inputCost - b.inputCost);
+    receipts = [sorted[0], sorted[sorted.length - 1]];
+  }
+  ui.receiptWall.innerHTML = '';
+  receipts.forEach((receipt) => ui.receiptWall.appendChild(createReceiptElement(receipt)));
+  ui.wallCount.textContent = `${state.pinned.length} pinned`;
+  ui.sortWall.classList.toggle('is-on', state.wallSorted);
+  ui.compareExtremes.classList.toggle('is-on', state.extremesOnly);
+  if (!receipts.length) {
+    ui.wallSpread.textContent = 'Pin completed receipts to compare fuel costs physically.';
+    return;
+  }
+  const min = receipts.reduce((a, b) => (a.inputCost < b.inputCost ? a : b));
+  const max = receipts.reduce((a, b) => (a.inputCost > b.inputCost ? a : b));
+  const ratio = min.inputCost > 0 ? max.inputCost / min.inputCost : 0;
+  ui.wallSpread.textContent = receipts.length === 1
+    ? `${min.company} ${min.model} metered at ${money(min.inputCost)} for the same input.`
+    : `${min.company} is cheapest at ${money(min.inputCost)}; ${max.company} is premium at ${money(max.inputCost)} (${ratio.toFixed(1)}x).`;
+}
+
+function resizeCanvas() {
+  const rect = ui.canvas.parentElement.getBoundingClientRect();
+  const ratio = window.devicePixelRatio || 1;
+  ui.canvas.width = Math.floor(rect.width * ratio);
+  ui.canvas.height = Math.floor(Math.max(420, rect.width * .56) * ratio);
+  ui.canvas.style.height = `${Math.max(420, rect.width * .56)}px`;
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+}
+
+function draw(now) {
+  state.phase = now / 1000;
+  const width = ui.canvas.clientWidth;
+  const height = ui.canvas.clientHeight;
+  const model = selectedModel();
+  const task = selectedTask();
+  const progress = currentProgress();
+  const displayProgress = state.fueling || state.completedCostVisible ? Math.max(progress, state.completedCostVisible ? 1 : 0) : 0;
+  updateReadout(state.fueling ? progress : 1);
+  drawBackground(width, height, model);
+  drawStation(width, height, model, task, displayProgress);
+  drawMeters(width, height, model, task, displayProgress);
+  drawRobot(width, height, displayProgress);
+  drawNozzle(width, height, progress);
+  if (state.fueling && progress >= 1) finishFueling();
+  requestAnimationFrame(draw);
+}
+
+function drawBackground(width, height, model) {
+  const style = getCompanyStyle(model?.company || 'Unknown');
+  ctx.clearRect(0, 0, width, height);
+  const gradient = ctx.createLinearGradient(0, 0, 0, height);
+  gradient.addColorStop(0, '#101312');
+  gradient.addColorStop(.55, '#17110d');
+  gradient.addColorStop(1, '#080706');
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, width, height);
+  ctx.strokeStyle = 'rgba(255,190,88,.08)';
+  ctx.lineWidth = 1;
+  for (let x = 0; x < width; x += 42) {
+    ctx.beginPath();
+    ctx.moveTo(x, height * .54);
+    ctx.lineTo(x - width * .15, height);
+    ctx.stroke();
+  }
+  ctx.fillStyle = style.paper;
+  ctx.globalAlpha = .035;
+  ctx.fillRect(width * .05, height * .12, width * .9, height * .06);
+  ctx.globalAlpha = 1;
+}
+
+function drawStation(width, height, model, task, progress) {
+  const x = width * .09, y = height * .18, w = width * .31, h = height * .62;
+  ctx.fillStyle = '#15120d';
+  ctx.strokeStyle = '#4b3b29';
+  ctx.lineWidth = 2;
+  ctx.fillRect(x, y, w, h);
+  ctx.strokeRect(x, y, w, h);
+  ctx.fillStyle = '#070604';
+  ctx.fillRect(x + w * .08, y + h * .08, w * .84, h * .23);
+  ctx.strokeStyle = 'rgba(255,187,80,.35)';
+  ctx.strokeRect(x + w * .08, y + h * .08, w * .84, h * .23);
+  ctx.font = `${Math.max(34, w * .13)}px "Share Tech Mono", monospace`;
+  ctx.fillStyle = '#ffd084';
+  ctx.shadowColor = 'rgba(255,172,66,.55)';
+  ctx.shadowBlur = 16;
+  ctx.textAlign = 'right';
+  ctx.fillText(money(estimateInputCost(model, task) * progress), x + w * .87, y + h * .22);
+  ctx.shadowBlur = 0;
+  ctx.font = '11px "IBM Plex Mono", monospace';
+  ctx.fillStyle = '#887a62';
+  ctx.textAlign = 'left';
+  ctx.fillText('INPUT TOKEN FUEL', x + w * .1, y + h * .12);
+  ctx.fillText(`${model.company} / ${model.provider}`.toUpperCase(), x + w * .1, y + h * .38);
+  ctx.fillText(model.name.toUpperCase().slice(0, 34), x + w * .1, y + h * .44);
+  ctx.fillText(`${task.tokens.toLocaleString()} TOKENS / FIXED LOAD`, x + w * .1, y + h * .5);
+  drawGauge(x + w * .16, y + h * .67, w * .16, progress, '#e05c46');
+  drawGauge(x + w * .42, y + h * .67, w * .16, model.input / 10, '#ffb44f');
+  drawGauge(x + w * .68, y + h * .67, w * .16, task.tokens / 650000, '#76c6c1');
+}
+
+function drawGauge(cx, cy, r, value, color) {
+  const v = clamp(value, 0, 1);
+  ctx.strokeStyle = '#403527';
+  ctx.lineWidth = 8;
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, Math.PI * .78, Math.PI * 2.22);
+  ctx.stroke();
+  ctx.strokeStyle = color;
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, Math.PI * .78, Math.PI * (.78 + 1.44 * v));
+  ctx.stroke();
+}
+
+function drawRobot(width, height, progress) {
+  const arrive = state.fueling ? clamp(progress / .24, 0, 1) : 1;
+  const x = width * (.75 - (1 - arrive) * .25);
+  const y = height * .59;
+  ctx.fillStyle = '#24231f';
+  ctx.strokeStyle = '#837662';
+  ctx.lineWidth = 2;
+  ctx.fillRect(x - 55, y - 95, 110, 125);
+  ctx.strokeRect(x - 55, y - 95, 110, 125);
+  ctx.fillStyle = '#11100e';
+  ctx.fillRect(x - 36, y - 72, 72, 28);
+  ctx.fillStyle = '#88e0d5';
+  ctx.globalAlpha = .8 + Math.sin(state.phase * 4) * .15;
+  ctx.fillRect(x - 24, y - 62, 18, 6);
+  ctx.fillRect(x + 6, y - 62, 18, 6);
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = '#171613';
+  ctx.fillRect(x - 41, y + 30, 22, 80);
+  ctx.fillRect(x + 19, y + 30, 22, 80);
+  ctx.fillStyle = '#2d2a24';
+  ctx.fillRect(x - 80, y - 60, 24, 84);
+  ctx.fillRect(x + 56, y - 60, 24, 84);
+  ctx.fillStyle = '#090807';
+  ctx.fillRect(x - 92, y + 108, 184, 8);
+}
+
+function drawNozzle(width, height, progress) {
+  const connected = state.fueling ? clamp((progress - .15) / .2, 0, 1) : 0;
+  const sx = width * .38, sy = height * .5, tx = width * .69, ty = height * .51;
+  ctx.strokeStyle = '#655743';
+  ctx.lineWidth = 10;
+  ctx.beginPath();
+  ctx.moveTo(sx, sy);
+  ctx.bezierCurveTo(width * .48, height * .25, width * .6, height * .7, sx + (tx - sx) * connected, sy + (ty - sy) * connected);
+  ctx.stroke();
+  ctx.fillStyle = '#b78a45';
+  ctx.fillRect(sx + (tx - sx) * connected - 15, sy + (ty - sy) * connected - 11, 45, 22);
+  if (connected > .95 && state.fueling) {
+    ctx.strokeStyle = 'rgba(255,183,76,.55)';
+    ctx.lineWidth = 3;
+    ctx.setLineDash([10, 12]);
+    ctx.beginPath();
+    ctx.moveTo(sx, sy);
+    ctx.bezierCurveTo(width * .48, height * .25, width * .6, height * .7, tx, ty);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+}
+
+function drawMeters(width, height, model, task, progress) {
+  const x = width * .46, y = height * .1, panelHeight = height * .24;
+  ctx.fillStyle = 'rgba(7,6,4,.78)';
+  ctx.strokeStyle = '#413629';
+  ctx.fillRect(x, y, width * .44, panelHeight);
+  ctx.strokeRect(x, y, width * .44, panelHeight);
+  ctx.font = '11px "IBM Plex Mono", monospace';
+  ctx.fillStyle = '#8d8069';
+  ctx.fillText('SAME INPUT DIFFERENT COST', x + 18, y + 28);
+  ctx.fillText('MODEL PRICE PER 1M INPUT TOKENS', x + 18, y + 58);
+  ctx.font = '34px "Share Tech Mono", monospace';
+  ctx.fillStyle = '#ffd084';
+  ctx.fillText(`${model.input.toFixed(model.input < 1 ? 3 : 2)}`, x + 18, y + 105);
+  ctx.font = '12px "IBM Plex Mono", monospace';
+  ctx.fillStyle = '#c6b694';
+  ctx.fillText(`${task.label.toUpperCase()} / ${task.tokens.toLocaleString()} TOKENS`, x + 18, y + 130);
+  if (state.fueling) {
+    const printProgress = clamp((progress - .62) / .34, 0, 1);
+    ui.printerState.textContent = printProgress > 0 ? 'printing' : 'metering';
+    if (printProgress > 0) {
+      ctx.fillStyle = '#e9dfc7';
+      ctx.fillRect(width * .1, height * .8, width * .22, 150 * printProgress);
+      ctx.fillStyle = '#16120d';
+      ctx.font = '10px "Special Elite", monospace';
+      ctx.fillText('THERMAL COPY / INPUT COST', width * .1 + 16, height * .8 + 26);
+      ctx.fillText('PRINTING...', width * .1 + 16, height * .8 + 48);
+    }
+  }
+}
+
+bootInterface();
+
+  </script>
+</body>
+</html>
