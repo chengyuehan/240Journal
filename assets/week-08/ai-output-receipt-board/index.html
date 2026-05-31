@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Output Price Receipt Board</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="board-header">
+        <div>
+          <p class="kicker">Receipt collection board</p>
+          <h1>AI output price receipts</h1>
+          <p class="intro">
+            Every receipt prices the same task: a long-form research report with
+            10,000 output tokens. Input price is intentionally excluded.
+          </p>
+        </div>
+        <aside class="task-slip" aria-label="Shared task assumptions">
+          <span>Shared task</span>
+          <strong>Research Report</strong>
+          <small>Estimated output: 10,000 tokens</small>
+        </aside>
+      </header>
+
+      <section class="control-bar" aria-label="Filter and sorting controls">
+        <label>
+          Arrangement
+          <select id="group-select">
+            <option value="company">Group by company</option>
+            <option value="mixed">Mixed receipt wall</option>
+          </select>
+        </label>
+        <label>
+          Sort by
+          <select id="sort-select">
+            <option value="price-desc">Output price: high to low</option>
+            <option value="price-asc">Output price: low to high</option>
+            <option value="cost-desc">Estimated cost: high to low</option>
+            <option value="cost-asc">Estimated cost: low to high</option>
+            <option value="company">Company name</option>
+          </select>
+        </label>
+        <label>
+          Company
+          <select id="company-filter">
+            <option value="all">All companies</option>
+          </select>
+        </label>
+        <label>
+          Visible receipts
+          <select id="limit-select">
+            <option value="48">48 models</option>
+            <option value="40">40 models</option>
+            <option value="50">50 models</option>
+            <option value="all">All priced models</option>
+          </select>
+        </label>
+        <div class="stat-strip" aria-live="polite">
+          <span id="visible-count">0 receipts</span>
+          <span id="price-range">$0 to $0 per 1M</span>
+        </div>
+      </section>
+
+      <section class="comparison-area" aria-label="Pinned receipts">
+        <div class="comparison-title">
+          <span>Pinned comparison</span>
+          <button id="clear-pins" type="button">Clear pins</button>
+        </div>
+        <div id="pinned-list" class="pinned-list">
+          <p class="pin-empty">Click a pin on any receipt to hold it here.</p>
+        </div>
+      </section>
+
+      <section class="board" aria-label="AI model output price receipt board">
+        <div id="receipt-grid" class="receipt-grid" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <div id="detail-modal" class="modal" aria-hidden="true">
+      <button class="modal-backdrop" type="button" data-close-modal></button>
+      <article class="modal-receipt" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <button class="close-button" type="button" data-close-modal>Close</button>
+        <div id="modal-content"></div>
+      </article>
+    </div>
+
+    <script src="./data/data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

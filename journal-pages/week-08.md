@@ -40,7 +40,7 @@ Showing my PPT also helped me realise that the project needs a clearer message. 
 
 ## Project Development
 
-After talking with my classmates, I started thinking about how to combine multiple model dimensions into one data visualisation. Since the feedback showed that people cared most about performance and price, I decided to start from the money side first.
+After talking with my classmates, I started thinking about how to combine multiple model dimensions into one data visualisation. Since the feedback showed that people cared most about performance and price, I decided to start from the money side first. Price felt like a useful entry point because it is easier to understand than many benchmark scores, but it still connects directly to real AI use.
 
 For large language models, the API price is usually divided into two parts: input price and output price. Input price is the cost of sending tokens into the model, while output price is the cost of the model generating tokens back. At first, I thought about whether I could combine these two values into one single price and visualise that instead. This seemed easier because one price would be simpler to compare across models.
 
@@ -48,11 +48,11 @@ For large language models, the API price is usually divided into two parts: inpu
 
 LLM Stats also provides a fixed input-output price ratio, so this direction was technically possible. If I used one combined value, I could make the visualisation cleaner. It would also make the comparison easier to sort, because each model would only need one cost value.
 
-However, after thinking about it more, I decided to give up this idea. The reason is that input price and output price are connected to different parts of the model's ability.  Also, if I want to show price in a more direct and interesting visual way, combining input and output into one number may not be the best method. A single combined price may be easier to compare, but it removes the difference between the two processes. I want the visualisation to show that using an AI model includes both sending information in and receiving information back.
+However, after thinking about it more, I decided to give up this idea. Input price and output price are connected to different parts of model use, and they do not represent exactly the same process. Also, if I want to show price in a more direct and interesting visual way, combining input and output into one number may not be the best method. A single combined price may be easier to compare, but it removes the difference between sending information into the model and receiving generated information back.
 
 Because of this, I decided that input price and output price should not be fully merged at this stage. They can still appear in the same visual idea, but they need to remain visually distinguishable. This pushed me to think about metaphors where input and output can be shown as two connected but different parts of the same system.
 
-So I started looking for creative solutions to make AI API pricing less monotonous and boring than a dry price list. I wanted to avoid traditional charts like bar charts, tables, and line graphs. Instead, I wanted to find a more relatable and intuitive way to present model pricing.
+After that, I started looking for creative solutions to make AI API pricing less monotonous and boring than a dry price list. I wanted to avoid traditional charts like bar charts, tables, and line graphs. Instead, I wanted to find a more relatable and intuitive way to present model pricing.
 
 The first complete idea I developed was the gas station metaphor. I started from the real experience of refuelling a car. If the same car goes to different gas stations and buys the same amount of fuel with different grades, the final price can still be different. This is similar to AI model pricing. If the user gives different models the same task and the same number of tokens, the cost will still change depending on the model.
 
@@ -62,13 +62,13 @@ This metaphor seemed useful at first because it connected price with consumption
 
 After completing this demo, I began thinking about how to incorporate more capability dimensions into it. However, as I developed the idea further, I found that the metaphor started to break down.
 
-The first issue was context length. I initially tried to connect context length with fuel tank capacity. At first glance, this seemed reasonable, since both are related to capacity. But within the fuel station metaphor, the user is already imagined as driving the same vehicle to different fuel stations. What is actually being compared is the price difference between different models for the same amount of input tokens. Because of this, the idea ultimately did not work.
+The first issue was context length. I initially tried to connect context length with fuel tank capacity. At first glance, this seemed reasonable, since both are related to capacity. But within the gas station metaphor, the user is already imagined as driving the same vehicle to different stations. What is actually being compared is the price difference between different models for the same amount of input tokens. Because of this, using tank capacity to represent context length made the logic confusing.
 
-The second issue was output pricing. I tried to explain output price as something like the cost of the return trip, or as a second fueling process. But the more I tried to fit it into the metaphor, the more forced it felt. Output pricing is not an independent journey or another dramatic event; it is simply another rate within the pricing structure. If I forced every part of the API pricing system into the fuel station story, the visualization would become harder to understand rather than clearer.
+The second issue was output pricing. I tried to explain output price as something like the cost of the return trip, or as a second fuelling process. But the more I tried to fit it into the metaphor, the more forced it felt. Output pricing is not an independent journey or another dramatic event; it is simply another rate within the pricing structure. If I forced every part of the API pricing system into the gas station story, the visualisation would become harder to understand rather than clearer.
 
-So I decided to return to the current fuel station concept and continue developing it. After some testing, I found that the existing version could not archive the cost after each fueling session. When users wanted to compare the prices of different models, they had to rely on memory alone.
+So I returned to the existing gas station demo and looked at what part of it was actually useful. After some testing, I found that the first version could show the cost of one fuelling session, but it could not keep a record after each session. When users wanted to compare the prices of different models, they had to rely on memory alone.
 
-I improved this by thinking about how the system could leave a record behind. After a brief brainstorming process, I came up with the idea of generating a receipt after each fueling session, preserving the price information for each model. I then updated the demo by adding a receipt-printing module. After each receipt is printed, it is automatically pinned to the board at the bottom, allowing users to compare different model prices more easily.
+I improved this by thinking about how the system could leave a record behind. After a brief brainstorming process, I came up with the idea of generating a receipt after each fuelling session, preserving the price information for each model. I then updated the demo by adding a receipt-printing module. After each receipt is printed, it is automatically pinned to the board at the bottom, allowing users to compare different model prices more easily.
 
 [link to demo](../assets/week-08/index.html)
 
@@ -78,6 +78,19 @@ This helped me shift the visual focus from the process to the result. Instead of
 
 The receipt idea also solved a practical problem. I wanted to show quite a large number of models, around 40 to 50. If each model became a complex machine or animated object, the page could become too crowded. But receipts are small, repeatable, and easy to compare. A receipt collection board can show many models at the same time while keeping the layout clear and readable.
 
+After coming up with this idea, I turned the receipt feature, which was originally a supplementary module, into a separate module and quickly built it using Codex.
 
+![2](../assets/week-08/3.png)
+[link to demo](../assets/week-08/ai-output-receipt-board/index.html)
 
 ## AI Usage Statement
+
+I used AI tools throughout this week's development process. ChatGPT helped me organise my  Journal, sumarize the conversation between me and AI, make my ideas into clearer English, and discuss how price and performance could become the main dimensions of the project. Claude was used during concept testing, especially when I was checking whether the gas station metaphor could also contain other dimensions such as context length and output pricing.
+
+I also used Codex as a vibe coding tool to develop the prototypes. Codex helped me build and revise the gas station demo, add the receipt-printing function, and then separate the receipt board into its own prototype. 
+
+OpenAI. (2026). ChatGPT (GPT-5.4 Thinking) [Large language model]. https://chat.openai.com/chat
+
+Anthropic. (2026). Claude [Large language model]. https://claude.ai/
+
+OpenAI. (2026). Codex (GPT-5.3 Codex) [Vibe coding agent]. https://openai.com/codex/
