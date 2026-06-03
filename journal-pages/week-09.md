@@ -60,7 +60,23 @@ This process wasted a lot of time because I kept trying to fix the problems with
 
 ## Project Development
 
+After using Codex and finding that I was getting no usable result from this direction, my approach changed for a reason outside the project itself. Around this time, a friend of mine returned to China and passed his Claude Max subscription on to me(thank him🙏🙏🙏🙏🙏). Because of this, I was able to access the Claude family of coding agents for the first time.
 
+I decided to try the recently released Claude Design to rebuild the design, to see if a different coding agent could do better than Codex.
+
+At first I just used the same prompt I had been giving Codex. This prompt was a very long block of text that ChatGPT had summarised from my earlier conversations about the idea. It was so long that I could not scroll to the bottom of it. After I put the same content into Claude Design and waited, the result was almost the same as the one from Codex.
+
+[![4](../assets/week-09/4.png)](../assets/week-09/i-2/Fuel%20Station.html)⬆️click image to see the demo
+
+This made me realise the problem was probably not the tool, but the prompt. Both agents gave almost the same result, which meant they were both faithfully following the same prompt. When I looked more carefully, I noticed that somewhere inside this long prompt — which I had never actually read to the end — it was already describing an interface that was not the one I wanted. So the agents were doing what the prompt asked; it just was not what I had in mind. So I stopped trying to fix the output and went back to rethink the idea, and to write the instructions myself this time.
+
+While rethinking the idea, I made the most important decision of this week: I changed the dimension from input price to output price. This sounds like a small change, but it solved a problem that had been blocking me since Week 8. Back then the gas station metaphor kept breaking down because I could not fit output pricing into it, and input price on its own only connected to context length, which did not really suit the refuelling action.
+
+Once I switched to output price, the whole scene started to work. Output price is the cost of the model generating tokens back, so it matches the idea of fuel coming out much more naturally than input price did. More importantly, this opened space to add a second dimension: the model's output speed. I could use output speed to control how fast the tank fills up during refuelling. This means the price and the generation speed are no longer two separate numbers — they are both shown through one refuelling action. A faster, cheaper model fills up quickly and cheaply; a slower, more expensive one does the opposite. This was the moment the gas station idea finally held two dimensions at once instead of falling apart.
+
+After this, I wrote the prompt myself instead of using the long summarised one, and I got the result I wanted.(⬇️click image to see the demo)
+
+[![4](../assets/week-09/5.png)](../assets/week-09/i-2/AI%20Fuel%20Station.html)
 
 ## AI Usage Statement
 
