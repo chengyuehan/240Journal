@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fuel Station Mode / AI API Pricing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@300;400;500;700&family=IBM+Plex+Mono:wght@300;400;500;700&family=Share+Tech+Mono&family=Special+Elite&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="grain"></div>
+  <main class="station">
+    <header class="topbar">
+      <div><b>FS-LLM-09</b><span>SAME INPUT / DIFFERENT COST</span></div>
+      <strong id="dataStatus">MODEL FUEL CACHE</strong>
+    </header>
+
+    <section class="task-rail" id="taskRail"></section>
+
+    <section class="forecourt">
+      <div class="scene">
+        <canvas id="stationCanvas"></canvas>
+        <div class="input-load">
+          <span>input load</span>
+          <strong id="taskTokens">240,000 tokens</strong>
+        </div>
+        <div class="robot-socket" id="robotSocket">
+          <span>robot fuel socket</span>
+          <strong>drag tank here</strong>
+        </div>
+        <div class="tank-yard">
+          <header><span>model fuel tanks on pump</span><strong>drag any tank to the robot</strong></header>
+          <div class="tank-rack" id="tankRack"></div>
+        </div>
+      </div>
+
+      <aside class="printer">
+        <div class="active">
+          <span>active tank</span>
+          <strong id="activeTank">drag from pump</strong>
+        </div>
+        <div class="printer-head"><span>thermal printer</span><strong id="printerState">idle</strong></div>
+        <div class="receipt-slot" id="receiptSlot"></div>
+      </aside>
+    </section>
+
+    <section class="wall">
+      <header><span>receipt wall</span><strong id="wallCount">0 pinned</strong></header>
+      <div class="wall-note" id="wallNote">Drag tanks onto the robot, then compare printed receipts.</div>
+      <div class="receipt-wall" id="receiptWall"></div>
+    </section>
+  </main>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
