@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Home
+title: Making Journal for DES240
 ---
 
-# Making Journal for DES240
+# Introduction
 
 As a second-year student in IT Management and Design, I chose this course because I spent the entire semester last year studying Data Analytica. I initially thought this was a good thing, but now it seems it significantly limited my imagination. As a design student, I am interested in UI/UX, animation, and game design.
 
