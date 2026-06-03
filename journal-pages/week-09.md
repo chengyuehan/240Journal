@@ -29,14 +29,23 @@ layout: default
 ### Evaluation 
 
 * What is working well?
+
 Presenting data to people in an interesting way
+
 * What is missing or underdeveloped?
+
 No, the current level is already quite comprehensive, even excessively so.
+
 * What feels overly generalised or AI-like?
-Phrases like "AI arms race," "users as fuel," and "symbols of geopolitical power" came easily when I was writing, but they actually overreach what my project can support, and they read like filler. These grand framings end up obscuring what I'm really trying to do: let ordinary people intuitively compare and choose between models.
+
+Like "AI arms race," "users as fuel," and "symbols of geopolitical power" are overly generalised. These words came easily when I was writing, but they actually overreach what my project can support, and they read like filler. These grand framings end up obscuring what I'm really trying to do: let ordinary people intuitively compare and choose between models.
+
 * What do you need to research further?
+
 Continue upgrading my webpage to generate the latest statement.
+
 * Write one sentence that commits to the direction of your project.
+
 "De-charting" information through relatable, physical metaphors.
 
 

@@ -32,6 +32,10 @@ In this way, the design from Claude gave me the inspiration I needed. It let me 
 
 [![2](../assets/week-10/4.png)](../assets/week-10/v1/AI%20Fuel%20Station.html)⬆️click image to see demo
 
+After this, I added back the receipt comparison feature. Earlier, while I was writing the prompts myself, I had left it out so I could keep each prompt focused and build the main scene first. Now that the scene was working, it was a good time to bring it back. With the comparison in place, the user is no longer limited to one model at a time; the receipts let them line different models up and compare them directly, which had been the point of the project from the beginning. At the same time, I added an achievement system that the user can unlock, which makes the whole thing feel more like a game than a plain comparison tool.
+
+The testing process makes me to think about: whether to give the user a way to skip or speed up the refuelling while a model was filling up. A skip or fast-forward button would be the obvious thing to add, since waiting can feel slow, and in most games or apps people expect to be able to move things along. But in the end I decided not to add it. The speed of the refuelling in my project is tied to the model's real output speed, so the waiting is not just dead time — it is part of what the visualisation is trying to show. In a real situation you cannot ask a model to answer your question any faster than it does; you simply have to wait for it. If I let the user skip the wait, I would be hiding exactly the difference I want them to feel. Keeping the wait means a slower model actually feels slower, which is more honest than a version where every model finishes instantly.
+
 
 
 ## AI Usage Statement
