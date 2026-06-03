@@ -48,7 +48,7 @@ Because of this, I started thinking about whether I could use a softer and more 
 
 Therefore, I brought back some gas station visual elements as an interaction test. For example, model price and generation speed do not necessarily have to be controlled only through sliders or dropdown menus. They could also be represented through visual elements that feel more like part of a scene. The purpose is to make the interface feel less like a control panel and more like a visual environment that can be operated.
 
-After confirming this idea, I tried to use Codex to continue building the demo. I explained the direction to Codex: I wanted to make the interaction less dependent on rigid buttons and sliders, and make it feel more like object-based interaction inside a gas station scene. The goal was to make the presentation of output price and output speed feel more natural.
+After confirming this idea, I tried to use Codex to continue building the demo. I explained the direction to Codex: I wanted to make the interaction less dependent on rigid buttons and sliders, and make it feel more like object-based interaction inside a gas station scene.
 
 However, this attempt with Codex did not go smoothly. It seemed to understand the general direction, but when it came to changing the webpage structure and interaction logic, the result was very weak. After many rounds of conversation and several version updates, the demo did not become closer to my idea. Instead, it doesn't quite paint the picture I want.
 
@@ -78,13 +78,21 @@ After this, I wrote the prompt myself instead of using the long summarised one, 
 
 [![4](../assets/week-09/5.png)](../assets/week-09/i-2/AI%20Fuel%20Station.html)
 
+After finishing the output-price gas station scene, I also used Claude Design to rebuild the receipt version for input price. This was the receipt board I had first made in Week 8, so this time I was not starting a new idea but remaking an existing one with a better tool. Using Claude Design and a prompt I wrote myself, the [Claude rebuilt receipt version](../assets/week-09/r.html) came out cleaner and closer to what I wanted than the earlier [Codex version](../assets/week-08/ai-output-receipt-board/index.html).
+
+![6](../assets/week-09/6.png)
+
 ## AI Usage Statement
 
-I used artificial intelligence tools to help draft and evaluate the project statement, develop self-review questions, and refine the written reflection. AI was also used for coding support during the prototype development process. I reviewed and edited the outputs to match my own project direction.
+Artificial intelligence tools is use to help draft and evaluate the project statement and refine the written reflection. AI was also used for coding support during the prototype development process. 
+
+Google. (2026). NotebookLM (AI Notebook). https://notebooklm.google.com/
 
 OpenAI. (2026). ChatGPT (GPT-5.4 Thinking) [Large language model]. https://chat.openai.com/chat
 
 OpenAI. (2026). Codex (GPT-5.3 Codex) [Vibe coding agent]. https://openai.com/codex/
 
+Anthropic. (2026). Claude Cowork (AI agent). https://claude.ai/
 
+Anthropic. (2026). Claude Design (Vibe design agent). https://claude.ai/design
 
