@@ -8,6 +8,10 @@ layout: default
 
 ## Documentation
 
+## Checklist 
+
+
+
 ## Project Development
 
 [![8](../assets/week-11/1.png)](../assets/week-11/fuel-station-gh/index.html)⬆️click image to see
@@ -36,15 +40,14 @@ By this point I had all four parts I had wanted, each with its own working inter
 
 Claude Code did this well and returned a single page that switches between the four visualisations using four tabs at the top. After thinking about it, though, I felt the project still needed a proper home page to introduce and present these visualisations, rather than dropping the viewer straight into the tabs. I also noticed that the gas station looked quite different in style from the other three visualisations, which made the whole thing feel a little inconsistent. So I decided to unify their styles so the four parts would sit together as one coherent website.
 
-<div style="width:100%; height:675px; overflow:hidden;">
-  <iframe
-    src="../assets/week-11/综合v2/index.html"
-    style="width:1440px; height:900px; border:none; transform:scale(0.75); transform-origin:top left;">
-  </iframe>
+<div style="overflow-x:auto;">
+    <iframe
+        src="../assets/week-11/综合v2/index.html"
+        width="1920"
+        height="1000"
+        style="border:none;">
+    </iframe>
 </div>
-
-
-
 
 ## AI Usage Statement
 
