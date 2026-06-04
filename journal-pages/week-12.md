@@ -23,29 +23,31 @@ Its intended impact is not grand but real: to hand the hidden information back t
 
 ## Final Artefact
 
-![]
-
-<div style="
-  position: relative;
-  left: 50%;
-  margin-left: -50vw;
-  width: 100vw;
-  height: calc(100vw * 1000 / 1920);
-  overflow: hidden;
-  border: 1px solid #ddd;
-">
+[link to the website](https://chengyuehan.github.io/Behind-The-Chat-Box)
+<div class="embed-fullscreen">
   <iframe
-    src="https://chengyuehan.github.io/Behind-The-Chat-Box"
-    style="
-      width: 1920px;
-      height: 1000px;
-      border: none;
-      display: block;
-      transform: scale(calc(100vw / 1920));
-      transform-origin: top left;
-    ">
+    src="https://chengyuehan.github.io/Behind-The-Chat-Box">
   </iframe>
 </div>
+
+<style>
+.embed-fullscreen {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 80vh;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.embed-fullscreen iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+</style>
 
 ## AI Usage Statement
 
