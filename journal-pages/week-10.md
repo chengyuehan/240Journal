@@ -76,10 +76,10 @@ McCandless, D. (2024). Per Second – Vibrations / Cycles / Waves / Rate / Frequ
 
 I used AI tools this week mainly for coding. Claude Code was used to connect my Claude Design prototype to the LLM Stats API and turn it into a working webpage that runs on live, accurate data. I also used AI to help polish the writing in this Journal. 
 
-Anthropic. (2026). Claude Design [Vibe coding agent]. https://claude.ai/design
+Anthropic. (2026). *Claude Design* [Vibe coding agent]. https://claude.ai/design
 
-Anthropic. (2026). Claude Code [Vibe coding agent]. https://claude.ai/code
+Anthropic. (2026). *Claude Code* [Vibe coding agent]. https://claude.ai/code
 
-OpenAI. (2026). ChatGPT (GPT-5.4 Thinking) [Large language model]. https://chat.openai.com/chat
+OpenAI. (2026). *ChatGPT* (GPT-5.4 Thinking) [Large language model]. https://chat.openai.com/chat
 
 

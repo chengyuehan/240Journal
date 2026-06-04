@@ -84,7 +84,7 @@ Developing a webpage with a coding agent removes this loop and offers a more dir
 
 I used artificial intelligence tools for idea evaluation, technical research, and writing assistance. I also used AI to research current model context windows and token conversions, and to help refine the wording of this documentation.
 
-Anthropic. (2026). Claude (Opus 4.8) \[Large language model]. <https://claude.ai/>
+Anthropic. (2026). *Claude* (Opus 4.8) \[Large language model]. <https://claude.ai/>
 
 ## Reference
 

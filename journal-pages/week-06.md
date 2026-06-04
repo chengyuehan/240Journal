@@ -149,7 +149,7 @@ My idea is to use a well-known book as the reference scale. Highlight the maximu
 
 I used artificial intelligence tools to help interpret the LLM Stats data structure, develop a small test dataset based on expected API fields, and support the creation of early HTML prototypes. AI was also used to help translate and polish the writing. The design decisions, project direction, and critical reflections were developed through my own evaluation of the course brief and my previous experiments.
 
-OpenAI. (2026). ChatGPT (GPT-5.4 Thinking) [Large language model]. https://chat.openai.com/chat
+OpenAI. (2026). *ChatGPT* (GPT-5.4 Thinking) [Large language model]. https://chat.openai.com/chat
 
 ## Reference
 

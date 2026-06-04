@@ -44,12 +44,15 @@ Claude Code did this well and returned a single page that switches between the f
         style="border:none;">
     </iframe>
 </div>
+The current version is not the final version. The final version in week 12 will change the entire homepage introduction to a project statement.
+[link to week 12](../journal-pages/week-12.md)
+[link to final version]()
 
 ## AI Usage Statement
 
 I used AI tools this week for design, coding, and writing. Claude Design was used to keep refining the visualisations and to work on unifying their style, and Claude Code was used to do most of the implementation: connecting the gas station to the live API, working out values such as speed that had to be calculated from the raw data, building the parameter count and context length visualisations, and combining the four parts into a single website. I also used AI to help polish the writing in this entry.
 
-Anthropic. (2026). Claude Code [Vibe coding agent]. https://claude.ai/code
+Anthropic. (2026). *Claude Code* [Vibe coding agent]. https://claude.ai/code
 
-Anthropic. (2026). Claude Cowork [AI agent]. https://claude.com/product/cowork
+Anthropic. (2026). *Claude Cowork* [AI agent]. https://claude.com/product/cowork
 

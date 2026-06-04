@@ -89,8 +89,8 @@ I used AI tools throughout this week's development process. ChatGPT helped me or
 
 I also used Codex as a vibe coding tool to develop the prototypes. Codex helped me build and revise the gas station demo, add the receipt-printing function, and then separate the receipt board into its own prototype. 
 
-OpenAI. (2026). ChatGPT (GPT-5.4 Thinking) [Large language model]. https://chat.openai.com/chat
+OpenAI. (2026). *ChatGPT* (GPT-5.4 Thinking) [Large language model]. https://chat.openai.com/chat
 
-Anthropic. (2026). Claude [Large language model]. https://claude.ai/
+Anthropic. (2026). *Claude* [Large language model]. https://claude.ai/
 
-OpenAI. (2026). Codex (GPT-5.3 Codex) [Vibe coding agent]. https://openai.com/codex/
+OpenAI. (2026). *Codex* (GPT-5.3 Codex) [Vibe coding agent]. https://openai.com/codex/

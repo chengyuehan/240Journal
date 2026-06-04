@@ -8,6 +8,8 @@ layout: default
 
 ## Project Statement 
 
+### Behind the chat box
+
 This is an interactive data-visualisation website that turns the vast, abstract metrics of large language models into four playful visualisations — each making one dimension of a model's capability something you can grasp intuitively rather than read off a number.
 The data updates itself, drawn from the LLM Stats API, which gathers the pricing, benchmarks, rankings and metadata of hundreds of models. By querying the API directly and fetching through a GitHub Action, the page refreshes on its own whenever a new model appears, always showing the latest state of the race. Models with missing information are dropped, so every comparison stays trustworthy.
 Its subject is the model race as it stands now — a new release every few days, each claiming to be cheaper and stronger. We move toward the future it points to only half-understanding it: one increasingly assisted, then led, by AI. There, the tool that helps you make every decision, write every line of code and finish every assignment is governed by costs and capabilities buried under numbers in the millions and billions, the real ability behind them out of sight.
@@ -21,4 +23,6 @@ Its intended impact is not grand but real: to hand the hidden information back t
 
 ## AI Usage Statement
 
-*Document any use of AI tools under an AI Usage Statement heading. Explain which tools you used and describe how you used them. Reference any AI-generated content (see [QuickCite](https://auckland.libguides.com/referencing-generative-ai-tools) for guidance).*
+I used Claude to help draft, refine, and translate the project statement above. I reviewed and rewrote the output so that the final wording reflected my own intentions.
+
+Anthropic. (2026). *Claude* [Large language model]. https://claude.ai/

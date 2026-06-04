@@ -95,13 +95,13 @@ After finishing the output-price gas station scene, I also used Claude Design to
 
 Artificial intelligence tools is use to help draft and evaluate the project statement and refine the written reflection. AI was also used for coding support during the prototype development process. 
 
-Google. (2026). NotebookLM (AI Notebook). https://notebooklm.google.com/
+Google. (2026). *NotebookLM* (AI Notebook). https://notebooklm.google.com/
 
-OpenAI. (2026). ChatGPT (GPT-5.4 Thinking) [Large language model]. https://chat.openai.com/chat
+OpenAI. (2026). *ChatGPT* (GPT-5.4 Thinking) [Large language model]. https://chat.openai.com/chat
 
-OpenAI. (2026). Codex (GPT-5.3 Codex) [Vibe coding agent]. https://openai.com/codex/
+OpenAI. (2026). *Codex* (GPT-5.3 Codex) [Vibe coding agent]. https://openai.com/codex/
 
-Anthropic. (2026). Claude Cowork (AI agent). https://claude.ai/
+Anthropic. (2026). *Claude Cowork* (AI agent). https://claude.ai/
 
-Anthropic. (2026). Claude Design (Vibe design agent). https://claude.ai/design
+Anthropic. (2026). *Claude Design* (Vibe design agent). https://claude.ai/design
 
