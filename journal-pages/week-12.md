@@ -22,22 +22,23 @@ Its intended impact is not grand but real: to hand the hidden information back t
 ![]
 
 <div style="
-    overflow-x: auto;
-    overflow-y: hidden;
-    width: 100%;
-    border: 1px solid #ddd;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  overflow-x: auto;
+  overflow-y: hidden;
+  border: 1px solid #ddd;
+  background: #eee8dd;
 ">
-
-    <iframe
-        src="https://chengyuehan.github.io/Behind-The-Chat-Box"
-        width="1920"
-        height="1000"
-        style="
-            border:none;
-            display:block;
-        ">
-    </iframe>
-
+  <iframe
+    src="https://chengyuehan.github.io/Behind-The-Chat-Box"
+    width="1920"
+    height="1000"
+    style="
+      border: none;
+      display: block;
+      margin: 0 auto;
+    ">
+  </iframe>
 </div>
 
 ## AI Usage Statement
