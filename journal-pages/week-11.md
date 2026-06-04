@@ -30,10 +30,21 @@ This smaller range also changed how I labelled it. Because the maximum context l
 
 [![8](../assets/week-11/4.png)](../assets/week-11/context/index.html)⬆️click image to see
 
-
 By this point I had all four parts I had wanted, each with its own working interface: the gas station, the receipt comparison, the parameter count visualisation, and the context length visualisation. The next step was to bring them together and integrate them into a single website.
 
 [![8](../assets/week-11/5.png)](../assets/week-11/综合/index.html)⬆️click image to see
+
+Claude Code did this well and returned a single page that switches between the four visualisations using four tabs at the top. After thinking about it, though, I felt the project still needed a proper home page to introduce and present these visualisations, rather than dropping the viewer straight into the tabs. I also noticed that the gas station looked quite different in style from the other three visualisations, which made the whole thing feel a little inconsistent. So I decided to unify their styles so the four parts would sit together as one coherent website.
+
+<iframe
+  src="../assets/week-11/综合v2/index.html"
+  width="100%"
+  height="600"
+  style="border: none;"
+></iframe>
+
+
+
 
 ## AI Usage Statement
 
