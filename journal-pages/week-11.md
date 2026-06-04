@@ -36,16 +36,43 @@ By this point I had all four parts I had wanted, each with its own working inter
 
 Claude Code did this well and returned a single page that switches between the four visualisations using four tabs at the top. After thinking about it, though, I felt the project still needed a proper home page to introduce and present these visualisations, rather than dropping the viewer straight into the tabs. I also noticed that the gas station looked quite different in style from the other three visualisations, which made the whole thing feel a little inconsistent. So I decided to unify their styles so the four parts would sit together as one coherent website.
 
-<iframe
-  src="../assets/week-11/综合v2/index.html"
-  width="100%"
-  height="600"
-  style="border: none;"
-></iframe>
+<div style="position:relative;">
+    
+    <a
+        href="../assets/week-11/综合v2/index.html"
+        target="_blank"
+        style="
+            position:absolute;
+            top:10px;
+            right:10px;
+            z-index:1000;
+            background:white;
+            padding:8px 12px;
+            border-radius:6px;
+            text-decoration:none;
+            box-shadow:0 2px 8px rgba(0,0,0,.2);
+        "
+    >
+        ↗ Open Full Screen
+    </a>
+
+    <iframe
+        src="../assets/week-11/综合v2/index.html"
+        width="100%"
+        height="800"
+        style="border:none;">
+    </iframe>
+
+</div>
 
 
 
 
 ## AI Usage Statement
 
-<!-- 用了哪些 AI、怎么用的，引用 -->
+I used AI tools this week for design, coding, and writing. Claude Design was used to keep refining the visualisations and to work on unifying their style, and Claude Code was used to do most of the implementation: connecting the gas station to the live API, working out values such as speed that had to be calculated from the raw data, building the parameter count and context length visualisations, and combining the four parts into a single website. I also used AI to help polish the writing in this entry.
+
+Anthropic. (2026). Claude Code [Vibe coding agent]. https://claude.ai/code
+
+Anthropic. (2026). Claude Cowork [AI agent]. https://claude.com/product/cowork
+
