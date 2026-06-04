@@ -45,7 +45,9 @@ Claude Code did this well and returned a single page that switches between the f
     </iframe>
 </div>
 The current version is not the final version. The final version in week 12 will change the entire homepage introduction to a project statement.
+
 [link to week 12](../journal-pages/week-12.md)
+
 [link to final version](https://chengyuehan.github.io/Behind-The-Chat-Box/)
 
 ## AI Usage Statement
