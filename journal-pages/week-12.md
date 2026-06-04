@@ -20,46 +20,17 @@ Its intended impact is not grand but real: to hand the hidden information back t
 
 ![]
 
-<div style="margin: 30px 0;">
-
-  <div style="margin-bottom: 12px; text-align: right;">
-    <a
-      href="https://chengyuehan.github.io/Behind-The-Chat-Box"
-      target="_blank"
-      style="
-        display: inline-block;
-        padding: 10px 18px;
-        border: 1px solid #111;
-        color: #111;
-        text-decoration: none;
-        letter-spacing: 2px;
-        font-family: monospace;
-        background: #f4efe5;
-      "
-    >
-      OPEN STANDALONE ↗
-    </a>
-  </div>
-
-  <div style="
-    width: 100%;
-    height: 650px;
-    overflow: hidden;
-    border: 1px solid #d6cbb8;
-    background: #f4efe5;
-  ">
+<div style="
+    overflow-x:auto;
+    width:100vw;
+    margin-left:calc(50% - 50vw);
+">
     <iframe
-      src="https://chengyuehan.github.io/Behind-The-Chat-Box"
-      style="
-        width: 1920px;
-        height: 1000px;
-        border: none;
-        transform: scale(0.7);
-        transform-origin: top left;
-      ">
+        src="https://chengyuehan.github.io/Behind-The-Chat-Box"
+        width="1920"
+        height="1000"
+        style="border:none;">
     </iframe>
-  </div>
-
 </div>
 
 ## AI Usage Statement
