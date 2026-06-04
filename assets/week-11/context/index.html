@@ -1053,12 +1053,12 @@ window.renderV3 = function (root) {
     setStatus("snapshot", window.MODELS_SNAPSHOT.length);
 
     // ─── Live data: fetch DIRECTLY from the LLM Stats gateway in the browser. ───
-    // The gateway catalog (/v1/models) is CORS-enabled, so a static page on GitHub
-    // Pages can read it with no server. It carries context_length + organization but
-    // NOT release dates — those are immutable, so we graft them on from the snapshot
-    // by model name (models the snapshot doesn't know just won't appear on the
-    // dated growth view). NOTE: this API key ships in the page and is publicly
-    // visible once deployed — rotate it if it leaks.
+    // The gateway catalog (/v1/models) is CORS-enabled, so this static page (e.g. on
+    // GitHub Pages) reads it with no server, refreshing on every load. It carries
+    // context_length + organization but NOT release dates — those are immutable, so we
+    // graft them from the snapshot by model name (models the snapshot doesn't know just
+    // won't appear on the dated growth view). NOTE: this API key ships in the page and
+    // is publicly visible once deployed — use a throwaway key and rotate it if it leaks.
     const GATEWAY = "https://api.llm-stats.com/v1/models";
     const API_KEY = "sk_ze_b5rXc5zLCUt8m5kg7DeB2PcBD4k2uz_N23_0hmzmqO0";
 

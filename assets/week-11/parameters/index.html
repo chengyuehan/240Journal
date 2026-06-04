@@ -1038,15 +1038,25 @@ window.renderV3 = function (root) {
       }
     }
 
-    // Parameter counts live ONLY on the LLM Stats `stats` catalog, which blocks
-    // cross-origin browser requests (CORS preflight 403) — and the CORS-enabled
-    // gateway catalog carries no param_count. So a purely static page can't fetch
-    // them live; we render the embedded snapshot, which is accurate because a model's
-    // parameter count never changes. Re-bake the snapshot to pick up brand-new models.
+    // Initial paint from the embedded snapshot so the page is never blank.
     setModels(window.MODELS_SNAPSHOT);
     const initial = (() => { try { const v = localStorage.getItem("llm-scale-v"); return (v === "1" || v === "2" || v === "3") ? v : "1"; } catch (_) { return "1"; } })();
     render(initial);
     setStatus("snapshot", window.MODELS_SNAPSHOT.length);
+
+    // Live data = data/parameters.json, regenerated hourly by the GitHub Action.
+    // param_count lives only on the `stats` catalog, which blocks cross-origin browser
+    // requests — so the Action fetches it SERVER-SIDE (key in a Secret) and writes this
+    // file; the browser just reads it. Falls back to the embedded snapshot if absent.
+    fetch("data/parameters.json", { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error("HTTP " + r.status))))
+      .then((d) => {
+        if (!d || !Array.isArray(d.models) || !d.models.length) throw new Error("empty");
+        setModels(d.models);
+        render(currentView);
+        setStatus("live", d.models.length, d.fetched_at);
+      })
+      .catch(() => { /* keep snapshot; status already reflects it */ });
   </script>
 </body>
 </html>
