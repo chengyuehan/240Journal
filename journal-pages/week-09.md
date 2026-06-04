@@ -87,7 +87,7 @@ After this, I wrote the prompt myself instead of using the long summarised one, 
 
 [![4](../assets/week-09/5.png)](../assets/week-09/i-2/AI%20Fuel%20Station.html)
 
-After finishing the output-price gas station scene, I also used Claude Design to rebuild the receipt version for input price. This was the receipt board I had first made in Week 8, so this time I was not starting a new idea but remaking an existing one with a better tool. Using Claude Design and a prompt I wrote myself, the [Claude rebuilt receipt version](../assets/week-09/r.html) came out cleaner and closer to what I wanted than the earlier [Codex version](../assets/week-08/ai-output-receipt-board/index.html).
+After finishing the output-price gas station scene, I also used Claude Design to rebuild the receipt version for input price.  Using Claude Design and a prompt I wrote myself, the [Claude rebuilt receipt version](../assets/week-09/r.html) came out cleaner and closer to what I wanted than the earlier [Codex version](../assets/week-08/ai-output-receipt-board/index.html).
 
 ![6](../assets/week-09/6.png)
 

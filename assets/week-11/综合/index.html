@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AI, to scale — four views on the numbers behind large language models</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f3eee3;
+    --ink: #161512;
+    --ink-soft: #5b574f;
+    --muted: #9d978a;
+    --line: #d6cfbe;
+    --accent: #c54a2c;
+    --serif: "Instrument Serif", "Times New Roman", serif;
+    --mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+    --sans: "Inter", system-ui, -apple-system, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    height: 100vh;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ───────── Top exhibition bar ───────── */
+  .topbar {
+    flex: none;
+    display: flex;
+    align-items: stretch;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--ink);
+    background: var(--bg);
+    box-shadow: 0 1px 0 var(--line), 0 10px 30px -22px rgba(0,0,0,0.4);
+    z-index: 5;
+  }
+
+  .brand {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    padding: 12px 22px;
+    border-right: 1px solid var(--line);
+    min-width: 220px;
+  }
+  .brand .eyebrow {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .brand .wordmark {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 27px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    margin: 0;
+    color: var(--ink);
+  }
+  .brand .wordmark em { font-style: italic; color: var(--accent); }
+
+  /* tabs */
+  .tabs {
+    display: flex;
+    flex: 1 1 480px;
+    min-width: 0;
+  }
+  .tab {
+    flex: 1 1 0;
+    min-width: 0;
+    appearance: none;
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--line);
+    text-align: left;
+    padding: 11px 18px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    color: var(--ink);
+    transition: background 0.16s ease, color 0.16s ease;
+  }
+  .tab:last-child { border-right: none; }
+  .tab:hover { background: rgba(0,0,0,0.045); }
+  .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .tab .t-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+  }
+  .tab .t-name {
+    font-family: var(--serif);
+    font-size: 21px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .tab .t-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .tab[aria-selected="true"] {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .tab[aria-selected="true"] .t-num { color: var(--accent); }
+  .tab[aria-selected="true"] .t-tag { color: rgba(243,238,227,0.62); }
+
+  /* right-side meta */
+  .meta {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 5px;
+    padding: 10px 20px;
+    border-left: 1px solid var(--line);
+    min-width: 150px;
+  }
+  .meta .standalone {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    border: 1px solid var(--ink);
+    padding: 7px 11px;
+    transition: background 0.16s ease, color 0.16s ease;
+    white-space: nowrap;
+  }
+  .meta .standalone:hover { background: var(--ink); color: var(--bg); }
+  .meta .hint {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .meta .hint kbd {
+    font-family: var(--mono);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 0 4px;
+    font-size: 9px;
+    color: var(--ink-soft);
+  }
+
+  /* ───────── Viewport hosting the iframes ───────── */
+  .viewport {
+    flex: 1 1 auto;
+    position: relative;
+    min-height: 0;
+    background: var(--bg);
+  }
+  /* Inactive frames are display:none so offscreen pages (e.g. the animated
+     fuel station) pause instead of burning CPU. State survives because each
+     frame is mounted once, while visible, and then kept in the DOM. */
+  .frame {
+    position: absolute;
+    inset: 0;
+    display: none;
+  }
+  .frame.is-active {
+    display: block;
+    animation: frameIn 0.22s ease;
+  }
+  @keyframes frameIn { from { opacity: 0; } to { opacity: 1; } }
+  .frame iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    background: var(--bg);
+  }
+
+  /* loading shimmer behind each frame until it reports load */
+  .frame .loader {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: var(--bg);
+    transition: opacity 0.3s ease;
+  }
+  .frame.loaded .loader { opacity: 0; pointer-events: none; }
+  .loader .dot {
+    width: 11px; height: 11px; border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 1.3s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.3; transform: scale(0.8); } }
+  .loader .lbl {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* narrow screens: let the bar breathe, drop the taglines */
+  @media (max-width: 860px) {
+    .brand { flex: 1 1 100%; border-right: none; border-bottom: 1px solid var(--line); }
+    .meta { display: none; }
+    .tab .t-tag { display: none; }
+    .tab .t-name { font-size: 17px; }
+  }
+
+  noscript .ns {
+    max-width: 640px; margin: 60px auto; padding: 0 24px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  noscript a { color: var(--accent); }
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <p class="eyebrow">An LLM scale exhibition</p>
+      <h1 class="wordmark">AI, <em>to scale</em></h1>
+    </div>
+
+    <nav class="tabs" id="tabs" role="tablist" aria-label="Visualizations">
+      <button class="tab" role="tab" data-key="parameters" aria-selected="false" aria-controls="frame-parameters" tabindex="-1">
+        <span class="t-num">01</span>
+        <span class="t-name">Parameters</span>
+        <span class="t-tag">From 1 to 2 trillion — how big the models are</span>
+      </button>
+      <button class="tab" role="tab" data-key="context" aria-selected="false" aria-controls="frame-context" tabindex="-1">
+        <span class="t-num">02</span>
+        <span class="t-name">Context</span>
+        <span class="t-tag">How much a model reads at once</span>
+      </button>
+      <button class="tab" role="tab" data-key="pricing" aria-selected="false" aria-controls="frame-pricing" tabindex="-1">
+        <span class="t-num">03</span>
+        <span class="t-name">Receipts</span>
+        <span class="t-tag">What a million tokens actually costs</span>
+      </button>
+      <button class="tab" role="tab" data-key="fuel" aria-selected="false" aria-controls="frame-fuel" tabindex="-1">
+        <span class="t-num">04</span>
+        <span class="t-name">Fuel&nbsp;Station</span>
+        <span class="t-tag">Fuel models — compare speed, price &amp; cost</span>
+      </button>
+    </nav>
+
+    <div class="meta">
+      <a class="standalone" id="standalone" href="parameters/index.html" target="_blank" rel="noopener">Open standalone&nbsp;↗</a>
+      <span class="hint"><kbd>1</kbd>–<kbd>4</kbd> · <kbd>←</kbd><kbd>→</kbd></span>
+    </div>
+  </header>
+
+  <main class="viewport" id="viewport">
+    <div class="frame" id="frame-parameters" role="tabpanel" data-key="parameters" aria-label="Parameters">
+      <div class="loader"><span class="dot"></span><span class="lbl">Loading · Parameters</span></div>
+      <iframe data-src="parameters/index.html" title="From 1 to 2 trillion — a tour through LLM parameter counts" loading="lazy"></iframe>
+    </div>
+    <div class="frame" id="frame-context" role="tabpanel" data-key="context" aria-label="Context">
+      <div class="loader"><span class="dot"></span><span class="lbl">Loading · Context</span></div>
+      <iframe data-src="context/index.html" title="How much can a model read at once — a tour through LLM context windows" loading="lazy"></iframe>
+    </div>
+    <div class="frame" id="frame-pricing" role="tabpanel" data-key="pricing" aria-label="Receipts">
+      <div class="loader"><span class="dot"></span><span class="lbl">Loading · Receipts</span></div>
+      <iframe data-src="input/index.html" title="Receipts — AI Pricing Archive" loading="lazy"></iframe>
+    </div>
+    <div class="frame" id="frame-fuel" role="tabpanel" data-key="fuel" aria-label="Fuel Station">
+      <div class="loader"><span class="dot"></span><span class="lbl">Loading · Fuel Station</span></div>
+      <iframe data-src="fuel-station-gh/index.html" title="AI Fuel Station" loading="lazy"></iframe>
+    </div>
+  </main>
+
+  <noscript>
+    <div class="ns">
+      <h1>AI, to scale</h1>
+      <p>This page combines four visualizations. Enable JavaScript to switch between them, or open each directly:</p>
+      <ul>
+        <li><a href="parameters/index.html">01 · Parameters</a></li>
+        <li><a href="context/index.html">02 · Context</a></li>
+        <li><a href="input/index.html">03 · Receipts</a></li>
+        <li><a href="fuel-station-gh/index.html">04 · Fuel Station</a></li>
+      </ul>
+    </div>
+  </noscript>
+
+  <script>
+    // Four standalone visualizations, each isolated in its own iframe so their
+    // CSS / JS / IDs never collide. Frames are mounted lazily on first visit and
+    // then kept alive, so each view preserves its state (filters, game progress)
+    // when you switch away and back.
+    const VIEWS = [
+      { key: "parameters", url: "parameters/index.html" },
+      { key: "context",    url: "context/index.html" },
+      { key: "pricing",    url: "input/index.html" },
+      { key: "fuel",       url: "fuel-station-gh/index.html" },
+    ];
+    const KEYS = VIEWS.map((v) => v.key);
+    const urlByKey = Object.fromEntries(VIEWS.map((v) => [v.key, v.url]));
+
+    const tabs = Array.from(document.querySelectorAll(".tab"));
+    const frames = Array.from(document.querySelectorAll(".frame"));
+    const tabByKey = Object.fromEntries(tabs.map((t) => [t.dataset.key, t]));
+    const frameByKey = Object.fromEntries(frames.map((f) => [f.dataset.key, f]));
+    const standalone = document.getElementById("standalone");
+
+    let current = null;
+    let routing = false; // guard against hashchange ↔ setHash feedback loop
+
+    function mount(frame) {
+      const iframe = frame.querySelector("iframe");
+      if (!iframe.src && iframe.dataset.src) {
+        iframe.addEventListener("load", () => frame.classList.add("loaded"), { once: true });
+        iframe.src = iframe.dataset.src;
+      }
+    }
+
+    function activate(key, { push = true } = {}) {
+      if (!KEYS.includes(key)) key = KEYS[0];
+      if (key === current) return;
+      current = key;
+
+      frames.forEach((f) => f.classList.toggle("is-active", f.dataset.key === key));
+      tabs.forEach((t) => {
+        const on = t.dataset.key === key;
+        t.setAttribute("aria-selected", String(on));
+        t.tabIndex = on ? 0 : -1;
+      });
+
+      mount(frameByKey[key]);                 // boot this frame while it is visible
+      standalone.href = urlByKey[key];
+      standalone.textContent = "Open standalone ↗";
+
+      try { localStorage.setItem("scale-room-view", key); } catch (_) {}
+      if (push) {
+        routing = true;
+        if (location.hash.slice(1) !== key) location.hash = key;
+        routing = false;
+      }
+      document.title = "AI, to scale · " + tabByKey[key].querySelector(".t-name").textContent.trim();
+    }
+
+    // clicks
+    document.getElementById("tabs").addEventListener("click", (e) => {
+      const tab = e.target.closest(".tab");
+      if (tab) activate(tab.dataset.key);
+    });
+
+    // keyboard: 1–4 jump, ← → cycle (only when focus isn't inside a form field)
+    window.addEventListener("keydown", (e) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const n = Number(e.key);
+      if (n >= 1 && n <= VIEWS.length) { activate(KEYS[n - 1]); tabByKey[KEYS[n - 1]].focus(); return; }
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        const i = KEYS.indexOf(current);
+        const next = (i + (e.key === "ArrowRight" ? 1 : KEYS.length - 1)) % KEYS.length;
+        activate(KEYS[next]); tabByKey[KEYS[next]].focus();
+      }
+    });
+
+    // back/forward through the URL hash
+    window.addEventListener("hashchange", () => {
+      if (routing) return;
+      const key = location.hash.slice(1);
+      if (KEYS.includes(key)) activate(key, { push: false });
+    });
+
+    // initial view: URL hash → last visited → first
+    const fromHash = location.hash.slice(1);
+    let initial = KEYS.includes(fromHash) ? fromHash : null;
+    if (!initial) { try { const s = localStorage.getItem("scale-room-view"); if (KEYS.includes(s)) initial = s; } catch (_) {} }
+    activate(initial || KEYS[0]);
+  </script>
+</body>
+</html>
