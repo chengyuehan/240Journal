@@ -36,33 +36,11 @@ By this point I had all four parts I had wanted, each with its own working inter
 
 Claude Code did this well and returned a single page that switches between the four visualisations using four tabs at the top. After thinking about it, though, I felt the project still needed a proper home page to introduce and present these visualisations, rather than dropping the viewer straight into the tabs. I also noticed that the gas station looked quite different in style from the other three visualisations, which made the whole thing feel a little inconsistent. So I decided to unify their styles so the four parts would sit together as one coherent website.
 
-<div style="position:relative;">
-    
-    <a
-        href="../assets/week-11/综合v2/index.html"
-        target="_blank"
-        style="
-            position:absolute;
-            top:10px;
-            right:10px;
-            z-index:1000;
-            background:white;
-            padding:8px 12px;
-            border-radius:6px;
-            text-decoration:none;
-            box-shadow:0 2px 8px rgba(0,0,0,.2);
-        "
-    >
-        ↗ Open Full Screen
-    </a>
-
-    <iframe
-        src="../assets/week-11/综合v2/index.html"
-        width="100%"
-        height="800"
-        style="border:none;">
-    </iframe>
-
+<div style="width:100%; height:675px; overflow:hidden;">
+  <iframe
+    src="../assets/week-11/综合v2/index.html"
+    style="width:1440px; height:900px; border:none; transform:scale(0.75); transform-origin:top left;">
+  </iframe>
 </div>
 
 
