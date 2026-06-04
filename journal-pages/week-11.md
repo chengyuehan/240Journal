@@ -8,10 +8,6 @@ layout: default
 
 ## Documentation
 
-## Checklist 
-
-
-
 ## Project Development
 
 [![8](../assets/week-11/1.png)](../assets/week-11/fuel-station-gh/index.html)⬆️click image to see

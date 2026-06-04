@@ -73,9 +73,7 @@ The way it is visualized is very interesting. I like the pattern of big trees an
 **Does this reference change or reinforce my current direction?**  
 This solidified my idea to create a de-chartistic visualization. 
 
-### 5. 
-
-[GardenFeed 3D](https://x.com/ruitongxue/status/2045362022917734811?s=20)
+### 5. [GardenFeed 3D](https://x.com/ruitongxue/status/2045362022917734811?s=20)
 
 **What draws me to it?**  
 What draws me to this project is it's topic is related to mine and also it's way to shwoing every news as a flower. 
