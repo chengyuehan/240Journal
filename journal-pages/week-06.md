@@ -65,26 +65,26 @@ This reference expands my current direction. It makes me start thinking about ho
 ### 4.[This is Not My Name](https://vis.csh.ac.at/notmyname/)
 
 **What draws me to it?**  
-What draws me to this visual essay is that it is not just showing data, but also showing the process of making a data story with AI. This is very relevant to my project because I am also using AI tools during the making process.
+This example visualize Chinese Pinyin, which in my opinion is purely academic content, with a theme that is close to life.
 
 **What specific quality or approach might I carry forward?**  
-I may carry forward its step-by-step storytelling approach. My project could also guide viewers through the question instead of showing all the model data at once.
+The way it is visualized is very interesting. I like the pattern of big trees and leaves. I wanted to use a similar approach in my visualizations to make them fun, intuitive and creative.
 
 **Does this reference change or reinforce my current direction?**  
-This reference reinforces the importance of narrative structure. It reminds me that an interactive data project needs a clear question, not only charts.
+This solidified my idea to create a de-chartistic visualization. 
 
 ### 5. 
 
-[PowerTracker](https://powertracker.io/)
+[GardenFeed 3D](https://x.com/ruitongxue/status/2045362022917734811?s=20)
 
 **What draws me to it?**  
-What draws me to PowerTracker is that it connects AI data centers with electricity and infrastructure. It makes AI feel less abstract and more connected to real places.
+What draws me to this project is it's topic is related to mine and also it's way to shwoing every news as a flower. 
 
 **What specific quality or approach might I carry forward?**  
-I may carry forward its layering approach. It shows that one dataset becomes more meaningful when it is connected with other systems.
+Its creativity in extending AI news into other areas
 
 **Does this reference change or reinforce my current direction?**  
-This reference reinforces my direction. Even if I use LLM Stats as my main data source, I should still make the visualisation feel connected to a wider AI infrastructure.
+This reinforces my current research direction and shows that my topic is one that can be well visualized.
 
 ## Project Planning and Skills Roadmap
 

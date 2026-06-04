@@ -1,0 +1,873 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>From 1 to 1,760,000,000,000 — a tour through LLM parameter counts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f3eee3;
+    --ink: #161512;
+    --ink-soft: #5b574f;
+    --muted: #9d978a;
+    --line: #d6cfbe;
+    --accent: #c54a2c;
+    --grid: #cdc6b4;
+    --serif: "Instrument Serif", "Times New Roman", serif;
+    --mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+    --sans: "Inter", system-ui, -apple-system, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); }
+  body { min-height: 100vh; padding: 56px 40px 120px; }
+  .muted { color: var(--muted); }
+  strong { font-weight: 600; }
+
+  /* ───── Header ───── */
+  header.page-head {
+    max-width: 1280px;
+    margin: 0 auto 56px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 32px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--line);
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 0 0 14px;
+  }
+  h1.headline {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(36px, 5vw, 72px);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  h1.headline em { font-style: italic; color: var(--accent); }
+  .deck {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 18px;
+    color: var(--ink-soft);
+    max-width: 56ch;
+    margin: 18px 0 0;
+    line-height: 1.4;
+  }
+
+  /* Variation tabs */
+  .tabs {
+    display: inline-flex;
+    border: 1px solid var(--ink);
+    border-radius: 0;
+    padding: 0;
+    background: transparent;
+  }
+  .tab {
+    appearance: none;
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--ink);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 11px 14px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .tab:last-child { border-right: none; }
+  .tab:hover { background: rgba(0,0,0,0.04); }
+  .tab.active { background: var(--ink); color: var(--bg); }
+
+  /* ───── Variation block container ───── */
+  .stage {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .variation-caption {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 0 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .variation-caption .label-num { color: var(--accent); margin-right: 8px; }
+  .variation-caption .desc { font-family: var(--serif); font-style: italic; text-transform: none; letter-spacing: 0; font-size: 14px; color: var(--ink-soft); }
+
+  /* ═════════════════════════════════════ V1 — Dot leader ═════════════════════════════════════ */
+  .view-v1 {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .v1-row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 20px;
+    font-size: 15px;
+    line-height: 1;
+  }
+  .v1-field {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    white-space: pre;
+    color: var(--ink);
+    letter-spacing: 0;
+  }
+  .v1-dots {
+    color: var(--muted);
+    opacity: 0.85;
+  }
+  .v1-num {
+    font-weight: 500;
+  }
+  .v1-label {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .v1-label-name { font-weight: 500; }
+  .v1-label-org { color: var(--muted); }
+  .v1-label-year { color: var(--muted); font-family: var(--mono); font-size: 11px; }
+  .v1-analog {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 200px;
+  }
+  .v1-emoji { font-size: 20px; line-height: 1; }
+  .v1-analog-label {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 16px;
+    color: var(--ink-soft);
+  }
+
+  /* ═════════════════════════════════════ V2 — Pure Typography ═════════════════════════════════════ */
+  .view-v2 {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .v2-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 32px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .v2-left { min-width: 0; }
+  .v2-num {
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    line-height: 0.96;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    word-break: break-all;
+  }
+  .v2-sub {
+    margin-top: 8px;
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .v2-right {
+    display: flex;
+    align-items: end;
+    gap: 16px;
+    text-align: right;
+  }
+  .v2-emoji { line-height: 1; }
+  .v2-analog {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 17px;
+    color: var(--ink-soft);
+    text-align: left;
+    min-width: 180px;
+  }
+  .v2-detail {
+    font-family: var(--mono);
+    font-style: normal;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ═════════════════════════════════════ V3 — Place-Value Grid ═════════════════════════════════════ */
+  .view-v3 {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .v3-row {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 32px;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .v3-grids {
+    display: flex;
+    gap: 6px;
+    flex-wrap: nowrap;
+    overflow: visible;
+    align-items: end;
+  }
+  .v3-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 6px);
+    grid-auto-rows: 6px;
+    gap: 2px;
+    position: relative;
+    padding-top: 14px;
+  }
+  .v3-cell {
+    width: 6px;
+    height: 6px;
+    background: transparent;
+    border: 1px solid var(--grid);
+    border-radius: 50%;
+  }
+  .v3-cell.on {
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+  .v3-tick {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+  .v3-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .v3-num {
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    font-size: 18px;
+    color: var(--ink);
+  }
+  .v3-name { font-family: var(--sans); font-size: 13px; }
+  .v3-storage {
+    margin-top: 4px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .v3-emoji { font-size: 16px; }
+
+  /* ═════════════════════════════════════ V4 — Log Tape ═════════════════════════════════════ */
+  .view-v4 {
+    position: relative;
+  }
+  .v4-scale {
+    position: relative;
+    height: 92px;
+    margin: 32px 80px 0 200px;
+    border-bottom: 1px solid var(--ink);
+  }
+  .v4-decade {
+    position: absolute;
+    bottom: 0;
+    transform: translateX(-50%);
+    text-align: center;
+    width: 100px;
+    padding-bottom: 8px;
+  }
+  .v4-decade-emoji { font-size: 22px; line-height: 1; margin-bottom: 6px; }
+  .v4-decade-label {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.1;
+  }
+  .v4-decade-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    margin-top: 4px;
+  }
+  .v4-tape { display: none; }
+  .v4-list {
+    margin: 0 80px 0 200px;
+    display: flex;
+    flex-direction: column;
+  }
+  .v4-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 0;
+    align-items: center;
+    height: 28px;
+  }
+  .v4-rowname {
+    transform: translateX(-200px);
+    width: 200px;
+    padding-right: 16px;
+    text-align: right;
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .v4-bar-wrap {
+    position: relative;
+    height: 28px;
+    border-top: 1px dashed transparent;
+  }
+  .v4-bar {
+    position: absolute;
+    left: 0; top: 50%;
+    height: 1px;
+    background: var(--ink);
+    transform: translateY(-50%);
+    opacity: 0.35;
+  }
+  .v4-marker {
+    position: absolute;
+    top: 50%;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    transform: translate(-50%, -50%);
+  }
+  .v4-num {
+    position: absolute;
+    top: 50%;
+    transform: translate(8px, -50%);
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 11px;
+    color: var(--ink-soft);
+    white-space: nowrap;
+    padding-left: 6px;
+  }
+  /* When the marker is near the right edge, push number to the LEFT of the dot */
+  .v4-num.flip { transform: translate(calc(-100% - 8px), -50%); }
+
+  /* Footer */
+  .footnotes {
+    max-width: 1280px;
+    margin: 80px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+  }
+  .footnotes strong { color: var(--ink); font-weight: 600; }
+
+  @media (max-width: 900px) {
+    body { padding: 32px 20px 80px; }
+    header.page-head { grid-template-columns: 1fr; }
+    .v1-label, .v1-analog { width: auto; }
+    .v3-row { grid-template-columns: 1fr; }
+    .v4-rowname { transform: none; width: 100%; text-align: left; padding: 0 0 4px; }
+    .v4-row { grid-template-columns: 1fr; height: auto; padding: 8px 0; }
+    .v4-list, .v4-scale { margin: 32px 12px 0; }
+  }
+
+  /* ───── Print ───── */
+  @media print {
+    @page {
+      size: A4 landscape;
+      margin: 12mm 14mm;
+    }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    html, body { background: var(--bg) !important; }
+    body { padding: 0 !important; }
+
+    /* Hide interactive bits */
+    .tabs, .variation-caption { display: none !important; }
+
+    /* Single-column header on print */
+    header.page-head {
+      grid-template-columns: 1fr !important;
+      margin: 0 0 16px !important;
+      padding-bottom: 12px !important;
+      break-inside: avoid;
+      page-break-after: avoid;
+    }
+    h1.headline { font-size: 32px !important; }
+    .deck { font-size: 13px !important; margin-top: 8px !important; max-width: none !important; }
+
+    .stage { max-width: none !important; }
+
+    /* Tighter row spacing */
+    .view-v1 { gap: 4px !important; }
+    .v1-row { font-size: 11px !important; gap: 14px !important; }
+    .v1-field { font-size: 11px !important; }
+    .v1-label { font-size: 10px !important; }
+    .v1-emoji { font-size: 14px !important; }
+    .v1-analog-label { font-size: 11px !important; }
+    .v1-analog { width: 170px !important; }
+    .v1-row, .v2-row, .v3-row, .v4-row { break-inside: avoid; }
+
+    .footnotes { font-size: 9px !important; margin-top: 24px !important; padding-top: 10px !important; break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+  <header class="page-head">
+    <div>
+      <p class="eyebrow">A scale primer · LLM parameters</p>
+      <h1 class="headline">From <em>1</em> to <em>1,760,000,000,000</em>.</h1>
+      <p class="deck">Every weight in a neural network is a single number. Modern frontier models hold more of them than there are stars in the Milky Way. Below: every published parameter count, side-by-side with the kind of file you could store in the same memory budget.</p>
+    </div>
+    <div class="tabs" role="tablist" id="tabs">
+      <button class="tab active" data-v="1">01 · Dot leader</button>
+      <button class="tab" data-v="2">02 · Typography</button>
+      <button class="tab" data-v="3">03 · Place value</button>
+      <button class="tab" data-v="4">04 · Log tape</button>
+    </div>
+  </header>
+
+  <main class="stage">
+    <div class="variation-caption">
+      <div id="cap-title"><span class="label-num">01</span>Dot leader</div>
+      <div class="desc" id="cap-desc">A single fixed-width row per model. Dots fill leftward; the number sits at the right. Each extra digit (each ×10) eats one more dot from the left — the "carry" is the visualization.</div>
+    </div>
+    <div id="root"></div>
+  </main>
+
+  <div class="footnotes">
+    <strong>METHOD</strong> · Parameter counts from official model cards, papers, and widely-reported press disclosures. MoE totals shown; active-expert counts are noted in the model label where relevant. GPT-4's count is a community estimate. Storage analogs assume FP16 (2 bytes per parameter).
+  </div>
+
+  <script>
+// LLM parameter dataset.
+// Sources: published papers, model cards, official disclosures.
+// For MoE models, "total" parameters are shown (active counts noted).
+// GPT-4 and later closed frontier models use widely-reported community estimates.
+
+window.MODELS = [
+  // The atomic anchor
+  { name: "one parameter", params: 1, year: null, org: null, note: "the atomic unit — a single weight" },
+
+  // Pre-LLM and early
+  { name: "Word2Vec", params: 3_000_000, year: 2013, org: "Google" },
+  { name: "ELMo", params: 94_000_000, year: 2018, org: "AI2" },
+  { name: "BERT-base", params: 110_000_000, year: 2018, org: "Google" },
+  { name: "GPT-1", params: 117_000_000, year: 2018, org: "OpenAI" },
+  { name: "BERT-large", params: 340_000_000, year: 2018, org: "Google" },
+  { name: "GPT-2", params: 1_500_000_000, year: 2019, org: "OpenAI" },
+  { name: "Megatron-LM", params: 8_300_000_000, year: 2019, org: "NVIDIA" },
+  { name: "T5", params: 11_000_000_000, year: 2019, org: "Google" },
+  { name: "Turing-NLG", params: 17_000_000_000, year: 2020, org: "Microsoft" },
+
+  // Modern open-weight tier
+  { name: "Phi-3 Medium", params: 14_000_000_000, year: 2024, org: "Microsoft" },
+  { name: "Gemma 2 27B", params: 27_000_000_000, year: 2024, org: "Google" },
+  { name: "Mixtral 8x7B", params: 47_000_000_000, year: 2023, org: "Mistral", note: "MoE · 13B active" },
+  { name: "LLaMA 65B", params: 65_000_000_000, year: 2023, org: "Meta" },
+  { name: "LLaMA 2 70B", params: 70_000_000_000, year: 2023, org: "Meta" },
+  { name: "Qwen 2.5 72B", params: 72_000_000_000, year: 2024, org: "Alibaba" },
+  { name: "Command R+", params: 104_000_000_000, year: 2024, org: "Cohere" },
+  { name: "Mixtral 8x22B", params: 141_000_000_000, year: 2024, org: "Mistral", note: "MoE · 39B active" },
+
+  // Frontier-ish 100–500B
+  { name: "GPT-3", params: 175_000_000_000, year: 2020, org: "OpenAI" },
+  { name: "BLOOM", params: 176_000_000_000, year: 2022, org: "BigScience" },
+  { name: "Falcon 180B", params: 180_000_000_000, year: 2023, org: "TII" },
+  { name: "DeepSeek V2", params: 236_000_000_000, year: 2024, org: "DeepSeek", note: "MoE · 21B active" },
+  { name: "Grok-1", params: 314_000_000_000, year: 2024, org: "xAI", note: "MoE · 86B active" },
+  { name: "LLaMA 3.1 405B", params: 405_000_000_000, year: 2024, org: "Meta" },
+  { name: "Megatron-Turing NLG", params: 530_000_000_000, year: 2021, org: "Microsoft + NVIDIA" },
+  { name: "PaLM", params: 540_000_000_000, year: 2022, org: "Google" },
+  { name: "DeepSeek V3", params: 671_000_000_000, year: 2024, org: "DeepSeek", note: "MoE · 37B active" },
+
+  // Trillion-class
+  { name: "Kimi K2", params: 1_000_000_000_000, year: 2025, org: "Moonshot", note: "MoE · 32B active" },
+  { name: "GPT-4 (reported)", params: 1_760_000_000_000, year: 2023, org: "OpenAI", note: "MoE · ~280B per expert · widely-reported estimate" },
+];
+
+// Storage analogs — assuming FP16 (2 bytes per parameter).
+// Mapped by power-of-ten brackets of parameter count.
+window.STORAGE_SCALE = [
+  { max: 10,                  emoji: "🔤", label: "one character",            detail: "2 bytes of text" },
+  { max: 1_000,               emoji: "💬", label: "a text message",           detail: "a couple of KB" },
+  { max: 100_000,             emoji: "📄", label: "a long article",           detail: "~200 KB of plain text" },
+  { max: 10_000_000,          emoji: "📷", label: "a photograph",             detail: "~20 MB raw image" },
+  { max: 100_000_000,         emoji: "🎵", label: "an album of music",        detail: "~200 MB of MP3" },
+  { max: 1_000_000_000,       emoji: "💿", label: "a CD-ROM",                 detail: "~700 MB capacity" },
+  { max: 10_000_000_000,      emoji: "🎬", label: "an HD movie",              detail: "~10–20 GB" },
+  { max: 100_000_000_000,     emoji: "📀", label: "a 4K Blu-ray box set",     detail: "~100 GB on disc" },
+  { max: 1_000_000_000_000,   emoji: "💾", label: "a portable SSD",           detail: "~500 GB – 1 TB" },
+  { max: 10_000_000_000_000,  emoji: "🗄️", label: "your entire NAS",          detail: "2–4 TB of files" },
+  { max: Infinity,            emoji: "🏛️", label: "a small data center rack", detail: "tens of TB at FP16" },
+];
+
+// Sort by params ascending so all variations render in scale order.
+window.MODELS.sort((a, b) => a.params - b.params);
+
+// Variation 1: "Dot leader"
+// Faithful to the reference: each row has dots filling the space leading up
+// to a right-aligned number. The total row width is uniform; as the number
+// grows wider (one more digit, more commas), it physically eats into the dot
+// run on its left — that's the "carry" mechanic. Dots are real glyphs in a
+// monospaced grid so the digit positions and dot positions stay aligned.
+
+window.renderV1 = function (root) {
+  const data = window.MODELS;
+  root.innerHTML = "";
+  root.className = "view view-v1";
+
+  // Width of the [dots + number] field, in monospaced character cells.
+  // Wide enough for the longest number + a comfortable run of dots.
+  const COLS = 50;
+
+  data.forEach((m) => {
+    const numStr = m.params.toLocaleString("en-US");
+    const stor = lookupStorage(m.params);
+    // Number takes numStr.length cells. One space gap. Dots fill the rest
+    // using a ". " pattern that places one dot per 2 character cells.
+    const dotCells = Math.max(0, COLS - numStr.length - 1);
+    let dotStr = "";
+    for (let i = 0; i < dotCells; i++) {
+      // First char of each pair is "." then " ", so odd index 0 = ".".
+      // We want dots aligned so that the rightmost cell of the dot field
+      // is a space (a visual gap before the number).
+      dotStr += (i % 2 === (dotCells % 2 === 0 ? 0 : 1)) ? "." : " ";
+    }
+
+    const row = document.createElement("div");
+    row.className = "v1-row";
+
+    // The "field" — fixed-width monospaced area containing dots + number.
+    const field = document.createElement("div");
+    field.className = "v1-field";
+
+    const dots = document.createElement("span");
+    dots.className = "v1-dots";
+    dots.textContent = dotStr;
+    field.appendChild(dots);
+
+    const num = document.createElement("span");
+    num.className = "v1-num";
+    num.textContent = " " + numStr;
+    field.appendChild(num);
+
+    row.appendChild(field);
+
+    // Model label (sans, small)
+    const label = document.createElement("div");
+    label.className = "v1-label";
+    label.innerHTML = m.name === "one parameter"
+      ? `<span class="v1-label-name muted">${m.name}</span>`
+      : `<span class="v1-label-name">${escapeHtml(m.name)}</span>` +
+        (m.org ? `<span class="v1-label-org"> · ${escapeHtml(m.org)}</span>` : "") +
+        (m.year ? `<span class="v1-label-year"> ${m.year}</span>` : "");
+    row.appendChild(label);
+
+    // Storage analog
+    const ana = document.createElement("div");
+    ana.className = "v1-analog";
+    ana.innerHTML =
+      `<span class="v1-emoji">${stor.emoji}</span>` +
+      `<span class="v1-analog-label">${stor.label}</span>`;
+    row.appendChild(ana);
+
+    root.appendChild(row);
+  });
+};
+
+function lookupStorage(params) {
+  for (const s of window.STORAGE_SCALE) {
+    if (params < s.max) return s;
+  }
+  return window.STORAGE_SCALE[window.STORAGE_SCALE.length - 1];
+}
+window.lookupStorage = lookupStorage;
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (c) => (
+    { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
+  ));
+}
+window.escapeHtml = escapeHtml;
+
+// Variation 2: "Pure Typography"
+// No dots — only the number, scaled in font-size proportional to log10 of params.
+// The digits themselves become the visualization.
+
+window.renderV2 = function (root) {
+  const data = window.MODELS;
+  root.innerHTML = "";
+  root.className = "view view-v2";
+
+  const maxLog = Math.log10(data[data.length - 1].params);
+
+  data.forEach((m) => {
+    const stor = lookupStorage(m.params);
+    const logP = Math.log10(Math.max(m.params, 1));
+    const t = logP / maxLog;
+    // Font size grows from 16px to 120px across the range.
+    const size = 16 + t * 104;
+    const numStr = m.params.toLocaleString("en-US");
+
+    const row = document.createElement("div");
+    row.className = "v2-row";
+
+    const left = document.createElement("div");
+    left.className = "v2-left";
+    left.innerHTML =
+      `<div class="v2-num" style="font-size:${size.toFixed(1)}px">${numStr}</div>` +
+      `<div class="v2-sub">` +
+      (m.name === "one parameter"
+        ? `<span class="muted">${m.name}</span>`
+        : `${escapeHtml(m.name)}` +
+          (m.org ? ` <span class="muted">· ${escapeHtml(m.org)}</span>` : "") +
+          (m.year ? ` <span class="muted">${m.year}</span>` : "")) +
+      `</div>`;
+    row.appendChild(left);
+
+    const right = document.createElement("div");
+    right.className = "v2-right";
+    right.innerHTML =
+      `<span class="v2-emoji" style="font-size:${(20 + t * 36).toFixed(0)}px">${stor.emoji}</span>` +
+      `<span class="v2-analog">${stor.label}<br><span class="muted v2-detail">${stor.detail}</span></span>`;
+    row.appendChild(right);
+
+    root.appendChild(row);
+  });
+};
+
+// Variation 3: "Place-Value Grid"
+// Each row renders the number as a horizontal sequence of 10×10 grids.
+// Each grid represents one magnitude bucket. Filled cells = digit value.
+// E.g. 175,000,000,000 = digits "175000000000" → 12 grids, only the highest
+// few have any fill (1 cell in the trillions grid, 7 in the hundreds-of-B,
+// 5 in the tens-of-B, etc).
+
+window.renderV3 = function (root) {
+  const data = window.MODELS;
+  root.innerHTML = "";
+  root.className = "view view-v3";
+
+  data.forEach((m) => {
+    const stor = lookupStorage(m.params);
+    const numStr = m.params.toLocaleString("en-US");
+
+    const row = document.createElement("div");
+    row.className = "v3-row";
+
+    // The number broken into digits, padded from the right.
+    // We render digits from highest place value down to ones.
+    const digits = String(m.params).split("").map(Number);
+
+    const gridWrap = document.createElement("div");
+    gridWrap.className = "v3-grids";
+
+    // Place-value labels every 3 digits
+    const totalDigits = digits.length;
+    digits.forEach((d, idx) => {
+      const place = totalDigits - 1 - idx;
+      const grid = document.createElement("div");
+      grid.className = "v3-grid";
+      grid.title = `digit ${d} × 10^${place}`;
+
+      // Use CSS — set the digit as a custom property; cells are pseudo via JS.
+      // We draw a 10-cell row: d cells filled, (10-d) empty. (Compact form.)
+      for (let i = 0; i < 10; i++) {
+        const cell = document.createElement("span");
+        cell.className = "v3-cell" + (i < d ? " on" : "");
+        grid.appendChild(cell);
+      }
+      // Add a place-value tick if this is a 1, 1000, 1M, 1B, 1T etc boundary
+      if (place % 3 === 0) {
+        const tick = document.createElement("div");
+        tick.className = "v3-tick";
+        tick.textContent =
+          place === 0 ? "1"
+          : place === 3 ? "K"
+          : place === 6 ? "M"
+          : place === 9 ? "B"
+          : place === 12 ? "T"
+          : `10^${place}`;
+        grid.appendChild(tick);
+      }
+      gridWrap.appendChild(grid);
+    });
+
+    row.appendChild(gridWrap);
+
+    const meta = document.createElement("div");
+    meta.className = "v3-meta";
+    meta.innerHTML =
+      `<div class="v3-num">${numStr}</div>` +
+      `<div class="v3-name">` +
+      (m.name === "one parameter"
+        ? `<span class="muted">${m.name}</span>`
+        : `${escapeHtml(m.name)}` +
+          (m.org ? ` <span class="muted">· ${escapeHtml(m.org)}</span>` : "")) +
+      `</div>` +
+      `<div class="v3-storage"><span class="v3-emoji">${stor.emoji}</span> <span class="muted">${stor.label}</span></div>`;
+    row.appendChild(meta);
+
+    root.appendChild(row);
+  });
+};
+
+// Variation 4: "Log Tape"
+// Horizontal logarithmic strip — every model is a tick on a shared scale.
+// At each magnitude decade, a storage analog is anchored above the strip.
+// A side rail shows the param count next to each tick.
+
+window.renderV4 = function (root) {
+  const data = window.MODELS;
+  root.innerHTML = "";
+  root.className = "view view-v4";
+
+  const minLog = 0;                                    // log10(1) = 0
+  const maxLog = Math.log10(data[data.length - 1].params);
+
+  // Top: decade scale with storage analogs
+  const scale = document.createElement("div");
+  scale.className = "v4-scale";
+  for (let p = 0; p <= Math.ceil(maxLog); p++) {
+    const t = (p - minLog) / (maxLog - minLog);
+    if (t < 0 || t > 1.02) continue;
+    const stor = lookupStorage(Math.pow(10, p));
+    const tick = document.createElement("div");
+    tick.className = "v4-decade";
+    tick.style.left = `${(t * 100).toFixed(3)}%`;
+    tick.innerHTML =
+      `<div class="v4-decade-emoji">${stor.emoji}</div>` +
+      `<div class="v4-decade-label">${stor.label}</div>` +
+      `<div class="v4-decade-num">10<sup>${p}</sup></div>`;
+    scale.appendChild(tick);
+  }
+  root.appendChild(scale);
+
+  // The tape itself
+  const tape = document.createElement("div");
+  tape.className = "v4-tape";
+  // Add decade grid lines
+  for (let p = 0; p <= Math.ceil(maxLog); p++) {
+    const t = (p - minLog) / (maxLog - minLog);
+    if (t < 0 || t > 1.02) continue;
+    const gl = document.createElement("div");
+    gl.className = "v4-gridline";
+    gl.style.left = `${(t * 100).toFixed(3)}%`;
+    tape.appendChild(gl);
+  }
+  root.appendChild(tape);
+
+  // Models list — each row a horizontal bar from 0 to its log position
+  const list = document.createElement("div");
+  list.className = "v4-list";
+
+  data.forEach((m) => {
+    const t = (Math.log10(Math.max(m.params, 1)) - minLog) / (maxLog - minLog);
+    const numStr = m.params.toLocaleString("en-US");
+
+    const row = document.createElement("div");
+    row.className = "v4-row";
+    row.innerHTML =
+      `<div class="v4-rowname">` +
+      (m.name === "one parameter"
+        ? `<span class="muted">${m.name}</span>`
+        : `<strong>${escapeHtml(m.name)}</strong>` +
+          (m.org ? ` <span class="muted">· ${escapeHtml(m.org)}</span>` : "")) +
+      `</div>` +
+      `<div class="v4-bar-wrap">` +
+        `<div class="v4-bar" style="width:${(t * 100).toFixed(3)}%"></div>` +
+        `<div class="v4-marker" style="left:${(t * 100).toFixed(3)}%"></div>` +
+        `<div class="v4-num" style="left:${(t * 100).toFixed(3)}%">${numStr}</div>` +
+      `</div>`;
+    list.appendChild(row);
+  });
+
+  root.appendChild(list);
+};
+
+  </script>
+  <script>
+    const captions = {
+      "1": { title: "Dot leader", desc: "A single fixed-width row per model. Dots fill leftward; the number sits at the right. Each extra digit (each ×10) eats one more dot from the left — the \"carry\" is the visualization." },
+      "2": { title: "Typography",  desc: "No dots. Just the digits, scaled in font-size by log-magnitude. The number is the visualization." },
+      "3": { title: "Place value", desc: "Every digit lights up its own 10×10 grid. Read the columns left-to-right as trillions · billions · millions · thousands · ones." },
+      "4": { title: "Log tape",    desc: "A single horizontal scale, log₁₀. Each storage analog anchors a decade; each model is a dot somewhere along the line." },
+    };
+
+    function render(n) {
+      const root = document.getElementById("root");
+      ({ "1": window.renderV1, "2": window.renderV2, "3": window.renderV3, "4": window.renderV4 }[n])(root);
+      const c = captions[n];
+      document.getElementById("cap-title").innerHTML = `<span class="label-num">0${n}</span>${c.title}`;
+      document.getElementById("cap-desc").textContent = c.desc;
+      document.querySelectorAll(".tab").forEach((b) => b.classList.toggle("active", b.dataset.v === n));
+
+      // V4: detect markers near right edge, flip their number labels.
+      if (n === "4") {
+        requestAnimationFrame(() => {
+          document.querySelectorAll(".v4-num").forEach((el) => {
+            const wrap = el.parentElement;
+            const wRect = wrap.getBoundingClientRect();
+            const leftPx = parseFloat(getComputedStyle(el).left) || (el.offsetLeft);
+            const overflow = leftPx + el.offsetWidth + 16 > wRect.width;
+            el.classList.toggle("flip", overflow);
+          });
+        });
+      }
+    }
+
+    document.getElementById("tabs").addEventListener("click", (e) => {
+      const t = e.target.closest(".tab");
+      if (!t) return;
+      render(t.dataset.v);
+      try { localStorage.setItem("llm-scale-v", t.dataset.v); } catch (_) {}
+    });
+
+    const initial = (() => { try { return localStorage.getItem("llm-scale-v") || "1"; } catch (_) { return "1"; } })();
+    // Force V1 (the dot-leader view) for the print-ready file.
+    render("1");
+
+  </script>
+</body>
+</html>

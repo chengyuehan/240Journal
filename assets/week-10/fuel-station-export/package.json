@@ -1,0 +1,10 @@
+{
+  "name": "ai-fuel-station",
+  "version": "1.0.0",
+  "description": "AI Fuel Station — interactive AI-pricing visualization fed by LIVE LLM Stats data (real prices, real output speed, benchmark-derived IQ).",
+  "scripts": {
+    "start": "node server.js",
+    "refresh": "node -e \"require('http').get('http://localhost:8753/api/refresh',r=>r.pipe(process.stdout))\""
+  },
+  "engines": { "node": ">=18" }
+}

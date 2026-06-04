@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>From 1 to 2,000,000,000,000 — a tour through LLM parameter counts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f3eee3;
+    --ink: #161512;
+    --ink-soft: #5b574f;
+    --muted: #9d978a;
+    --line: #d6cfbe;
+    --accent: #c54a2c;
+    --grid: #cdc6b4;
+    --serif: "Instrument Serif", "Times New Roman", serif;
+    --mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+    --sans: "Inter", system-ui, -apple-system, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); }
+  body { min-height: 100vh; padding: 56px 40px 120px; }
+  .muted { color: var(--muted); }
+  strong { font-weight: 600; }
+
+  /* ───── Header ───── */
+  header.page-head {
+    max-width: 1280px;
+    margin: 0 auto 56px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 32px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--line);
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 0 0 14px;
+  }
+  h1.headline {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(36px, 5vw, 72px);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  h1.headline em { font-style: italic; color: var(--accent); }
+  .deck {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 18px;
+    color: var(--ink-soft);
+    max-width: 56ch;
+    margin: 18px 0 0;
+    line-height: 1.4;
+  }
+
+  /* Variation tabs */
+  .tabs {
+    display: inline-flex;
+    border: 1px solid var(--ink);
+    border-radius: 0;
+    padding: 0;
+    background: transparent;
+  }
+  .tab {
+    appearance: none;
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--ink);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 11px 14px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .tab:last-child { border-right: none; }
+  .tab:hover { background: rgba(0,0,0,0.04); }
+  .tab.active { background: var(--ink); color: var(--bg); }
+
+  /* ───── Variation block container ───── */
+  .stage {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .variation-caption {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 0 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .variation-caption .label-num { color: var(--accent); margin-right: 8px; }
+  .variation-caption .desc { font-family: var(--serif); font-style: italic; text-transform: none; letter-spacing: 0; font-size: 14px; color: var(--ink-soft); }
+
+  /* ═════════════════════════════════════ V1 — Dot leader ═════════════════════════════════════ */
+  .view-v1 {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .v1-row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 20px;
+    font-size: 15px;
+    line-height: 1;
+  }
+  .v1-field {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    white-space: pre;
+    color: var(--ink);
+    letter-spacing: 0;
+  }
+  .v1-dots {
+    color: var(--muted);
+    opacity: 0.85;
+  }
+  .v1-num {
+    font-weight: 500;
+  }
+  .v1-label {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .v1-label-name { font-weight: 500; }
+  .v1-label-org { color: var(--muted); }
+  .v1-label-year { color: var(--muted); font-family: var(--mono); font-size: 11px; }
+  /* Media markers — interleaved among the models on the same number line.
+     Horizontal margin/padding cancel so the dot field stays column-aligned. */
+  .v1-row.is-media {
+    background: rgba(197, 74, 44, 0.07);
+    border-radius: 2px;
+    padding: 7px 10px;
+    margin: 2px -10px;
+  }
+  .v1-row.is-media .v1-dots { color: var(--accent); opacity: 0.38; }
+  .v1-row.is-media .v1-num { color: var(--accent); font-weight: 600; }
+  .v1-media-emoji { font-size: 18px; line-height: 1; margin-right: 9px; }
+  .v1-media-name {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 17px;
+    color: var(--accent);
+    margin-right: 11px;
+  }
+  .v1-media-cap {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ═════════════════════════════════════ V3 — Media-count matrix ═════════════════════════════════════ */
+  .view-v3 { overflow-x: auto; }
+  .v3-table { min-width: 920px; display: flex; flex-direction: column; }
+  .v3-head, .v3-row {
+    display: grid;
+    grid-template-columns: minmax(200px, 1.6fr) 130px repeat(5, 1fr);
+    align-items: center;
+    gap: 18px;
+  }
+  .v3-head {
+    padding: 4px 0 14px;
+    border-bottom: 1px solid var(--ink);
+  }
+  .v3-row {
+    padding: 13px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .v3-h-lab {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .v3-h-lab.r { text-align: right; }
+  .v3-h-media {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    gap: 3px;
+  }
+  .v3-h-emoji { font-size: 22px; line-height: 1; }
+  .v3-h-name { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--ink-soft); line-height: 1.05; }
+  .v3-h-cap { font-family: var(--mono); font-size: 9px; letter-spacing: 0.03em; color: var(--muted); }
+  .v3-c-model { font-family: var(--sans); font-size: 13px; }
+  .v3-c-model .nm { font-weight: 600; }
+  .v3-c-params {
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 13px;
+    text-align: right;
+    color: var(--ink);
+  }
+  .v3-c-count {
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 15px;
+    text-align: right;
+    color: var(--ink);
+  }
+  .v3-c-count.zero { color: var(--muted); opacity: 0.45; }
+
+  /* Footer */
+  .footnotes {
+    max-width: 1280px;
+    margin: 80px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+  }
+  .footnotes strong { color: var(--ink); font-weight: 600; }
+
+  @media (max-width: 900px) {
+    body { padding: 32px 20px 80px; }
+    header.page-head { grid-template-columns: 1fr; }
+    .v1-row { grid-template-columns: 1fr; gap: 4px; }
+    .v1-label, .v1-media { width: auto; min-width: 0; }
+    .v1-media { justify-content: flex-start; flex-wrap: wrap; }
+    .view-v3 { overflow-x: auto; }
+  }
+  /* ═════════════════════════════════════ Growth timeline ═════════════════════════════════════ */
+  .view-timeline { overflow-x: auto; padding-bottom: 8px; }
+  .tl-plot { position: relative; margin: 0 auto; }
+  .tl-svg { position: absolute; inset: 0; overflow: visible; }
+  .tl-gridline { stroke: var(--grid); stroke-width: 1; }
+  .tl-axis { stroke: var(--line); stroke-width: 1; }
+  .tl-bookline { stroke: var(--accent); stroke-width: 1; stroke-dasharray: 2 4; opacity: 0.55; }
+  .tl-frontier { fill: none; stroke: var(--accent); stroke-width: 2; }
+  .tl-leader { stroke: var(--muted); stroke-width: 1; opacity: 0.5; }
+  .tl-dot { fill: var(--muted); }
+  .tl-dot-record { fill: var(--accent); stroke: var(--bg); stroke-width: 2; }
+  .tl-year {
+    position: absolute;
+    transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+  }
+  .tl-ytick {
+    position: absolute;
+    transform: translateY(-50%);
+    right: 100%;
+    margin-right: 10px;
+    white-space: nowrap;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--muted);
+  }
+  .tl-book {
+    position: absolute;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--accent);
+    line-height: 1.05;
+    background: var(--bg);
+    padding: 1px 7px 1px 4px;
+    border-radius: 3px;
+  }
+  .tl-book .tl-book-tok {
+    display: block;
+    font-family: var(--mono);
+    font-style: normal;
+    font-size: 9.5px;
+    letter-spacing: 0.03em;
+    color: var(--accent);
+    opacity: 0.7;
+  }
+  .tl-lab {
+    position: absolute;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .tl-lab .nm { font-family: var(--sans); font-size: 11px; font-weight: 600; color: var(--ink); }
+  .tl-lab .sz { font-family: var(--mono); font-size: 10px; color: var(--accent); margin-left: 5px; }
+  .tl-lab.left { text-align: right; }
+</style>
+</head>
+<body>
+  <header class="page-head">
+    <div>
+      <p class="eyebrow">A scale primer · LLM parameters</p>
+      <h1 class="headline">From <em>1</em> to <em>2,000,000,000,000</em>.</h1>
+      <p class="deck">Every weight in a neural network is a single number. How many numbers is that? Here each parameter count shares one line with the <em>tokens</em> of text in books you know — convert a book's word count to tokens (≈4/3 each) and it becomes a plain number you can set right beside a model. From a single page to the Library of Congress.</p>
+    </div>
+    <div class="tabs" role="tablist" id="tabs">
+      <button class="tab active" data-v="1">01 · Dot leader</button>
+      <button class="tab" data-v="2">02 · Growth</button>
+      <button class="tab" data-v="3">03 · Book count</button>
+    </div>
+  </header>
+
+  <main class="stage">
+    <div class="variation-caption">
+      <div id="cap-title"><span class="label-num">01</span>Dot leader</div>
+      <div class="desc" id="cap-desc">A single fixed-width row per model. Dots fill leftward; the number sits at the right. Each extra digit (each ×10) eats one more dot from the left — the "carry" is the visualization.</div>
+    </div>
+    <div id="root"></div>
+  </main>
+
+  <div class="footnotes">
+    <strong>METHOD</strong> · Parameter counts from official model cards, papers, and widely-reported disclosures. MoE totals shown; active-expert counts noted in the label where relevant. GPT-4's count is a community estimate; Llama 4 Behemoth is a preview figure. Book figures use published word counts converted to tokens at ≈4/3 tokens per word — Gatsby 47K words · Moby-Dick 206K · War and Peace 587K · Harry Potter series 1.08M · Encyclopædia Britannica 44M · English Wikipedia 4.7B · Library of Congress ~1.7T words.
+  </div>
+
+  <script>
+// LLM parameter dataset.
+// Sources: published papers, model cards, official disclosures.
+// For MoE models, "total" parameters are shown (active counts noted).
+// GPT-4 and later closed frontier models use widely-reported community estimates.
+
+window.MODELS = [
+  // The atomic anchor
+  { name: "one parameter", params: 1, year: null, org: null, note: "the atomic unit — a single weight" },
+
+  // Pre-LLM and early
+  { name: "Word2Vec", params: 3_000_000, year: 2013, org: "Google" },
+  { name: "ELMo", params: 94_000_000, year: 2018, org: "AI2" },
+  { name: "BERT-base", params: 110_000_000, year: 2018, org: "Google" },
+  { name: "GPT-1", params: 117_000_000, year: 2018, org: "OpenAI" },
+  { name: "BERT-large", params: 340_000_000, year: 2018, org: "Google" },
+  { name: "GPT-2", params: 1_500_000_000, year: 2019, org: "OpenAI" },
+  { name: "Megatron-LM", params: 8_300_000_000, year: 2019, org: "NVIDIA" },
+  { name: "T5", params: 11_000_000_000, year: 2019, org: "Google" },
+  { name: "Turing-NLG", params: 17_000_000_000, year: 2020, org: "Microsoft" },
+
+  // Modern open-weight tier
+  { name: "Phi-3 Medium", params: 14_000_000_000, year: 2024, org: "Microsoft" },
+  { name: "Gemma 2 27B", params: 27_000_000_000, year: 2024, org: "Google" },
+  { name: "Mixtral 8x7B", params: 47_000_000_000, year: 2023, org: "Mistral", note: "MoE · 13B active" },
+  { name: "LLaMA 65B", params: 65_000_000_000, year: 2023, org: "Meta" },
+  { name: "LLaMA 2 70B", params: 70_000_000_000, year: 2023, org: "Meta" },
+  { name: "Qwen 2.5 72B", params: 72_000_000_000, year: 2024, org: "Alibaba" },
+  { name: "Command R+", params: 104_000_000_000, year: 2024, org: "Cohere" },
+  { name: "Mixtral 8x22B", params: 141_000_000_000, year: 2024, org: "Mistral", note: "MoE · 39B active" },
+
+  // Frontier-ish 100–500B
+  { name: "GPT-3", params: 175_000_000_000, year: 2020, org: "OpenAI" },
+  { name: "BLOOM", params: 176_000_000_000, year: 2022, org: "BigScience" },
+  { name: "Falcon 180B", params: 180_000_000_000, year: 2023, org: "TII" },
+  { name: "DeepSeek V2", params: 236_000_000_000, year: 2024, org: "DeepSeek", note: "MoE · 21B active" },
+  { name: "Grok-1", params: 314_000_000_000, year: 2024, org: "xAI", note: "MoE · 86B active" },
+  { name: "LLaMA 3.1 405B", params: 405_000_000_000, year: 2024, org: "Meta" },
+  { name: "Megatron-Turing NLG", params: 530_000_000_000, year: 2021, org: "Microsoft + NVIDIA" },
+  { name: "PaLM", params: 540_000_000_000, year: 2022, org: "Google" },
+  { name: "DeepSeek V3", params: 671_000_000_000, year: 2024, org: "DeepSeek", note: "MoE · 37B active" },
+
+  // Trillion-class
+  { name: "Kimi K2", params: 1_000_000_000_000, year: 2025, org: "Moonshot", note: "MoE · 32B active" },
+  { name: "GPT-4 (reported)", params: 1_760_000_000_000, year: 2023, org: "OpenAI", note: "MoE · ~280B per expert · widely-reported estimate" },
+  { name: "Llama 4 Behemoth", params: 2_000_000_000_000, year: 2025, org: "Meta", note: "MoE · ~288B active · preview" },
+];
+
+// English text converts to tokens at roughly 4/3 of its word count.
+window.TOKENS_PER_WORD = 4 / 3;
+
+// Famous books, by published word count. Multiply by ~4/3 and each book's text
+// becomes a token count — a plain number that sits on the SAME line as the
+// model parameter counts. A book lands at the parameter count it equals in
+// tokens, so "this model = the tokens in N War-and-Peaces" reads directly off
+// the scale. Span runs from a single page up to the Library of Congress.
+window.BOOKS = [
+  { emoji: "📄", label: "printed pages",          one: "a printed page",              words: 300 },
+  { emoji: "📰", label: "magazine features",      one: "a magazine feature",          words: 5_000 },
+  { emoji: "📗", label: "copies of Gatsby",       one: "The Great Gatsby",            words: 47_000 },
+  { emoji: "📘", label: "copies of Moby-Dick",    one: "Moby-Dick",                   words: 206_000 },
+  { emoji: "📕", label: "War & Peaces",           one: "War and Peace",               words: 587_000 },
+  { emoji: "📚", label: "Harry Potter sets",      one: "the Harry Potter series",     words: 1_084_000 },
+  { emoji: "📖", label: "Britannica sets",        one: "the Encyclopædia Britannica", words: 44_000_000 },
+  { emoji: "🌐", label: "Wikipedias",             one: "English Wikipedia",           words: 4_700_000_000 },
+  { emoji: "🏛️", label: "national libraries",     one: "a 5-million-book library",     words: 500_000_000_000 },
+  { emoji: "📜", label: "Libraries of Congress",  one: "the Library of Congress",     words: 1_700_000_000_000 },
+];
+
+// Sort by params ascending so all variations render in scale order.
+window.MODELS.sort((a, b) => a.params - b.params);
+
+// THE KEY IDEA: books are not a side note — they ARE points on the same number
+// line as the models. A book of W words converts to ~W·4/3 tokens; that token
+// count is a plain number we drop straight onto the parameter axis. mergedScale()
+// weaves models + books into one list, sorted by size, so every book lands
+// BETWEEN the models it sits between.
+window.bookTokens = function (b) { return Math.round(b.words * window.TOKENS_PER_WORD); };
+
+window.mergedScale = function () {
+  const models = window.MODELS.map((m) => Object.assign({ type: "model" }, m));
+  const books = window.BOOKS.map((b) => {
+    const tokens = window.bookTokens(b);
+    return Object.assign({ type: "media", params: tokens, tokens }, b);
+  });
+  return models.concat(books).sort((a, b) => a.params - b.params);
+};
+
+// Variation 1: "Dot leader"
+// Faithful to the reference: each row has dots filling the space leading up
+// to a right-aligned number. The total row width is uniform; as the number
+// grows wider (one more digit, more commas), it physically eats into the dot
+// run on its left — that's the "carry" mechanic. Dots are real glyphs in a
+// monospaced grid so the digit positions and dot positions stay aligned.
+
+window.renderV1 = function (root) {
+  root.innerHTML = "";
+  root.className = "view view-v1";
+
+  // Width of the [dots + number] field, in monospaced character cells.
+  const COLS = 42;
+  const items = window.mergedScale();
+
+  items.forEach((it) => {
+    const numStr = Math.round(it.params).toLocaleString("en-US");
+    const dotCells = Math.max(0, COLS - numStr.length - 1);
+    let dotStr = "";
+    for (let i = 0; i < dotCells; i++) {
+      dotStr += (i % 2 === (dotCells % 2 === 0 ? 0 : 1)) ? "." : " ";
+    }
+
+    const row = document.createElement("div");
+    row.className = "v1-row" + (it.type === "media" ? " is-media" : "");
+
+    // Fixed-width monospaced field: dots fill leftward, number sits at right.
+    const field = document.createElement("div");
+    field.className = "v1-field";
+    const dots = document.createElement("span");
+    dots.className = "v1-dots";
+    dots.textContent = dotStr;
+    field.appendChild(dots);
+    const num = document.createElement("span");
+    num.className = "v1-num";
+    num.textContent = " " + numStr;
+    field.appendChild(num);
+    row.appendChild(field);
+
+    const label = document.createElement("div");
+    label.className = "v1-label";
+    if (it.type === "media") {
+      label.innerHTML =
+        `<span class="v1-media-emoji">${it.emoji}</span>` +
+        `<span class="v1-media-name">${escapeHtml(it.one)}</span>` +
+        `<span class="v1-media-cap">${it.words.toLocaleString("en-US")} words ≈ this many tokens of text</span>`;
+    } else if (it.name === "one parameter") {
+      label.innerHTML = `<span class="v1-label-name muted">${it.name}</span>`;
+    } else {
+      label.innerHTML =
+        `<span class="v1-label-name">${escapeHtml(it.name)}</span>` +
+        (it.org ? `<span class="v1-label-org"> · ${escapeHtml(it.org)}</span>` : "") +
+        (it.year ? `<span class="v1-label-year"> ${it.year}</span>` : "");
+    }
+    row.appendChild(label);
+
+    root.appendChild(row);
+  });
+};
+
+// Full count (matrix): integer with thousands separators, "—" below one.
+function fmtCount(n) {
+  if (n < 1) return "—";
+  return Math.round(n).toLocaleString("en-US");
+}
+window.fmtCount = fmtCount;
+
+// Short count (inline chips): 176K, 5.7K, 36, "—".
+function fmtShort(n) {
+  if (n < 1) return "—";
+  if (n < 1000) return String(Math.round(n));
+  if (n < 1e6) { const v = n / 1e3; return (v < 10 ? v.toFixed(1).replace(/\.0$/, "") : Math.round(v)) + "K"; }
+  if (n < 1e9) { const v = n / 1e6; return (v < 10 ? v.toFixed(1).replace(/\.0$/, "") : Math.round(v)) + "M"; }
+  const v = n / 1e9; return (v < 10 ? v.toFixed(1).replace(/\.0$/, "") : Math.round(v)) + "B";
+}
+window.fmtShort = fmtShort;
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (c) => (
+    { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
+  ));
+}
+window.escapeHtml = escapeHtml;
+
+// Variation 2: "Growth timeline"
+// Plots every model by YEAR (x) against its size (log y), draws a climbing
+// "frontier" line through the record-setters, and overlays famous books as
+// horizontal reference lines — so you can read off exactly when models
+// surpassed Harry Potter, Britannica, all of Wikipedia, the Library of Congress.
+
+window.fmtParamsShort = function (p) {
+  if (p >= 1e12) return (p / 1e12).toFixed(p % 1e12 === 0 ? 0 : (p / 1e12 < 10 ? 2 : 1)) + "T";
+  if (p >= 1e9)  { const b = p / 1e9; return (b < 10 ? b.toFixed(1) : Math.round(b)) + "B"; }
+  if (p >= 1e6)  return Math.round(p / 1e6) + "M";
+  return p.toLocaleString("en-US");
+};
+
+window.renderTimeline = function (root) {
+  root.innerHTML = "";
+  root.className = "view view-timeline";
+
+  const models = window.MODELS.filter((m) => m.year);
+  const Y0 = 2013, Y1 = 2026;
+  const LOG_MIN = 6, LOG_MAX = 12.6;
+
+  const M = { t: 28, r: 30, b: 40, l: 64 };
+  const plotW = 860, plotH = 540;
+  const W = plotW + M.l + M.r, H = plotH + M.t + M.b;
+
+  const xFor = (yr) => M.l + ((yr - Y0) / (Y1 - Y0)) * plotW;
+  const yFor = (p) => M.t + (1 - (Math.log10(p) - LOG_MIN) / (LOG_MAX - LOG_MIN)) * plotH;
+
+  const plot = document.createElement("div");
+  plot.className = "tl-plot";
+  plot.style.width = W + "px";
+  plot.style.height = H + "px";
+
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, "svg");
+  svg.setAttribute("class", "tl-svg");
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  const mk = (tag, attrs) => {
+    const el = document.createElementNS(svgNS, tag);
+    for (const k in attrs) el.setAttribute(k, attrs[k]);
+    return el;
+  };
+
+  // y gridlines + ticks (per decade)
+  for (let e = Math.ceil(LOG_MIN); e <= Math.floor(LOG_MAX); e++) {
+    const y = yFor(Math.pow(10, e));
+    svg.appendChild(mk("line", { class: "tl-gridline", x1: M.l, y1: y, x2: M.l + plotW, y2: y }));
+    const tick = document.createElement("div");
+    tick.className = "tl-ytick";
+    tick.style.left = M.l + "px";
+    tick.style.top = y + "px";
+    tick.textContent = window.fmtParamsShort(Math.pow(10, e));
+    plot.appendChild(tick);
+  }
+
+  // x gridlines + year labels (every 2 years)
+  for (let yr = Y0; yr <= Y1; yr++) {
+    const x = xFor(yr);
+    if (yr % 2 === (Y0 % 2)) {
+      svg.appendChild(mk("line", { class: "tl-gridline", x1: x, y1: M.t, x2: x, y2: M.t + plotH }));
+      const yl = document.createElement("div");
+      yl.className = "tl-year";
+      yl.style.left = x + "px";
+      yl.style.top = (M.t + plotH + 18) + "px";
+      yl.textContent = yr;
+      plot.appendChild(yl);
+    }
+  }
+
+  // axes
+  svg.appendChild(mk("line", { class: "tl-axis", x1: M.l, y1: M.t, x2: M.l, y2: M.t + plotH }));
+  svg.appendChild(mk("line", { class: "tl-axis", x1: M.l, y1: M.t + plotH, x2: M.l + plotW, y2: M.t + plotH }));
+
+  // book reference lines
+  const refBooks = window.BOOKS.filter((b) => {
+    const l = Math.log10(window.bookTokens(b));
+    return l >= LOG_MIN && l <= LOG_MAX;
+  });
+  refBooks.forEach((b) => {
+    const y = yFor(window.bookTokens(b));
+    svg.appendChild(mk("line", { class: "tl-bookline", x1: M.l, y1: y, x2: M.l + plotW, y2: y }));
+    const lab = document.createElement("div");
+    lab.className = "tl-book";
+    lab.style.left = (M.l + 8) + "px";
+    lab.style.top = (y - 11) + "px";
+    lab.innerHTML = `${b.emoji} ${escapeHtml(b.one)}` +
+      `<span class="tl-book-tok">${window.fmtParamsShort(window.bookTokens(b))} tokens</span>`;
+    plot.appendChild(lab);
+  });
+
+  // frontier = running all-time max as years progress
+  const byYear = models.slice().sort((a, b) => a.year - b.year || a.params - b.params);
+  let max = 0;
+  const records = [];
+  byYear.forEach((m) => { if (m.params > max) { max = m.params; records.push(m); } });
+
+  // frontier polyline (step through record points)
+  const pts = records.map((m) => `${xFor(m.year)},${yFor(m.params)}`).join(" ");
+  svg.appendChild(mk("polyline", { class: "tl-frontier", points: pts }));
+
+  // ── label layout: de-collide vertically, leader lines back to each dot ──
+  const GAP = 18;
+  const TOP = M.t, BOT = M.t + plotH;
+  function decollide(group) {
+    group.sort((a, b) => a.dy - b.dy);
+    group.forEach((g) => (g.ly = g.dy));
+    for (let i = 1; i < group.length; i++)
+      if (group[i].ly < group[i - 1].ly + GAP) group[i].ly = group[i - 1].ly + GAP;
+    if (group.length && group[group.length - 1].ly > BOT) {
+      group[group.length - 1].ly = BOT;
+      for (let i = group.length - 2; i >= 0; i--)
+        if (group[i].ly > group[i + 1].ly - GAP) group[i].ly = group[i + 1].ly - GAP;
+    }
+    if (group.length && group[0].ly < TOP) {
+      group[0].ly = TOP;
+      for (let i = 1; i < group.length; i++)
+        if (group[i].ly < group[i - 1].ly + GAP) group[i].ly = group[i - 1].ly + GAP;
+    }
+  }
+
+  // each record gets a label; side = left of dot if the dot is in the right third
+  const labs = records.map((m) => ({
+    m, dx: xFor(m.year), dy: yFor(m.params),
+    onRight: (xFor(m.year) - M.l) / plotW > 0.66,
+  }));
+  decollide(labs); // one global pass so no two labels ever share a row, regardless of side
+
+  // leader lines (under the dots)
+  labs.forEach((L) => {
+    const ax = L.onRight ? L.dx - 9 : L.dx + 9;
+    svg.appendChild(mk("line", { class: "tl-leader", x1: L.dx, y1: L.dy, x2: ax, y2: L.ly }));
+  });
+
+  // dots
+  const recordSet = new Set(records);
+  models.forEach((m) => {
+    const isRec = recordSet.has(m);
+    svg.appendChild(mk("circle", {
+      class: isRec ? "tl-dot-record" : "tl-dot",
+      cx: xFor(m.year), cy: yFor(m.params), r: isRec ? 5 : 3,
+    }));
+  });
+
+  plot.appendChild(svg);
+
+  // label elements
+  labs.forEach((L) => {
+    const el = document.createElement("div");
+    el.className = "tl-lab" + (L.onRight ? " left" : "");
+    el.style.top = L.ly + "px";
+    if (L.onRight) {
+      el.style.left = (L.dx - 11) + "px";
+      el.style.transform = "translate(-100%, -50%)";
+    } else {
+      el.style.left = (L.dx + 11) + "px";
+      el.style.transform = "translateY(-50%)";
+    }
+    el.innerHTML = `<span class="nm">${escapeHtml(L.m.name)}</span>` +
+      `<span class="sz">${window.fmtParamsShort(L.m.params)}</span>`;
+    plot.appendChild(el);
+  });
+
+  root.appendChild(plot);
+};
+
+// Variation 3: "Book-count matrix"
+// One column per book. Each cell answers: how many copies of THIS book's text
+// would it take to equal the model's parameter count in tokens (~4/3 per word)?
+// Reading down a column shows the explosion of scale; reading across a row
+// shows what one model's parameter count actually means in books you know.
+
+window.renderV3 = function (root) {
+  const data = window.MODELS;
+  root.innerHTML = "";
+  root.className = "view view-v3";
+
+  const table = document.createElement("div");
+  table.className = "v3-table";
+  const cols = `minmax(190px, 1.5fr) 120px repeat(${window.BOOKS.length}, minmax(58px, 1fr))`;
+  table.style.minWidth = (320 + window.BOOKS.length * 88) + "px";
+
+  // Header row — book identity (emoji · name · word count)
+  const head = document.createElement("div");
+  head.className = "v3-head";
+  head.style.gridTemplateColumns = cols;
+  head.innerHTML =
+    `<div class="v3-h-lab">Model</div>` +
+    `<div class="v3-h-lab r">Parameters</div>` +
+    window.BOOKS.map((b) =>
+      `<div class="v3-h-media">` +
+        `<span class="v3-h-emoji">${b.emoji}</span>` +
+        `<span class="v3-h-name">${escapeHtml(b.one)}</span>` +
+        `<span class="v3-h-cap">${b.words.toLocaleString("en-US")} words</span>` +
+      `</div>`
+    ).join("");
+  table.appendChild(head);
+
+  data.forEach((m) => {
+    const numStr = m.params.toLocaleString("en-US");
+    const row = document.createElement("div");
+    row.className = "v3-row";
+    row.style.gridTemplateColumns = cols;
+
+    let html =
+      `<div class="v3-c-model">` +
+      (m.name === "one parameter"
+        ? `<span class="muted">${m.name}</span>`
+        : `<span class="nm">${escapeHtml(m.name)}</span>` +
+          (m.org ? ` <span class="muted">· ${escapeHtml(m.org)}</span>` : "")) +
+      `</div>` +
+      `<div class="v3-c-params">${numStr}</div>`;
+
+    window.BOOKS.forEach((b) => {
+      const c = m.params / window.bookTokens(b);
+      const z = c < 1 ? " zero" : "";
+      html += `<div class="v3-c-count${z}">${fmtCount(c)}</div>`;
+    });
+
+    row.innerHTML = html;
+    table.appendChild(row);
+  });
+
+  root.appendChild(table);
+};
+
+  </script>
+  <script>
+    const captions = {
+      "1": { title: "Dot leader", desc: "Models and famous books share one number line, sorted by size. The accent rows are books — each sits at the token count its text converts to (≈4/3 of its word count). Read the gaps: a model lands between two books, anchoring its parameter count to something you can picture." },
+      "2": { title: "Growth", desc: "When did models reach each size? Every model plotted by year against its parameter count (log scale). The accent line tracks the climbing frontier; the dashed lines mark famous books — read off when models surpassed Harry Potter, Britannica, all of Wikipedia, the Library of Congress." },
+      "3": { title: "Book count", desc: "The other direction: how many copies of each book's text it would take to equal a model's parameter count in tokens. Read across one row — pages · features · Gatsby · Moby-Dick · War and Peace · Harry Potter · Britannica · Wikipedia · libraries." },
+    };
+
+    function render(n) {
+      const root = document.getElementById("root");
+      const fn = { "1": window.renderV1, "2": window.renderTimeline, "3": window.renderV3 }[n] || window.renderV1;
+      fn(root);
+      const c = captions[n];
+      document.getElementById("cap-title").innerHTML = `<span class="label-num">0${n}</span>${c.title}`;
+      document.getElementById("cap-desc").textContent = c.desc;
+      document.querySelectorAll(".tab").forEach((b) => b.classList.toggle("active", b.dataset.v === n));
+    }
+
+    document.getElementById("tabs").addEventListener("click", (e) => {
+      const t = e.target.closest(".tab");
+      if (!t) return;
+      render(t.dataset.v);
+      try { localStorage.setItem("llm-scale-v", t.dataset.v); } catch (_) {}
+    });
+
+    const initial = (() => { try { const v = localStorage.getItem("llm-scale-v"); return (v === "1" || v === "2" || v === "3") ? v : "1"; } catch (_) { return "1"; } })();
+    render(initial);
+  </script>
+</body>
+</html>
