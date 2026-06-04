@@ -65,7 +65,7 @@ This reference expands my current direction. It makes me start thinking about ho
 ### 4.[This is Not My Name](https://vis.csh.ac.at/notmyname/)
 
 **What draws me to it?**  
-This example visualize Chinese Pinyin, which in my opinion is purely academic content, with a theme that is close to life.
+This example visualize Chinese Pinyin with a theme that is close to life. 
 
 **What specific quality or approach might I carry forward?**  
 The way it is visualized is very interesting. I like the pattern of big trees and leaves. I wanted to use a similar approach in my visualizations to make them fun, intuitive and creative.
