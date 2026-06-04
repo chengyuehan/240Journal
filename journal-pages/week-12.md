@@ -48,6 +48,8 @@ Its intended impact is not grand but real: to hand the hidden information back t
 
 </div>
 
+![1](../assets/week-12/1.png)
+![2](../assets/week-12/2.png)
 ## AI Usage Statement
 
 I used Claude to help draft, refine, and translate the project statement above. I reviewed and rewrote the output so that the final wording reflected my own intentions.
