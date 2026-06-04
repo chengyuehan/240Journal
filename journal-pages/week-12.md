@@ -28,16 +28,12 @@ Its intended impact is not grand but real: to hand the hidden information back t
 <div style="
   position: relative;
   left: 50%;
-  right: 50%;
   margin-left: -50vw;
-  margin-right: -50vw;
   width: 100vw;
-  max-width: 100vw;
-  overflow-x: auto;
-  overflow-y: hidden;
+  height: calc(100vw * 1000 / 1920);
+  overflow: hidden;
   border: 1px solid #ddd;
 ">
-
   <iframe
     src="https://chengyuehan.github.io/Behind-The-Chat-Box"
     style="
@@ -45,9 +41,10 @@ Its intended impact is not grand but real: to hand the hidden information back t
       height: 1000px;
       border: none;
       display: block;
+      transform: scale(calc(100vw / 1920));
+      transform-origin: top left;
     ">
   </iframe>
-
 </div>
 
 ## AI Usage Statement
