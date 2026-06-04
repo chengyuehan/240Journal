@@ -1146,7 +1146,7 @@
     const [sort, setSort] = React.useState('speed');
 
     const METRICS = [
-      { id: 'iq', label: 'IQ SCORE', better: 'high', get: (r) => r.iq || 0, fmt: (v) => v + ' /100' },
+      { id: 'iq', label: 'IQ · LLM STATS', better: 'high', get: (r) => r.iq || 0, fmt: (v) => '' + v },
       { id: 'inprice', label: 'INPUT PRICE', better: 'low', get: (r) => (r.inPrice != null ? r.inPrice : r.price), fmt: (v) => '$' + v.toFixed(2) + '/M' },
       { id: 'price', label: 'OUTPUT PRICE', better: 'low', get: (r) => r.price, fmt: (v) => '$' + v.toFixed(2) + '/M' },
       { id: 'speed', label: 'OUTPUT SPEED', better: 'high', get: (r) => r.speed, fmt: (v, r) => (r && r.isEstSpeed ? '~' : '') + v + ' t/s' },
@@ -1179,7 +1179,7 @@
           {METRICS.map((m) => (
             <button key={m.id} className={'cmp-sortbtn' + (sort === m.id ? ' on' : '')} onClick={() => setSort(m.id)}>{m.label}</button>
           ))}
-          <span className="cmp-note">// live LLM Stats data · price · IQ · real output speed (~ = estimated)</span>
+          <span className="cmp-note">// live · IQ = LLM Stats Score (TrueSkill across all benchmarks) · real price &amp; speed (~ = est.)</span>
         </div>
 
         <div className="cmp-rows">
@@ -1428,7 +1428,10 @@ const { useState, useRef, useEffect, useCallback, useMemo } = React;
 //          telemetry fall back to a price estimate (flagged isEstSpeed → "~est").
 // Visual emblems are ORIGINAL geometric marks (no branded logos).
 // ============================================================
-const FUEL_API = '/api/fuel-data';
+// Static-first: read the snapshot committed by the GitHub Action (works on GitHub
+// Pages, no server). Falls back to a live server endpoint when one is running.
+const FUEL_API = 'fuel-data.json';
+const FUEL_API_FALLBACK = '/api/fuel-data';
 
 // Original geometric emblems, colour-parametrised. Unknown orgs get a generic mark.
 const EMBLEMS = {
@@ -1758,8 +1761,9 @@ function App() {
   const [dataInfo, setDataInfo] = useState(null); // { modelCount, updatedAt }
   useEffect(() => {
     let alive = true;
-    fetch(FUEL_API)
-      .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
+    const load = (url) => fetch(url, { cache: 'no-store' }).then((res) => (res.ok ? res.json() : Promise.reject(res.status)));
+    load(FUEL_API)
+      .catch(() => load(FUEL_API_FALLBACK)) // local dev server, if the snapshot is absent
       .then((data) => {
         if (!alive || !data || !data.stations) return;
         const fresh = buildCompanies(data.stations);
@@ -1867,19 +1871,27 @@ function App() {
     if (!stage) return;
     const stageBox = stage.getBoundingClientRect();
     const s = scaleRef.current;
+    // The pump bay scrolls horizontally and clips overflowing pumps, but the nozzles
+    // are drawn in the stage (so they can be dragged out). Only record anchors for
+    // pumps that are actually inside the bay's visible viewport — otherwise a
+    // scrolled-out pump's nozzle would float over the robot.
+    const bay = stage.querySelector('.pump-bay');
+    const bayBox = bay ? bay.getBoundingClientRect() : stageBox;
     const anchors = {};
     const rest = {};
     company.models.forEach((_m, i) => {
       const pumpEl = stage.querySelector(`[data-pump-idx="${i}"]`);
       const holEl  = stage.querySelector(`[data-holster-idx="${i}"]`);
-      if (pumpEl) {
-        const pb = pumpEl.getBoundingClientRect();
-        anchors[i] = { x: (pb.right - stageBox.left) / s - 4, y: (pb.top - stageBox.top) / s + 90 };
-      }
-      if (holEl) {
-        const hb = holEl.getBoundingClientRect();
-        rest[i] = { x: (hb.left - stageBox.left) / s - 24, y: (hb.top - stageBox.top) / s - 12 };
-      }
+      if (!pumpEl || !holEl) return;
+      const hb = holEl.getBoundingClientRect();
+      // gate on the NOZZLE (holster) being inside the bay's visible band — a pump can
+      // straddle the edge with its holster in the clipped region, which would float
+      // the nozzle over the robot.
+      const holCenter = (hb.left + hb.right) / 2;
+      if (holCenter < bayBox.left + 4 || holCenter > bayBox.right - 4) return;
+      const pb = pumpEl.getBoundingClientRect();
+      anchors[i] = { x: (pb.right - stageBox.left) / s - 4, y: (pb.top - stageBox.top) / s + 90 };
+      rest[i] = { x: (hb.left - stageBox.left) / s - 24, y: (hb.top - stageBox.top) / s - 12 };
     });
     setPumpAnchors(anchors);
     setHolsterPositions(rest);
@@ -2104,7 +2116,7 @@ function App() {
                   <div className="row"><span className="k">SPEED</span><span className="v" title={m.isEstSpeed ? 'estimated — no published telemetry' : 'real 7-day throughput'}>{m.isEstSpeed ? '~' : ''}{m.speed} t/s</span></div>
                   <div className="row"><span className="k">OUT</span><span className="v">${m.price.toFixed(2)}/M</span></div>
                   <div className="row"><span className="k">IN</span><span className="v">${m.inPrice.toFixed(2)}/M</span></div>
-                  <div className="row"><span className="k">IQ</span><span className="v" style={{color:'#f8b4d6'}}>{m.iq}</span></div>
+                  <div className="row"><span className="k">IQ</span><span className="v" style={{color:'#f8b4d6'}} title="LLM Stats Score — composite TrueSkill rating across every tracked benchmark">{m.iq}</span></div>
                 </div>
                 <div className="nozzle-holster" data-holster-idx={i} />
                 {isPumping && <button className="stop-btn" onClick={stopPump}>STOP</button>}

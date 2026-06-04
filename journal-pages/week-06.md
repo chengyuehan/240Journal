@@ -81,7 +81,7 @@ This solidified my idea to create a de-chartistic visualization.
 What draws me to this project is it's topic is related to mine and also it's way to shwoing every news as a flower. 
 
 **What specific quality or approach might I carry forward?**  
-Its creativity in extending AI news into other areas
+Its creativity in extending AI news into other areas.
 
 **Does this reference change or reinforce my current direction?**  
 This reinforces my current research direction and shows that my topic is one that can be well visualized.

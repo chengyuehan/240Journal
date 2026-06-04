@@ -6,19 +6,35 @@ layout: default
 
 [← Back to Home](../index.md)
 
-## Documentation 
+## Documentation
 
-*Include your documentation for the week. Devise your own structure of headings relevant to the required tasks and your process.*
+## Project Development
 
-## Images & Media
+[link to the demo](../assets/week-11/fuel-station-gh/index.html)⬆️click image to see
 
-*Use the format below to embed images from your assets folder:*
+After a long stretch of back-and-forth with Claude Code, I finally finished the live, API-connected version of the gas station. Up to now the gas station had mostly been a design running on sample values, so this was the step that turned it into a working version pulling real data, the same way I had already done with the receipt prototype.
 
-`![Alt text](../assets/week-01/your-image.jpg)`
-`*Your caption here*`
+Connecting it to live data also brought out a problem I had to deal with directly: the data has a lot of missing information. Not every model in the source returns a complete set of fields, and a model with gaps would either break the scene or show empty values that look wrong. Rather than display these incomplete entries, I decided to only include the models whose information is complete enough to be shown properly. This keeps the gas station accurate and readable, even though it means the page shows fewer models than the source actually lists.
 
-*The text inside the square brackets is alt text (a description for accessibility), not a visible caption. To add a caption, place a line of italic text below the image.*
+![2](../assets/week-11/2.png)the process that finding the speed
+
+Exploring the API was also not as smooth as I had imagined. I had assumed most of what I wanted to show would be there to read off directly, but it turned out that many of the values shown on the page actually have to be calculated from the raw data rather than taken straight from a field. Speed was one example of this. To work out how to derive it correctly, I had Claude Code research the problem for a while, and after some time it found a way to calculate and implement it from the data that was available.
+
+With the gas station finished, I could finally focus on the last two pieces of content: parameter count and model context length. I took the demo I had already reviewed and approved and sent it to Claude Code to implement. Once Claude Code returned the result, I noticed that the real data did not behave the same way as the sample data had. One thing that stood out was that many models share the same parameter count. To handle this, I made a collapsible design, so models with identical parameters can be folded together instead of each taking up its own row. This saved a lot of screen space. On top of that, because the amount of data was large, I added a filter function to both visualisations, so a viewer can narrow things down and find the data they are looking for quickly instead of scrolling through everything.
+
+[![1](../assets/week-11)](..)⬆️click image to see
+
+After finishing the parameter count visualisation, I moved on to building the context length visualisation. Here the range was different: the largest value only reaches about 2M tokens, which is much smaller than the parameter counts that ran up into the trillions. Because of this smaller ceiling, I optimised the logic used to display the amounts, and added more markers to the scale within the 2M range, so that the comparison stays detailed across this narrower range instead of leaving most of the values bunched together at one end.
+
+This smaller range also changed how I labelled it. Because the maximum context length is only around 2,000,000 tokens, the equivalent word count is actually a useful reference for a person — it is a number you can picture. So for each model I converted its token count into a word count and displayed that on top. This is different from the parameter count, where the numbers were too large to convert into anything meaningful and I had to fall back on plain-text anchors instead.
+
+[![1](../assets/week-11)](..)⬆️click image to see
+
+
+By this point I had all four parts I had wanted, each with its own working interface: the gas station, the receipt comparison, the parameter count visualisation, and the context length visualisation. The next step was to bring them together and integrate them into a single website.
+
+
 
 ## AI Usage Statement
 
-*Document any use of AI tools under an AI Usage Statement heading. Explain which tools you used and describe how you used them. Reference any AI-generated content (see [QuickCite](https://auckland.libguides.com/referencing-generative-ai-tools) for guidance).*
+<!-- 用了哪些 AI、怎么用的，引用 -->

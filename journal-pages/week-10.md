@@ -66,8 +66,18 @@ From here, I kept refining the idea together with Claude Design, and after sever
 
 [![8](../assets/week-10/8.png)](../assets/week-10/context/LLM%20Parameter%20Scale.html)⬆️click image to see demo
 
+## Reference
 
+McCandless, D. (2024). Per Second – Vibrations / Cycles / Waves / Rate / Frequency [Infographic]. Information Is Beautiful. https://informationisbeautiful.net/2024/per-second-vibrations-cycles-waves-rate-frequency/
 
 ## AI Usage Statement
 
-*Document any use of AI tools under an AI Usage Statement heading. Explain which tools you used and describe how you used them. Reference any AI-generated content (see [QuickCite](https://auckland.libguides.com/referencing-generative-ai-tools) for guidance).*
+I used AI tools this week mainly for coding. Claude Code was used to connect my Claude Design prototype to the LLM Stats API and turn it into a working webpage that runs on live, accurate data. I also used AI to help polish the writing in this Journal. 
+
+Anthropic. (2026). Claude Design [Vibe coding agent]. https://claude.ai/design
+
+Anthropic. (2026). Claude Code [Vibe coding agent]. https://claude.ai/code
+
+OpenAI. (2026). ChatGPT (GPT-5.4 Thinking) [Large language model]. https://chat.openai.com/chat
+
+
