@@ -10,8 +10,6 @@ layout: default
 
 In week 8, I prepared a short progress report on the current status of my project. I presented and explained it to my classmates in class, listened to their feedback, and provided feedback on their projects.
 
-<iframe loading="lazy" style="position: absolute; width: 700; height: 450; top: 0; left: 0; border: none; padding: 0;margin: 0;" src="https://www.canva.com/design/DAHJCJVQIUE/cbhh54tOIdCnrXSbY60qwQ/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen"></iframe>
-=======
 <iframe
   src="https://www.canva.com/design/DAHJCJVQIUE/cbhh54tOIdCnrXSbY60qwQ/view?embed"
   width="700"
