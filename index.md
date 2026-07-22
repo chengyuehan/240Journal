@@ -8,7 +8,8 @@ title: Making Journal for DES240
     margin-bottom: 3rem;
   }
 
-  .journal-intro h1 {
+  .journal-intro h1,
+  .journal-section h2 {
     color: #15965f;
   }
 
@@ -24,14 +25,24 @@ title: Making Journal for DES240
     display: flex;
     align-items: center;
     justify-content: center;
+
     min-height: 260px;
+    padding: 32px;
+
     overflow: hidden;
+    box-sizing: border-box;
+
     border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 22px;
+
     background: linear-gradient(135deg, #207397, #15966b);
+
     color: #ffffff !important;
+    text-align: center;
     text-decoration: none !important;
+
     box-shadow: 0 8px 24px rgba(20, 40, 50, 0.1);
+
     transition:
       transform 0.25s ease,
       box-shadow 0.25s ease;
@@ -40,35 +51,53 @@ title: Making Journal for DES240
   .journal-card::before {
     content: "";
     position: absolute;
+
     width: 230px;
     height: 230px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
+
+    border: 2px solid rgba(255, 255, 255, 0.18);
     border-radius: 50%;
   }
 
   .journal-card::after {
     content: "";
     position: absolute;
+
     width: 145px;
     height: 145px;
+
     border-radius: 32px;
+
     background: rgba(255, 255, 255, 0.09);
+
     transform: rotate(12deg);
   }
 
   .journal-card span {
     position: relative;
-    z-index: 1;
+    z-index: 2;
+
+    display: block;
+
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
     color: #ffffff;
-    font-size: 2.4rem;
+
+    font-size: 2.8rem;
     font-weight: 700;
-    letter-spacing: -0.02em;
+    line-height: 1.1;
+
+    text-align: center;
   }
 
   .journal-card:hover {
     color: #ffffff !important;
     text-decoration: none !important;
+
     transform: translateY(-6px);
+
     box-shadow: 0 16px 36px rgba(20, 40, 50, 0.18);
   }
 
@@ -130,7 +159,7 @@ title: Making Journal for DES240
     }
 
     .journal-card span {
-      font-size: 2rem;
+      font-size: 2.2rem;
     }
   }
 </style>
@@ -153,55 +182,94 @@ title: Making Journal for DES240
   <h2>Weekly Journal</h2>
 
   <div class="journal-grid">
-    <a class="journal-card" href="{{ '/journal-pages/week-01.html' | relative_url }}">
+    <a
+      class="journal-card"
+      href="{{ '/journal-pages/week-01.html' | relative_url }}"
+    >
       <span>Week 01</span>
     </a>
 
-    <a class="journal-card" href="{{ '/journal-pages/week-02.html' | relative_url }}">
+    <a
+      class="journal-card"
+      href="{{ '/journal-pages/week-02.html' | relative_url }}"
+    >
       <span>Week 02</span>
     </a>
 
-    <a class="journal-card" href="{{ '/journal-pages/week-03.html' | relative_url }}">
+    <a
+      class="journal-card"
+      href="{{ '/journal-pages/week-03.html' | relative_url }}"
+    >
       <span>Week 03</span>
     </a>
 
-    <a class="journal-card" href="{{ '/journal-pages/week-04.html' | relative_url }}">
+    <a
+      class="journal-card"
+      href="{{ '/journal-pages/week-04.html' | relative_url }}"
+    >
       <span>Week 04</span>
     </a>
 
-    <a class="journal-card" href="{{ '/journal-pages/week-05.html' | relative_url }}">
+    <a
+      class="journal-card"
+      href="{{ '/journal-pages/week-05.html' | relative_url }}"
+    >
       <span>Week 05</span>
     </a>
 
-    <a class="journal-card" href="{{ '/journal-pages/week-06.html' | relative_url }}">
+    <a
+      class="journal-card"
+      href="{{ '/journal-pages/week-06.html' | relative_url }}"
+    >
       <span>Week 06</span>
     </a>
 
-    <a class="journal-card" href="{{ '/journal-pages/week-07.html' | relative_url }}">
+    <a
+      class="journal-card"
+      href="{{ '/journal-pages/week-07.html' | relative_url }}"
+    >
       <span>Week 07</span>
     </a>
 
-    <a class="journal-card" href="{{ '/journal-pages/week-08.html' | relative_url }}">
+    <a
+      class="journal-card"
+      href="{{ '/journal-pages/week-08.html' | relative_url }}"
+    >
       <span>Week 08</span>
     </a>
 
-    <a class="journal-card" href="{{ '/journal-pages/week-09.html' | relative_url }}">
+    <a
+      class="journal-card"
+      href="{{ '/journal-pages/week-09.html' | relative_url }}"
+    >
       <span>Week 09</span>
     </a>
 
-    <a class="journal-card" href="{{ '/journal-pages/week-10.html' | relative_url }}">
+    <a
+      class="journal-card"
+      href="{{ '/journal-pages/week-10.html' | relative_url }}"
+    >
       <span>Week 10</span>
     </a>
 
-    <a class="journal-card" href="{{ '/journal-pages/week-11.html' | relative_url }}">
+    <a
+      class="journal-card"
+      href="{{ '/journal-pages/week-11.html' | relative_url }}"
+    >
       <span>Week 11</span>
     </a>
 
-    <a class="journal-card" href="{{ '/journal-pages/week-12.html' | relative_url }}">
+    <a
+      class="journal-card"
+      href="{{ '/journal-pages/week-12.html' | relative_url }}"
+    >
       <span>Week 12</span>
     </a>
 
-    <a class="journal-card" href="{{ '/journal-pages/week-13.html' | relative_url }}">
+    <a
+      class="journal-card"
+      href="{{ '/journal-pages/week-13.html' | relative_url }}"
+    >
       <span>Reflections & Resources</span>
     </a>
   </div>
