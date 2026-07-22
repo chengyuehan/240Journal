@@ -25,3 +25,4 @@ As a second-year student in IT Management and Design, I chose this course becaus
 | [Week 10](journal-pages/week-10.md) | Design Project |
 | [Week 11](journal-pages/week-11.md) | Design Project |
 | [Week 12](journal-pages/week-12.md) | Showcase |
+| [Week 13?](journal-pages/week-13.md) | Reflections & Resources |
