@@ -1,10 +1,4 @@
----
-layout: default
----
-
-# Week 08
-
-[← Back to Home](../index.md)
+# Documentation
 
 ## Progress Report
 
@@ -34,7 +28,7 @@ Another useful piece of feedback was that my classmates seemed most interested i
 
 These responses helped me narrow the project direction. Instead of trying to include every field from the API, I should focus more on dimensions that viewers can quickly understand and care about. Performance and price may become the main comparison points, while other data such as speed and model context length can work as supporting information. This also helped me think about how to combine different capability dimensions into one data visualisation design.
 
-## Project Development
+# Project Development
 
 After talking with my classmates, I started thinking about how to combine multiple model dimensions into one data visualisation. Since the feedback showed that people cared most about performance and price, I decided to start from the money side first. Price felt like a useful entry point because it is easier to understand than many benchmark scores, but it still connects directly to real AI use.
 

@@ -1,12 +1,4 @@
----
-layout: default
----
-
-# Week 06
-
-[← Back to Home](../index.md)
-
-## Documentation
+# Documentation
 
 ## In-Class Activity
 

@@ -1,7 +1,3 @@
-# Week 01
-
-[← Back to Home](../index.md)
-
 # Documentation
 
 ## Group Data Portrait

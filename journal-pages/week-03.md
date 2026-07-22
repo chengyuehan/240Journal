@@ -1,8 +1,4 @@
-# Week 03
-
-[← Back to Home](../index.md)
-
-## Documentation
+# Documentation
 
 ## In-Class Activities
 

@@ -1,12 +1,4 @@
----
-layout: default
----
-
-# Week 09
-
-[← Back to Home](../index.md)
-
-## Documentation
+# Documentation
 
 ## Project Statement: First Draft
 

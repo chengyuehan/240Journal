@@ -1,12 +1,4 @@
----
-layout: default
----
-
-# Week 07
-
-[← Back to Home](../index.md)
-
-## Documentation
+# Documentation
 
 ## Continuing the Concept Sketch
 

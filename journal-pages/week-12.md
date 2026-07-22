@@ -1,12 +1,4 @@
----
-layout: default
----
-
-# Week 12
-
-[← Back to Home](../index.md)
-
-## Project Statement 
+# Project Statement 
 
 ### Behind the chat box
 

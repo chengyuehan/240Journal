@@ -1,12 +1,4 @@
----
-layout: default
----
-
-# Week 05
-
-[← Back to Home](../index.md)
-
-## Reflective Proposal
+# Reflective Proposal
 
 After four weeks of learning and participating in a wide range of experiments related to data design, I found that the API experiment in Week Three and the AI capability comparison in Week Four were the types I enjoyed most. The final experiment of Week Three made me realize how compelling it can be to transform raw numbers into creative, dynamic visualizations — an experience far more meaningful than reading a chart. The AI-focused content of Week Four then confirmed the direction I want to pursue. I hope to present what lies creatively behind AI, using the concept of "making the invisible visible" to surface information that is usually hidden from the everyday user behind a simple chat interface.
 

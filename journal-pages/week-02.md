@@ -1,13 +1,7 @@
----
-layout: default
----
-
-# Week 02
-
-[← Back to Home](../index.md)
-
 # Documentation 
+
 ## In-Class Activities
+
 ### Activity 1: Drawing with Code
 After learning some very basic p5.js drawing functions such as:
 
