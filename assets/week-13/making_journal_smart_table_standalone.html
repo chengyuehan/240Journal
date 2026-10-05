@@ -27,4 +27,30 @@ function filtered(){return rows.filter(x=>{const typeMatch=!selectedType||(selec
 function render(){const data=filtered();renderCards();const p5Mode=selectedType==='Digital';const filters=document.querySelector('#p5Filters');const showP5Column=p5Mode&&!selectedP5;document.querySelector('#p5Header').hidden=!showP5Column;if(p5Mode){const opts=[['','All Digital Projects'],['Confirmed: p5.js','Confirmed: p5.js'],['Confirmed: Other Tools','Confirmed: Other Tools'],['Unconfirmed','Unconfirmed']];filters.innerHTML='<div class="p5-heading">p5.js Check</div><div class="p5-options">'+opts.map(([value,label])=>{const n=rows.filter(x=>x.type==='Digital'&&(!value||x.p5===value)).length;return `<button class="p5-option ${selectedP5===value?'active':''}" data-value="${value}" aria-pressed="${selectedP5===value}"><span>${label}</span><span class="p5-num">${n}</span></button>`}).join('')+'</div>';filters.querySelectorAll('.p5-option').forEach(btn=>btn.addEventListener('click',()=>{selectedP5=btn.dataset.value;render()}))}document.querySelector('#count').textContent=`Showing ${data.length} / ${rows.length} projects`;document.querySelector('#footCount').textContent=`${data.length} / ${rows.length}`;const body=document.querySelector('#body');body.innerHTML=data.map(x=>`<tr><td class="repo"><a href="${x.url}" target="_blank" rel="noopener">${x.repo}</a><br><a class="url" href="${x.url}" target="_blank" rel="noopener">Open GitHub Pages ↗</a></td><td class="project">${x.title}</td>${showP5Column?`<td class="status">${badge(x.p5,pClass[x.p5]||'na')}</td>`:''}</tr>`).join('');document.querySelector('#empty').hidden=data.length>0;document.querySelector('#totalCount').textContent=rows.length}
 
 document.querySelectorAll('th[data-key]').forEach(th=>th.addEventListener('click',()=>{if(th.dataset.key==='p5'&&selectedType!=='Digital')return;const key=th.dataset.key;sortDir=key===sortKey?-sortDir:1;sortKey=key;render()}));render();
-</script></body></html>
+</script>
+<script>
+(() => {
+  if (window.parent === window) return;
+  const expandForEmbedding = () => {
+    const tableScroller = document.querySelector('.scroll');
+    if (tableScroller) {
+      tableScroller.style.maxHeight = 'none';
+      tableScroller.style.overflow = 'visible';
+    }
+    const sendHeight = () => {
+      const height = Math.ceil(Math.max(document.documentElement.scrollHeight, document.body.scrollHeight));
+      window.parent.postMessage({ type: 'making-journal-table:resize', height }, '*');
+    };
+    const observer = new ResizeObserver(() => requestAnimationFrame(sendHeight));
+    observer.observe(document.documentElement);
+    observer.observe(document.body);
+    window.addEventListener('load', sendHeight);
+    window.addEventListener('resize', sendHeight);
+    requestAnimationFrame(sendHeight);
+    setTimeout(sendHeight, 200);
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', expandForEmbedding, { once: true });
+  else expandForEmbedding();
+})();
+</script>
+</body></html>
