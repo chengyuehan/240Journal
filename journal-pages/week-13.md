@@ -7,7 +7,7 @@
   src="../assets/week-13/making_journal_smart_table_standalone.html"
   title="Making Journal 项目智能表"
   width="100%"
-  height="900"
+  height="100%"
   style="border:0; border-radius:16px; overflow:hidden;"
   loading="lazy">
 </iframe>
