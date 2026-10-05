@@ -178,8 +178,4 @@ As a second-year student in IT Management and Design, I chose this course becaus
 <span>Week 12</span>
 </a>
 
-<a class="journal-card" href="{{ '/journal-pages/week-13.html' | relative_url }}">
-<span>Reflections<br>&<br> Resources</span>
-</a>
-
 </div>
