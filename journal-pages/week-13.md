@@ -1,49 +1,21 @@
-# Project Statement 
+# # Week 0/13
+如果你有幸访问这个页面，说明你能想到去通过仓库名的方式来搜索之前的案例。如果你很幸运的在前面几个搜索中正好看到我这个。那么既然如此我就将帮你不那么费力的去继续寻找。我使用Claude匹配了许多2026 S1的同学的Journal，如果你有兴趣的话可以一个一个去看看大家都干了些什么，或是不知道改写什么的话就看看大家都怎么写weekly journal的。当然前提是明年的课程还一样，毕竟今年就改版了。
 
-### Behind the chat box
+匹配标准：仓库 README.md 与上传文件 (git blob 945644ab…, 3591 字节) **逐字节相同**。 GitHub Pages 网址格式：https://<用户名>.github.io/<仓库名>/
 
-This is an interactive data-visualisation website that turns the vast, abstract metrics of large language models into four playful visualisations — each making one dimension of a model's capability something you can grasp intuitively rather than read off a number.
+<iframe
+  src="../assets/week-13/making_journal_smart_table_standalone.html"
+  title="Making Journal 项目智能表"
+  width="100%"
+  height="900"
+  style="border:0; border-radius:16px; overflow:hidden;"
+  loading="lazy">
+</iframe>
 
-The data updates itself, drawn from the LLM Stats API, which gathers the pricing, benchmarks, rankings and metadata of hundreds of models. By querying the API directly and fetching through a GitHub Action, the page refreshes on its own whenever a new model appears, always showing the latest state of the race. Models with missing information are dropped, so every comparison stays trustworthy.
+## 课程评价
+在我看来改版之后的课程是一个十分友好且开放的设计课程，在我选择这门课的时候我查了25S1的course outline。彼时coding部分作为quiz是课程评分标准的一部分。根据outline的说法以及跟老师的求证，之前coding部分应该教的是processing。而该课程的改版体现出了更大的包容性，现在你可以去制作任何形态的数据可视化作为你最中的项目。课程前半部分的内容设置在整个design elective中是十分有趣且实用的。如果你选择去使用coding来完成最终的设计的话，认真学习前面的会是一个比较好的事情。即便不制作coding类项目，其也具有价值且是前40%不可或缺的部分。
 
-Its subject is the model race as it stands now — a new release every few days, each claiming to be cheaper and stronger. We move toward the future it points to only half-understanding it: one increasingly assisted, then led, by AI. There, the tool that helps you make every decision, write every line of code and finish every assignment is governed by costs and capabilities buried under numbers in the millions and billions, the real ability behind them out of sight.
+出勤率在本课程中的影响较大，但不会出现因为缺勤导致完全卡死的情况。所有的内容都在canvas中进行更新。但有些课堂活动需要现场记录同学的反馈则直接无法获得。我就面临到了这样的问题，缺席了许多需要获得反馈的课程对评分造成了影响。
 
-Critically, the work takes issue with an industry that teaches its users almost nothing — what has changed, how one model differs from another. Knowing next to nothing, people end up bound to whatever model an app, a default or a habit hands them. That is no choice at all: a development racing ahead of the very understanding its users would need, leaving them behind.
+作为整个课程唯一需要提交的内容（将所有项目包含在里面），Journal的写作也是需要一些能力的。使用markdown大全去查阅更多的markdown语法从而实现更多课上没有展示的功能在你的网页中可能是可以脱引而出的一个方面。或者你也可以直接让AI帮你写markdown语法，it’s vibe generation right?
 
-Its intended impact is not grand but real: to hand the hidden information back to ordinary users, so they can compare models themselves and, in a world AI will come to lead, choose the one that suits them best — closing the gap this development has opened, so they can pick the model that will carry their memories, their work, even their life.
-
-
-## Final Artefact
-
-<div style="
-  text-align:center;
-  margin:40px 0;
-">
-
-  <a
-    href="https://chengyuehan.github.io/Behind-The-Chat-Box"
-    target="_blank"
-    style="
-      display:inline-block;
-      padding:16px 32px;
-      border:2px solid #222;
-      text-decoration:none;
-      color:#222;
-      font-size:18px;
-      letter-spacing:2px;
-      text-transform:uppercase;
-      transition:0.2s;
-    "
-  >
-    Open Interactive Website ↗
-  </a>
-
-</div>
-
-![1](../assets/week-12/1.png)
-![2](../assets/week-12/2.png)
-## AI Usage Statement
-
-I used Claude to help draft, refine, and translate the project statement above. I reviewed and rewrote the output so that the final wording reflected my own intentions.
-
-Anthropic. (2026). *Claude* [Large language model]. https://claude.ai/
